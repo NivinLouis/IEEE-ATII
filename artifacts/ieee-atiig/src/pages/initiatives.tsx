@@ -1,0 +1,248 @@
+import { useState } from "react";
+import { Layout } from "@/components/Layout";
+import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Link } from "wouter";
+import { motion } from "framer-motion";
+import { Search, Filter, ArrowRight, Lightbulb, Users, BookOpen, Building, GraduationCap, Globe } from "lucide-react";
+
+import initHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(4)_1777748003995.png";
+import initVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(3)_1777748003997.png";
+
+export default function InitiativesPage() {
+  const [activeTab, setActiveTab] = useState("All");
+
+  return (
+    <Layout>
+      {/* Hero */}
+      <section className="bg-slate-50 pt-16 pb-20 border-b border-slate-100" data-testid="initiatives-hero">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex-1">
+              <div className="text-sm font-medium text-slate-500 mb-4 flex items-center gap-2">
+                <Link href="/" className="hover:text-navy transition-colors">Home</Link>
+                <span>/</span>
+                <span className="text-navy">Initiatives</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-black text-navy mb-6">Our Initiatives</h1>
+              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                Strategic programs and action-oriented interventions designed to build a more inclusive society through technology, education, and community engagement.
+              </p>
+              <div className="flex gap-6 mb-8">
+                <div className="flex flex-col">
+                  <span className="text-3xl font-black text-orange">6</span>
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Core Programs</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-3xl font-black text-teal">25K+</span>
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Beneficiaries</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-3xl font-black text-purple">120+</span>
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Volunteers</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex-1">
+              <img src={initHeroImg} alt="Initiatives in action" className="rounded-2xl shadow-lg w-full h-[400px] object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Filter Bar */}
+      <section className="py-8 bg-white border-b border-slate-100 sticky top-20 z-30 shadow-sm" data-testid="initiatives-filters">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex overflow-x-auto w-full md:w-auto pb-2 md:pb-0 gap-2 hide-scrollbar">
+            {["All", "Ongoing", "Upcoming", "Completed", "In Planning"].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-5 py-2 rounded-full font-bold text-sm whitespace-nowrap transition-colors ${
+                  activeTab === tab 
+                    ? "bg-navy text-white" 
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex w-full md:w-auto gap-3">
+            <div className="relative flex-1 md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input placeholder="Search initiatives..." className="pl-9 bg-slate-50 border-slate-200" />
+            </div>
+            <Button variant="outline" className="border-slate-200 text-navy font-bold shrink-0">
+              <Filter className="w-4 h-4 mr-2" /> Filters
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Initiatives Grid */}
+      <section className="py-24 bg-slate-50" data-testid="initiatives-grid">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                id: "innovation-lab",
+                title: "AT Innovation Lab", theme: "navy", icon: <Lightbulb className="w-6 h-6" />,
+                desc: "Our innovation lab develops and prototypes assistive devices and solutions using emerging technologies and user-centered design.",
+                stats: ["18 Projects", "4.3K+ Lives Impacted", "12 Partners"]
+              },
+              {
+                id: "outreach",
+                title: "Community Outreach", theme: "teal", icon: <Users className="w-6 h-6" />,
+                desc: "We collaborate with communities to identify needs, create awareness, and deliver inclusive solutions where they are needed most.",
+                stats: ["65+ Events", "8.7K+ People Reached", "20+ Volunteers"]
+              },
+              {
+                id: "education",
+                title: "Inclusive Education", theme: "purple", icon: <BookOpen className="w-6 h-6" />,
+                desc: "Promoting inclusive learning environments through accessible resources, teacher training, and inclusive learning tools.",
+                stats: ["35+ Institutions", "6.1K+ Students", "80+ Sessions"]
+              },
+              {
+                id: "campus",
+                title: "Accessible Campus Program", theme: "orange", icon: <Building className="w-6 h-6" />,
+                desc: "Making campuses universally inclusive through audits, retrofitting, awareness campaigns and inclusive infrastructure advocacy.",
+                stats: ["15+ Campuses", "2.8K+ Users", "10+ Audits"]
+              },
+              {
+                id: "capacity",
+                title: "Capacity Building", theme: "teal", icon: <GraduationCap className="w-6 h-6" />,
+                desc: "Workshops, mentoring and hands-on training to build skills in assistive technology, design thinking, and inclusive innovation.",
+                stats: ["40+ Workshops", "3.9K+ Participants", "25+ Mentors"]
+              },
+              {
+                id: "humanitarian",
+                title: "Humanitarian Technology", theme: "navy", icon: <Globe className="w-6 h-6" />,
+                desc: "Designing low-cost, scalable assistive solutions for disaster response and refugee and underserved settings.",
+                stats: ["10+ Deployments", "1.6K+ Impacted", "8+ Partners"]
+              }
+            ].map((init, i) => {
+              const themeStyles = {
+                navy: { border: "border-l-navy", bg: "bg-navy/10", text: "text-navy", statBg: "bg-navy/5" },
+                teal: { border: "border-l-teal", bg: "bg-teal/10", text: "text-teal", statBg: "bg-teal/5" },
+                purple: { border: "border-l-purple", bg: "bg-purple/10", text: "text-purple", statBg: "bg-purple/5" },
+                orange: { border: "border-l-orange", bg: "bg-orange/10", text: "text-orange", statBg: "bg-orange/5" }
+              };
+              const style = themeStyles[init.theme as keyof typeof themeStyles];
+
+              return (
+                <motion.div 
+                  key={i} id={init.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`bg-white rounded-2xl shadow-sm border border-slate-100 border-l-8 ${style.border} p-8 flex flex-col hover:shadow-md transition-shadow`}
+                >
+                  <div className="flex justify-between items-start mb-6">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${style.bg} ${style.text}`}>
+                        {init.icon}
+                      </div>
+                      <h3 className="text-2xl font-bold text-navy">{init.title}</h3>
+                    </div>
+                    <span className="bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full">Active</span>
+                  </div>
+                  
+                  <p className="text-slate-600 mb-8 flex-1 text-lg leading-relaxed">{init.desc}</p>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-8">
+                    {init.stats.map((stat, j) => {
+                      const [val, ...labelParts] = stat.split(" ");
+                      const label = labelParts.join(" ");
+                      return (
+                        <div key={j} className={`p-4 rounded-xl text-center ${style.statBg}`}>
+                          <div className={`font-black text-xl mb-1 ${style.text}`}>{val}</div>
+                          <div className="text-xs text-slate-500 font-bold uppercase leading-tight">{label}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <Link href={`/projects`} className={`font-bold text-lg inline-flex items-center group ${style.text}`}>
+                    Explore Projects <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Initiative */}
+      <section className="py-24 bg-white" data-testid="initiatives-featured">
+        <div className="container mx-auto px-4">
+          <div className="bg-navy rounded-3xl overflow-hidden shadow-xl flex flex-col lg:flex-row">
+            <div className="lg:w-1/2">
+              <img src={initVariantImg} alt="Innovation Lab" className="w-full h-full object-cover min-h-[400px]" />
+            </div>
+            <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center text-white">
+              <span className="text-orange font-bold tracking-widest uppercase mb-4 text-sm">Featured Initiative</span>
+              <h2 className="text-4xl md:text-5xl font-black mb-6">AT Innovation Lab</h2>
+              <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+                The AT Innovation Lab serves as a central hub where engineers, designers, and persons with disabilities co-create solutions. From low-cost prosthetics to communication devices, we're building the future of inclusive hardware.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-6 mb-10">
+                <div>
+                  <div className="text-3xl font-black text-teal mb-1">18</div>
+                  <div className="text-sm font-semibold text-slate-400 uppercase tracking-wide">Prototypes Built</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-purple mb-1">5</div>
+                  <div className="text-sm font-semibold text-slate-400 uppercase tracking-wide">Patents Filed</div>
+                </div>
+              </div>
+              
+              <div>
+                <Button asChild className="bg-orange hover:bg-orange/90 text-white font-bold h-14 px-8 text-base">
+                  <Link href="/projects#featured">View Lab Projects <ArrowRight className="ml-2 w-5 h-5" /></Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Program Journey */}
+      <section className="py-24 bg-slate-50" data-testid="initiatives-journey">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Our Program Approach</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">How we move from identifying a problem to delivering sustainable impact.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-6xl mx-auto relative">
+            <div className="hidden md:block absolute top-12 left-10 right-10 h-1 bg-slate-200 z-0"></div>
+            
+            {[
+              { num: "01", title: "Discover", desc: "Identify real-world needs through community engagement and research", color: "bg-navy" },
+              { num: "02", title: "Design", desc: "Co-create solutions with users, experts and stakeholders", color: "bg-teal" },
+              { num: "03", title: "Develop", desc: "Build and prototype using accessible and inclusive design principles", color: "bg-purple" },
+              { num: "04", title: "Deploy", desc: "Implement solutions in communities and institutions", color: "bg-orange" },
+              { num: "05", title: "Impact", desc: "Measure impact, learn and continuously improve for sustainable change", color: "bg-navy" }
+            ].map((step, i) => (
+              <div key={i} className="relative z-10 flex flex-col items-center text-center">
+                <div className={`w-24 h-24 rounded-full ${step.color} text-white flex items-center justify-center text-2xl font-black mb-6 shadow-lg border-4 border-slate-50`}>
+                  {step.num}
+                </div>
+                <h3 className="text-xl font-bold text-navy mb-3">{step.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <PartnerCarousel />
+    </Layout>
+  );
+}
