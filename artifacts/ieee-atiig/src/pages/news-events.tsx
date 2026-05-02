@@ -64,7 +64,7 @@ export default function NewsEventsPage() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button asChild size="lg" className="bg-navy hover:bg-navy/90 text-white font-bold h-14 px-8 text-base">
-                  <a href="#events">Explore Events</a>
+                  <a href="#upcoming">Explore Events</a>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="border-navy text-navy hover:bg-navy/5 font-bold h-14 px-8 text-base">
                   <a href="#newsletter">Subscribe to Updates</a>
