@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { Layout } from "@/components/Layout";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
@@ -29,6 +30,27 @@ import {
 import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
 import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 
+const stories = [
+  {
+    quote: "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable.",
+    author: "Ananya",
+    role: "Student Beneficiary",
+    img: teamImg,
+  },
+  {
+    quote: "With the assistive communication device developed by the team, my son can now express himself freely for the first time.",
+    author: "Priya Rajan",
+    role: "Parent & Community Member",
+    img: teamImg,
+  },
+  {
+    quote: "Volunteering with IEEE ATIIG opened my eyes to inclusive design. The experience has transformed how I approach engineering problems.",
+    author: "Mohammed Arif",
+    role: "Volunteer Engineer",
+    img: teamImg,
+  },
+];
+
 const lineData = [
   { year: "2020", impact: 2.1 },
   { year: "2021", impact: 5.8 },
@@ -47,6 +69,21 @@ const pieData = [
 ];
 
 export default function HomePage() {
+  const [storyIndex, setStoryIndex] = useState(0);
+
+  const prevStory = useCallback(() => {
+    setStoryIndex((i) => (i - 1 + stories.length) % stories.length);
+  }, []);
+
+  const nextStory = useCallback(() => {
+    setStoryIndex((i) => (i + 1) % stories.length);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(nextStory, 6000);
+    return () => clearInterval(interval);
+  }, [nextStory]);
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -372,25 +409,65 @@ export default function HomePage() {
       </section>
 
       {/* Stories of Change */}
-      <section className="py-24 bg-slate-50" data-testid="home-stories">
+      <section className="py-24 bg-slate-50" data-testid="home-stories" aria-label="Stories of Change carousel">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden border border-slate-100">
             <div className="grid md:grid-cols-5 h-full">
-              <div className="md:col-span-2 relative h-64 md:h-auto">
-                <img src={teamImg} alt="Beneficiary" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="md:col-span-2 relative h-64 md:h-auto overflow-hidden">
+                {stories.map((s, i) => (
+                  <img
+                    key={i}
+                    src={s.img}
+                    alt={`${s.author} — ${s.role}`}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === storyIndex ? "opacity-100" : "opacity-0"}`}
+                  />
+                ))}
               </div>
               <div className="md:col-span-3 p-10 md:p-14 flex flex-col justify-center">
                 <h2 className="text-sm font-bold tracking-widest text-teal uppercase mb-6">Stories of Change</h2>
-                <blockquote className="text-xl md:text-2xl font-medium text-navy leading-relaxed mb-8 italic">
-                  "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable."
-                </blockquote>
-                <div className="font-bold text-lg text-slate-800">— Ananya, Student Beneficiary</div>
-                
-                <div className="mt-12 flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <button className="w-10 h-2 rounded-full bg-orange transition-all" aria-label="Slide 1"></button>
-                    <button className="w-2 h-2 rounded-full bg-slate-200 transition-all hover:bg-slate-300" aria-label="Slide 2"></button>
-                    <button className="w-2 h-2 rounded-full bg-slate-200 transition-all hover:bg-slate-300" aria-label="Slide 3"></button>
+                <div className="relative min-h-[140px]">
+                  {stories.map((s, i) => (
+                    <div
+                      key={i}
+                      className={`transition-all duration-500 ${i === storyIndex ? "opacity-100 translate-y-0" : "opacity-0 absolute inset-0 translate-y-2 pointer-events-none"}`}
+                      aria-hidden={i !== storyIndex}
+                    >
+                      <blockquote className="text-xl md:text-2xl font-medium text-navy leading-relaxed mb-8 italic">
+                        "{s.quote}"
+                      </blockquote>
+                      <div className="font-bold text-lg text-slate-800">— {s.author}, <span className="font-medium text-slate-500">{s.role}</span></div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-10 flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={prevStory}
+                      aria-label="Previous story"
+                      className="w-8 h-8 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-navy text-slate-400 hover:text-navy transition-colors"
+                    >
+                      ‹
+                    </button>
+                    <div className="flex gap-2" role="tablist" aria-label="Story slides">
+                      {stories.map((_, i) => (
+                        <button
+                          key={i}
+                          role="tab"
+                          aria-selected={i === storyIndex}
+                          aria-label={`Story ${i + 1} of ${stories.length}`}
+                          onClick={() => setStoryIndex(i)}
+                          className={`h-2 rounded-full transition-all duration-300 ${i === storyIndex ? "w-8 bg-orange" : "w-2 bg-slate-200 hover:bg-slate-300"}`}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      onClick={nextStory}
+                      aria-label="Next story"
+                      className="w-8 h-8 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-navy text-slate-400 hover:text-navy transition-colors"
+                    >
+                      ›
+                    </button>
                   </div>
                   <Button variant="link" className="text-navy font-bold" asChild>
                     <Link to="/projects#impact">Read More Stories <ArrowRight className="ml-2 w-4 h-4" /></Link>

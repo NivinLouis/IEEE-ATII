@@ -201,26 +201,31 @@ export default function ContactPage() {
             <h2 className="text-3xl font-black text-navy">Our Office Location</h2>
           </div>
           
-          <div className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 relative h-[400px]">
-            {/* Map Placeholder Graphic */}
-            <div className="absolute inset-0 bg-[#e5e7eb]">
-              <div className="w-full h-full flex flex-col items-center justify-center bg-[url('https://www.transparenttextures.com/patterns/cartographer.png')]">
-                <div className="bg-white/90 backdrop-blur px-6 py-4 rounded-xl shadow-lg border border-slate-200 text-center relative animate-pulse">
-                  <MapPin className="w-10 h-10 text-orange mx-auto mb-2" />
-                  <h3 className="font-black text-navy text-lg">Technopark Phase III</h3>
-                  <p className="text-slate-500 font-medium text-sm">Thiruvananthapuram</p>
-                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white/90"></div>
-                </div>
-              </div>
-            </div>
-            
+          <div className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-sm border border-slate-100 relative">
+            <iframe
+              title="IEEE Kerala ATIIG Office Location — Technopark, Thiruvananthapuram"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=76.8900%2C8.5050%2C76.9800%2C8.5600&amp;layer=mapnik&amp;marker=8.5241%2C76.9366"
+              width="100%"
+              height="400"
+              className="block w-full"
+              loading="lazy"
+              allowFullScreen
+              aria-label="Map showing IEEE Kerala ATIIG office at Technopark, Thiruvananthapuram"
+            />
             <div className="absolute bottom-6 left-6 right-6 md:right-auto md:w-80 bg-white p-6 rounded-2xl shadow-xl z-10">
               <h3 className="font-bold text-navy text-lg mb-2">Visit Us</h3>
               <p className="text-sm text-slate-600 mb-4 leading-relaxed">
                 IEEE Kerala Section Office, Technopark Campus, Thiruvananthapuram, Kerala
               </p>
-              <Button className="w-full bg-navy hover:bg-navy/90 text-white font-bold">
-                Get Directions <ArrowRight className="ml-2 w-4 h-4" />
+              <Button className="w-full bg-navy hover:bg-navy/90 text-white font-bold" asChild>
+                <a
+                  href="https://www.openstreetmap.org/?mlat=8.5241&mlon=76.9366#map=15/8.5241/76.9366"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open directions to IEEE Kerala ATIIG office in OpenStreetMap"
+                >
+                  Get Directions <ArrowRight className="ml-2 w-4 h-4" />
+                </a>
               </Button>
             </div>
           </div>

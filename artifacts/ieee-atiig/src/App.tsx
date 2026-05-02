@@ -11,6 +11,9 @@ import ResourcesPage from "@/pages/resources";
 import GetInvolvedPage from "@/pages/get-involved";
 import NewsEventsPage from "@/pages/news-events";
 import ContactPage from "@/pages/contact";
+import PrivacyPage from "@/pages/privacy";
+import TermsPage from "@/pages/terms";
+import AccessibilityStatementPage from "@/pages/accessibility-statement";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,9 @@ function Router() {
       <Route path="/get-involved" element={<GetInvolvedPage />} />
       <Route path="/news-events" element={<NewsEventsPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
+      <Route path="/accessibility" element={<AccessibilityStatementPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
