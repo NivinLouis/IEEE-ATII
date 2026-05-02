@@ -11,8 +11,20 @@ import newsVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(7)_1
 import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
 import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 
+const allEvents = [
+  { date: "MAY 15", title: "AT Innovation Hackathon 2025", loc: "UL Cyberpark, Kozhikode, Kerala", time: "10:00 AM-4:00 PM IST", active: true,  category: "Hackathons" },
+  { date: "MAY 28", title: "Webinar: Inclusive Tech for All",          loc: "Online (Zoom)",                time: "6:00 PM-7:30 PM IST",   active: false, category: "Webinars"   },
+  { date: "JUN 10", title: "Community Accessibility Audit Drive",      loc: "Kochi, Kerala",               time: "9:00 AM-1:00 PM IST",   active: false, category: "Community"  },
+  { date: "JUN 22", title: "Inclusive Education Workshop",             loc: "Thiruvananthapuram",          time: "10:30 AM-1:00 PM IST",  active: false, category: "Workshops"  },
+];
+
 export default function NewsEventsPage() {
-  const [date, setDate] = useState<Date | undefined>(new Date(2025, 4, 15)); // May 15, 2025
+  const [date, setDate] = useState<Date | undefined>(new Date(2025, 4, 15));
+  const [activeCategory, setActiveCategory] = useState("All Events");
+
+  const filteredEvents = activeCategory === "All Events"
+    ? allEvents
+    : allEvents.filter(e => e.category === activeCategory);
 
   return (
     <Layout>
@@ -60,12 +72,13 @@ export default function NewsEventsPage() {
               </h2>
               
               <div className="space-y-4">
-                {[
-                  { date: "MAY 15", title: "AT Innovation Hackathon 2025", loc: "UL Cyberpark, Kozhikode, Kerala", time: "10:00 AM-4:00 PM IST", active: true },
-                  { date: "MAY 28", title: "Webinar: Inclusive Tech for All", loc: "Online (Zoom)", time: "6:00 PM-7:30 PM IST", active: false },
-                  { date: "JUN 10", title: "Community Accessibility Audit Drive", loc: "Kochi, Kerala", time: "9:00 AM-1:00 PM IST", active: false },
-                  { date: "JUN 22", title: "Inclusive Education Workshop", loc: "Thiruvananthapuram", time: "10:30 AM-1:00 PM IST", active: false }
-                ].map((evt, i) => (
+                {filteredEvents.length === 0 && (
+                  <div className="text-center py-10">
+                    <p className="text-slate-400 font-medium">No events in this category.</p>
+                    <button onClick={() => setActiveCategory("All Events")} className="mt-2 text-navy font-bold hover:underline text-sm">Show all events</button>
+                  </div>
+                )}
+                {filteredEvents.map((evt, i) => (
                   <div key={i} className={`p-5 rounded-xl border transition-all ${evt.active ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
                     <div className="flex gap-4">
                       <div className="w-16 flex-shrink-0 text-center">
@@ -113,8 +126,8 @@ export default function NewsEventsPage() {
               </div>
             </div>
             
-            {/* Featured Event */}
-            <div className="lg:col-span-4">
+            {/* Featured Event — only shown when there are filtered results */}
+            {filteredEvents.length > 0 && <div className="lg:col-span-4">
               <h2 className="text-2xl font-black text-navy mb-6">Featured Event</h2>
               <div className="bg-navy text-white rounded-2xl p-8 shadow-lg h-full flex flex-col relative overflow-hidden">
                 <div className="absolute -right-10 -top-10 w-40 h-40 bg-orange/20 rounded-full blur-2xl"></div>
@@ -144,7 +157,7 @@ export default function NewsEventsPage() {
                   </Button>
                 </div>
               </div>
-            </div>
+            </div>}
             
           </div>
         </div>
@@ -155,8 +168,12 @@ export default function NewsEventsPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-3">
             <span className="text-slate-500 font-bold self-center mr-2">Browse by:</span>
-            {["All Events", "Webinars", "Workshops", "Hackathons", "Community", "Conferences"].map((cat, i) => (
-              <button key={i} className={`px-5 py-2 rounded-full font-bold text-sm transition-colors ${i === 0 ? "bg-navy text-white shadow-md" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"}`}>
+            {["All Events", "Webinars", "Workshops", "Hackathons", "Community", "Conferences"].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2 rounded-full font-bold text-sm transition-colors ${activeCategory === cat ? "bg-navy text-white shadow-md" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"}`}
+              >
                 {cat}
               </button>
             ))}
@@ -189,9 +206,9 @@ export default function NewsEventsPage() {
                   <div className="text-xs font-bold text-slate-500 mb-3">{news.date}</div>
                   <h3 className="font-bold text-navy text-lg mb-3 leading-snug group-hover:text-teal transition-colors">{news.title}</h3>
                   <p className="text-slate-600 text-sm mb-6 flex-1 line-clamp-3">{news.desc}</p>
-                  <a href="#" className="text-navy font-bold text-sm inline-flex items-center group-hover:text-orange transition-colors mt-auto">
+                  <Link to="/news-events" className="text-navy font-bold text-sm inline-flex items-center group-hover:text-orange transition-colors mt-auto">
                     Read More <ArrowRight className="ml-1 w-4 h-4" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}

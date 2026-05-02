@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,19 @@ import { Search, FileText, Download, PlayCircle, Filter, BookOpen, ExternalLink,
 
 import resourcesHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(7)_1777748003996.png";
 
+const topicSections: Record<string, string[]> = {
+  guides:    ["All Topics", "Assistive Technology", "Inclusive Design", "Education"],
+  research:  ["All Topics", "Research", "Assistive Technology"],
+  videos:    ["All Topics", "Assistive Technology", "Inclusive Design", "Education"],
+  standards: ["All Topics", "Policy & Standards"],
+};
+
 export default function ResourcesPage() {
+  const [activeTopic, setActiveTopic] = useState("All Topics");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const showSection = (key: string) => topicSections[key].includes(activeTopic);
+
   return (
     <Layout>
       {/* Hero */}
@@ -39,18 +52,23 @@ export default function ResourcesPage() {
                 placeholder="Search resources, publications, or topics..."
                 aria-label="Search resources, publications, or topics"
                 className="pl-12 h-14 bg-white border-slate-200 text-lg shadow-sm"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button className="h-14 px-8 bg-orange hover:bg-orange/90 text-white font-bold text-base shrink-0">Search</Button>
+            <Button onClick={() => setSearchQuery("")} className="h-14 px-8 bg-orange hover:bg-orange/90 text-white font-bold text-base shrink-0">
+              {searchQuery ? "Clear" : "Search"}
+            </Button>
           </div>
           
           <div className="flex overflow-x-auto pb-2 mt-6 gap-2 hide-scrollbar items-center">
             <span className="text-sm font-bold text-slate-400 uppercase mr-2">Filter:</span>
-            {["All Topics", "Assistive Technology", "Inclusive Design", "Research", "Policy & Standards", "Education"].map((tab, i) => (
+            {["All Topics", "Assistive Technology", "Inclusive Design", "Research", "Policy & Standards", "Education"].map((tab) => (
               <button
                 key={tab}
+                onClick={() => setActiveTopic(tab)}
                 className={`px-5 py-2 rounded-full font-bold text-sm whitespace-nowrap transition-colors ${
-                  i === 0 
+                  activeTopic === tab
                     ? "bg-navy text-white" 
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
                 }`}
@@ -58,7 +76,7 @@ export default function ResourcesPage() {
                 {tab}
               </button>
             ))}
-            <Button variant="ghost" className="text-navy font-bold ml-auto shrink-0"><Filter className="w-4 h-4 mr-2" /> More Filters</Button>
+            <Button variant="ghost" onClick={() => setActiveTopic("All Topics")} className="text-navy font-bold ml-auto shrink-0"><Filter className="w-4 h-4 mr-2" /> Reset</Button>
           </div>
         </div>
       </section>
@@ -71,7 +89,7 @@ export default function ResourcesPage() {
             <div className="lg:col-span-8 lg:col-start-1 xl:col-span-9">
               
               {/* Guides & Toolkits */}
-              <div id="guides" className="mb-20 scroll-mt-32">
+              {showSection("guides") && <div id="guides" className="mb-20 scroll-mt-32">
                 <div className="flex justify-between items-end mb-8 border-b border-slate-100 pb-4">
                   <h2 className="text-3xl font-black text-navy flex items-center"><BookOpen className="mr-3 text-orange w-8 h-8" /> Guides & Toolkits</h2>
                   <Button variant="link" className="text-navy font-bold hover:text-orange">View all guides →</Button>
@@ -97,10 +115,10 @@ export default function ResourcesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* Research & Publications */}
-              <div id="research" className="mb-20 scroll-mt-32">
+              {showSection("research") && <div id="research" className="mb-20 scroll-mt-32">
                 <div className="flex justify-between items-end mb-8 border-b border-slate-100 pb-4">
                   <h2 className="text-3xl font-black text-navy flex items-center"><FileText className="mr-3 text-teal w-8 h-8" /> Research & Publications</h2>
                   <Button variant="link" className="text-navy font-bold hover:text-orange">View all →</Button>
@@ -131,10 +149,10 @@ export default function ResourcesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* Videos & Webinars */}
-              <div id="videos" className="mb-20 scroll-mt-32">
+              {showSection("videos") && <div id="videos" className="mb-20 scroll-mt-32">
                 <div className="flex justify-between items-end mb-8 border-b border-slate-100 pb-4">
                   <h2 className="text-3xl font-black text-navy flex items-center"><PlayCircle className="mr-3 text-purple w-8 h-8" /> Videos & Webinars</h2>
                 </div>
@@ -157,10 +175,10 @@ export default function ResourcesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div>}
 
               {/* Standards */}
-              <div id="standards" className="scroll-mt-32">
+              {showSection("standards") && <div id="standards" className="scroll-mt-32">
                 <div className="flex justify-between items-end mb-8 border-b border-slate-100 pb-4">
                   <h2 className="text-3xl font-black text-navy flex items-center"><FileText className="mr-3 text-navy w-8 h-8" /> Standards & Guidelines</h2>
                 </div>
@@ -178,7 +196,7 @@ export default function ResourcesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div>}
 
             </div>
 
@@ -195,8 +213,8 @@ export default function ResourcesPage() {
                       { label: "Research & Publications", href: "#research" },
                       { label: "Standards & Guidelines", href: "#standards" },
                       { label: "Videos & Webinars", href: "#videos" },
-                      { label: "Tools & Templates", href: "#" },
-                      { label: "Events & Trainings", href: "#" }
+                      { label: "Guides & Toolkits", href: "#guides" },
+                      { label: "Events & Trainings", href: "/news-events" }
                     ].map((link, i) => (
                       <li key={i}>
                         <a href={link.href} className={`block py-2 text-sm font-medium ${i === 0 ? "text-orange font-bold" : "text-slate-600 hover:text-navy hover:translate-x-1 transition-all"}`}>
@@ -206,9 +224,9 @@ export default function ResourcesPage() {
                     ))}
                   </ul>
                   <div className="mt-6 pt-4 border-t border-slate-200">
-                    <a href="#" className="text-teal font-bold text-sm flex items-center hover:underline">
+                    <Link to="/contact" className="text-teal font-bold text-sm flex items-center hover:underline">
                       Suggest a Resource <ArrowRight className="ml-1 w-3 h-3" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
 
@@ -247,7 +265,7 @@ export default function ResourcesPage() {
                   <span className="bg-orange text-white text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded inline-block mb-3">Featured</span>
                   <h3 className="font-bold text-lg leading-snug mb-2">Inclusive Innovation: A Framework for Impact</h3>
                   <p className="text-white/70 text-xs mb-6">White paper detailing our systemic approach to accessible design.</p>
-                  <a href="#" className="font-bold text-sm inline-flex items-center hover:underline">
+                  <a href="#research" className="font-bold text-sm inline-flex items-center hover:underline">
                     Read Now <ArrowRight className="ml-1 w-3 h-3" />
                   </a>
                 </div>

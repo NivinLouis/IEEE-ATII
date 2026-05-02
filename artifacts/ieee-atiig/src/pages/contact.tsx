@@ -291,16 +291,16 @@ export default function ContactPage() {
                 <p className="text-slate-300 mb-8 relative z-10">Follow our journey and join the conversation on social media.</p>
                 
                 <div className="flex gap-4 relative z-10">
-                  <a href="#" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/company/ieee-kerala-section/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="LinkedIn">
                     <FaLinkedin className="w-6 h-6" />
                   </a>
-                  <a href="#" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Facebook">
+                  <a href="https://www.facebook.com/IEEEKeralaSection" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Facebook">
                     <FaFacebook className="w-6 h-6" />
                   </a>
-                  <a href="#" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Instagram">
+                  <a href="https://www.instagram.com/ieee_kerala_section/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Instagram">
                     <FaInstagram className="w-6 h-6" />
                   </a>
-                  <a href="#" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="YouTube">
+                  <a href="https://www.youtube.com/@IEEEKeralaSection" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="YouTube">
                     <FaYoutube className="w-6 h-6" />
                   </a>
                 </div>

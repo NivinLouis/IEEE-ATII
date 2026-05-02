@@ -180,7 +180,7 @@ export default function AboutPage() {
                 <div className="flex-1">
                   <h3 className="text-lg font-bold text-navy group-hover:text-orange transition-colors">{person.name}</h3>
                   <p className="text-sm text-slate-500 mb-3">{person.role}</p>
-                  <a href="#" className="inline-flex text-slate-400 hover:text-navy transition-colors">
+                  <a href="https://www.linkedin.com/company/ieee-kerala-section/" target="_blank" rel="noopener noreferrer" className="inline-flex text-slate-400 hover:text-navy transition-colors" aria-label="IEEE Kerala LinkedIn">
                     <FaLinkedin className="w-5 h-5" />
                   </a>
                 </div>
