@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import volunteerImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png";
@@ -30,6 +31,32 @@ export default function GetInvolvedPage() {
 
   return (
     <Layout>
+      <SEO
+        title="Get Involved | Join IEEE Kerala ATIIG"
+        description="Join IEEE Kerala ATIIG as a volunteer, IEEE member, partner, or sponsor. Help shape engineering education, research, and humanitarian technology across Kerala."
+        path="/get-involved"
+        keywords="join IEEE Kerala, IEEE volunteer Kerala, IEEE membership Kerala, IEEE partnership Kerala"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Get Involved", path: "/get-involved" },
+          ]),
+          faqSchema([
+            {
+              q: "How do I become an IEEE Kerala ATIIG volunteer?",
+              a: "Visit our Get Involved page and submit the volunteer interest form. Volunteers help organize workshops, mentor students, lead research initiatives, or support humanitarian technology projects. No prior IEEE membership is required to volunteer.",
+            },
+            {
+              q: "How much does IEEE membership cost in India?",
+              a: "IEEE student membership in India costs approximately INR 2,000 per year (USD 27). Professional membership is approximately INR 11,000 per year (USD 142). Discounted rates are available for graduate students and recent graduates. Joining ATIIG itself has no additional fee for IEEE Kerala Section members.",
+            },
+            {
+              q: "Can companies partner with IEEE Kerala ATIIG?",
+              a: "Yes. Companies can sponsor workshops, host industry-academia events, mentor research projects, or fund humanitarian initiatives. Partnership inquiries are handled through the contact form on our Get Involved and Contact pages.",
+            },
+          ]),
+        ]}
+      />
       {/* Hero */}
       <section className="bg-slate-50 pt-20 pb-24 border-b border-slate-100 text-center" data-testid="get-involved-hero">
         <div className="container mx-auto px-4 max-w-4xl">

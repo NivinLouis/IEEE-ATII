@@ -1,8 +1,20 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 
 export default function PrivacyPage() {
   return (
     <Layout>
+      <SEO
+        title="Privacy Policy | IEEE Kerala ATIIG"
+        description="How IEEE Kerala ATIIG collects, uses, and protects your personal information."
+        path="/privacy"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Privacy Policy", path: "/privacy" },
+          ]),
+        ]}
+      />
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 max-w-3xl">
           <h1 className="text-4xl font-black text-navy mb-4">Privacy Policy</h1>

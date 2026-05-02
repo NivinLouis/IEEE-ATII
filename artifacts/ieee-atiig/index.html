@@ -2,12 +2,103 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>IEEE Kerala ATIIG Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#023A74" />
+    <meta name="color-scheme" content="light" />
+    <meta name="author" content="IEEE Kerala Section ATIIG" />
+    <meta name="googlebot" content="index, follow" />
+
+    <!-- Default title/description shown to non-JS crawlers and during initial paint.
+         Per-route <SEO/> (react-helmet-async) replaces these once React mounts. -->
+    <title>IEEE Kerala ATIIG — Advancing Technology for Industry, Impact & Growth</title>
+    <meta name="description" content="IEEE Kerala ATIIG is the official IEEE Kerala Section affinity group connecting 25,000+ engineers across Kerala through industry partnerships, research initiatives, technical workshops, and humanitarian projects." />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Sitewide-stable Open Graph signals (per-route og:title / og:description / og:url
+         are set by <SEO/>; these defaults apply when JS is disabled). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="IEEE Kerala ATIIG" />
+    <meta property="og:image" content="https://ieee-atiig.replit.app/opengraph.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="IEEE Kerala ATIIG — Advancing Technology for Industry, Impact & Growth" />
+    <meta property="og:locale" content="en_IN" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@IEEEKerala" />
+    <meta name="twitter:creator" content="@IEEEKerala" />
+
+    <!-- Geo / Local signals (sitewide) -->
+    <meta name="geo.region" content="IN-KL" />
+    <meta name="geo.placename" content="Kerala, India" />
+
+    <!-- Preconnect to font origins (Montserrat is loaded from src/index.css) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Schema.org JSON-LD: sitewide Organization + WebSite graph (per-page schemas
+         such as BreadcrumbList, FAQPage, CollectionPage are added by <SEO/>) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["NGO", "EducationalOrganization", "Organization"],
+          "@id": "https://ieee-atiig.replit.app/#organization",
+          "name": "IEEE Kerala ATIIG",
+          "alternateName": "IEEE Kerala Advancing Technology for Industry, Impact & Growth",
+          "url": "https://ieee-atiig.replit.app/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://ieee-atiig.replit.app/opengraph.jpg",
+            "width": 1200,
+            "height": 630
+          },
+          "image": "https://ieee-atiig.replit.app/opengraph.jpg",
+          "description": "IEEE Kerala ATIIG is the official affinity group of the IEEE Kerala Section connecting 25,000+ engineers, students, and industry professionals across Kerala through technical initiatives, research, education, and humanitarian projects.",
+          "foundingDate": "2018",
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Kerala, India"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Thiruvananthapuram",
+            "addressRegion": "Kerala",
+            "addressCountry": "IN"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/ieee-kerala-section/",
+            "https://www.facebook.com/IEEEKeralaSection/",
+            "https://x.com/IEEEKerala",
+            "https://www.instagram.com/ieeekerala/",
+            "https://www.youtube.com/@IEEEKeralaSection"
+          ],
+          "parentOrganization": {
+            "@type": "Organization",
+            "name": "IEEE Kerala Section",
+            "url": "https://ieeekerala.org/"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "IEEE",
+            "url": "https://www.ieee.org/"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://ieee-atiig.replit.app/#website",
+          "url": "https://ieee-atiig.replit.app/",
+          "name": "IEEE Kerala ATIIG",
+          "publisher": { "@id": "https://ieee-atiig.replit.app/#organization" },
+          "inLanguage": "en-IN"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

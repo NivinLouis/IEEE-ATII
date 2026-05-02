@@ -93,3 +93,15 @@ A full 8-page website for the IEEE Kerala Assistive Technology & Inclusive Innov
 ### Workflow
 - Dev server: `pnpm --filter @workspace/ieee-atiig run dev`
 - Vite dev port: 22892
+
+### SEO / GEO Improvements (May 2026)
+- `react-helmet-async` for per-route meta + JSON-LD via `src/components/SEO.tsx`
+- `index.html` holds only sitewide-stable signals: charset/viewport/theme-color, default title/description, sitewide OG defaults (`og:type`, `og:site_name`, `og:image`, `og:locale`), Twitter card/site, geo signals (IN-KL), favicon/manifest, font preconnect, and a sitewide Organization+WebSite JSON-LD `@graph` (NGO + EducationalOrganization).
+- Per-route `<SEO />` owns: `<title>`, `description`, `keywords`, `robots`, `canonical`, `og:title/description/url/image`, `twitter:title/description/image`, plus per-page JSON-LD (`BreadcrumbList`, `FAQPage`, `CollectionPage`, `ContactPage`, `AboutPage`).
+- FAQ schemas on `/` (5 Q&As) and `/get-involved` (3 Q&As) for GEO/AI retrieval.
+- 404 route forces `noindex, follow`.
+- `public/robots.txt` allows Googlebot, Bingbot, OAI-SearchBot, PerplexityBot, ClaudeBot; blocks GPTBot, CCBot, anthropic-ai (training-only). References `sitemap.xml`.
+- `public/sitemap.xml` lists all 11 indexable routes with priorities.
+- `public/site.webmanifest` for PWA / install metadata.
+- `SEO` helpers: `breadcrumbSchema()`, `faqSchema()`, `eventSchema()` exported from `SEO.tsx`.
+- Site URL constant: `https://ieee-atiig.replit.app` (update in `SEO.tsx` and `sitemap.xml` when production domain changes).

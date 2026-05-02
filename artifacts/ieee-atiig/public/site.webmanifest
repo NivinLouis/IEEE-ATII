@@ -1,0 +1,12 @@
+{
+  "name": "IEEE Kerala ATIIG",
+  "short_name": "IEEE ATIIG",
+  "description": "IEEE Kerala ATIIG — Advancing Technology for Industry, Impact & Growth.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#023A74",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

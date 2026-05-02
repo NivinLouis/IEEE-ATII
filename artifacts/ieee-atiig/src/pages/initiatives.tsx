@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,6 +72,26 @@ export default function InitiativesPage() {
 
   return (
     <Layout>
+      <SEO
+        title="Initiatives | IEEE Kerala ATIIG Programs & Projects"
+        description="Explore IEEE Kerala ATIIG's initiatives spanning industry-academia partnerships, applied research, technical workshops, and humanitarian technology projects. Filter by status and join an active program."
+        path="/initiatives"
+        keywords="IEEE Kerala initiatives, IEEE Kerala workshops, IEEE Kerala research, IEEE Kerala humanitarian projects"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Initiatives", path: "/initiatives" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "IEEE Kerala ATIIG Initiatives",
+            url: "https://ieee-atiig.replit.app/initiatives",
+            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+            about: { "@id": "https://ieee-atiig.replit.app/#organization" },
+          },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-slate-50 pt-16 pb-20 border-b border-slate-100" data-testid="initiatives-hero">
         <div className="container mx-auto px-4">

@@ -1,8 +1,20 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 
 export default function TermsPage() {
   return (
     <Layout>
+      <SEO
+        title="Terms of Use | IEEE Kerala ATIIG"
+        description="Terms governing your use of the IEEE Kerala ATIIG website and services."
+        path="/terms"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Terms of Use", path: "/terms" },
+          ]),
+        ]}
+      />
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 max-w-3xl">
           <h1 className="text-4xl font-black text-navy mb-4">Terms of Use</h1>

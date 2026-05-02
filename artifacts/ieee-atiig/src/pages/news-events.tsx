@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,6 +29,25 @@ export default function NewsEventsPage() {
 
   return (
     <Layout>
+      <SEO
+        title="News & Events | IEEE Kerala ATIIG"
+        description="Latest news, upcoming workshops, technical events, and conferences from IEEE Kerala ATIIG. Browse the calendar, filter by category, and join the next event."
+        path="/news-events"
+        keywords="IEEE Kerala events, IEEE Kerala news, engineering events Kerala, IEEE workshops Kerala 2026"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "News & Events", path: "/news-events" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "IEEE Kerala ATIIG News & Events",
+            url: "https://ieee-atiig.replit.app/news-events",
+            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+          },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-slate-50 pt-20 pb-24 border-b border-slate-100" data-testid="news-hero">
         <div className="container mx-auto px-4">

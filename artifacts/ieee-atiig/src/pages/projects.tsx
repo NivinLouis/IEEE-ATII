@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { StatCounter } from "@/components/StatCounter";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,25 @@ const beneficiaryBarData = [
 export default function ProjectsPage() {
   return (
     <Layout>
+      <SEO
+        title="Projects & Impact | IEEE Kerala ATIIG"
+        description="See the measurable impact of IEEE Kerala ATIIG: 25,000+ engineers reached, 200+ workshops delivered, 50+ research collaborations, and humanitarian technology projects spanning energy, water, and disaster response."
+        path="/projects"
+        keywords="IEEE Kerala projects, IEEE Kerala impact, engineering projects Kerala, IEEE humanitarian technology"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Projects & Impact", path: "/projects" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "IEEE Kerala ATIIG Projects & Impact",
+            url: "https://ieee-atiig.replit.app/projects",
+            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+          },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-navy text-white pt-20 pb-24 overflow-hidden relative" data-testid="projects-hero">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>

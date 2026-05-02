@@ -1,8 +1,20 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 
 export default function AccessibilityStatementPage() {
   return (
     <Layout>
+      <SEO
+        title="Accessibility Statement | IEEE Kerala ATIIG"
+        description="IEEE Kerala ATIIG's commitment to web accessibility, WCAG 2.1 AA compliance, and how to report accessibility issues."
+        path="/accessibility"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Accessibility", path: "/accessibility" },
+          ]),
+        ]}
+      />
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 max-w-3xl">
           <h1 className="text-4xl font-black text-navy mb-4">Accessibility Statement</h1>

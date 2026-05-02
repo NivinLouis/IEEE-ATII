@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,25 @@ export default function ContactPage() {
 
   return (
     <Layout>
+      <SEO
+        title="Contact IEEE Kerala ATIIG | Reach Our Team"
+        description="Get in touch with IEEE Kerala ATIIG. Contact us about volunteering, partnerships, research collaboration, workshops, or general inquiries. Based in Thiruvananthapuram, Kerala."
+        path="/contact"
+        keywords="contact IEEE Kerala, IEEE Kerala address, IEEE Kerala email, IEEE Thiruvananthapuram"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact IEEE Kerala ATIIG",
+            url: "https://ieee-atiig.replit.app/contact",
+            mainEntity: { "@id": "https://ieee-atiig.replit.app/#organization" },
+          },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-slate-50 pt-20 pb-24 border-b border-slate-100" data-testid="contact-hero">
         <div className="container mx-auto px-4">

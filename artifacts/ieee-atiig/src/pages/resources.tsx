@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -22,6 +23,25 @@ export default function ResourcesPage() {
 
   return (
     <Layout>
+      <SEO
+        title="Resources | Guides, Toolkits & Learning Materials | IEEE Kerala ATIIG"
+        description="Free engineering resources from IEEE Kerala ATIIG: technical guides, project toolkits, recorded workshops, research templates, and IEEE membership materials. Filter by topic."
+        path="/resources"
+        keywords="IEEE Kerala resources, engineering guides Kerala, IEEE toolkits, engineering learning materials"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Resources", path: "/resources" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "IEEE Kerala ATIIG Resources",
+            url: "https://ieee-atiig.replit.app/resources",
+            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+          },
+        ]}
+      />
       {/* Hero */}
       <section className="bg-navy text-white pt-20 pb-24 overflow-hidden relative" data-testid="resources-hero">
         <div className="absolute inset-0 bg-gradient-to-r from-navy to-purple/50 opacity-90"></div>

@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {
   return (
     <Layout>
+      <SEO
+        title="Page Not Found (404) | IEEE Kerala ATIIG"
+        description="The page you are looking for does not exist. Return to the IEEE Kerala ATIIG home page or explore our initiatives."
+        path="/404"
+        noindex
+      />
       <section className="min-h-[70vh] flex items-center justify-center py-24 bg-slate-50">
         <div className="container mx-auto px-4 text-center">
           <div className="text-[120px] md:text-[180px] font-black leading-none text-navy/10 select-none mb-4">

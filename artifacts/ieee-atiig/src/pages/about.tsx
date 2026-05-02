@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,25 @@ import aboutVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(2)_
 export default function AboutPage() {
   return (
     <Layout>
+      <SEO
+        title="About IEEE Kerala ATIIG | Mission, Vision & Leadership"
+        description="Founded in 2018, IEEE Kerala ATIIG is the affinity group of IEEE Kerala Section dedicated to bridging industry and academia. Learn about our mission, leadership team, and the 25,000+ engineers we serve."
+        path="/about"
+        keywords="IEEE Kerala ATIIG about, IEEE Kerala mission, IEEE Kerala leadership, IEEE Kerala Section history"
+        schemas={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About IEEE Kerala ATIIG",
+            url: "https://ieee-atiig.replit.app/about",
+            mainEntity: { "@id": "https://ieee-atiig.replit.app/#organization" },
+          },
+        ]}
+      />
       {/* Page Hero */}
       <section className="bg-slate-50 pt-16 pb-20 border-b border-slate-100" data-testid="about-hero">
         <div className="container mx-auto px-4">
