@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,6 +89,46 @@ export default function InitiativesPage() {
             isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
             about: { "@id": "https://ieee-atiig.replit.app/#organization" },
           },
+          {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "IEEE Kerala ATIIG Programs",
+            itemListOrder: "https://schema.org/ItemListOrderAscending",
+            numberOfItems: allInitiatives.length,
+            itemListElement: allInitiatives.map((init, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: init.title,
+              url: `https://ieee-atiig.replit.app/initiatives#${init.id}`,
+              item: {
+                "@type": "Service",
+                name: init.title,
+                serviceType: init.title,
+                description: init.desc,
+                provider: { "@id": "https://ieee-atiig.replit.app/#organization" },
+                areaServed: { "@type": "AdministrativeArea", name: "Kerala, India" },
+                url: `https://ieee-atiig.replit.app/initiatives#${init.id}`,
+              },
+            })),
+          },
+          faqSchema([
+            {
+              q: "What programs does IEEE Kerala ATIIG run?",
+              a: "ATIIG runs six programs: AT Innovation Lab (assistive-device prototyping), Community Outreach, Inclusive Education, Accessible Campus Program (audits + retrofits), Capacity Building (workshops + mentoring), and Humanitarian Technology (disaster + underserved-community deployments).",
+            },
+            {
+              q: "How can I propose a new initiative or partner on an existing one?",
+              a: "Visit the Get Involved page (/get-involved) and choose Partner With Us or Volunteer. Each program lead reviews proposals and replies within two weeks.",
+            },
+            {
+              q: "Are the prototypes from the AT Innovation Lab open source?",
+              a: "Most reference designs and learning resources are released under permissive licenses on the Resources page. Some partner-funded prototypes are restricted by partnership agreements.",
+            },
+            {
+              q: "Which districts of Kerala does ATIIG serve?",
+              a: "Programs run across all 14 districts of Kerala with anchor sites in Thiruvananthapuram, Ernakulam, Kozhikode, and Kollam.",
+            },
+          ]),
         ]}
       />
       {/* Hero */}

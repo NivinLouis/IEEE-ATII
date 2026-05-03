@@ -58,7 +58,8 @@
             "height": 630
           },
           "image": "https://ieee-atiig.replit.app/opengraph.jpg",
-          "description": "IEEE Kerala ATIIG is the official affinity group of the IEEE Kerala Section connecting 25,000+ engineers, students, and industry professionals across Kerala through technical initiatives, research, education, and humanitarian projects.",
+          "description": "IEEE Kerala ATIIG is the official affinity group of the IEEE Kerala Section connecting 25,000+ engineers, students, and industry professionals across Kerala through assistive technology, inclusive innovation, research, education, and humanitarian projects.",
+          "slogan": "Innovation with Empathy. Technology with Purpose.",
           "foundingDate": "2018",
           "areaServed": {
             "@type": "AdministrativeArea",
@@ -68,8 +69,36 @@
             "@type": "PostalAddress",
             "addressLocality": "Thiruvananthapuram",
             "addressRegion": "Kerala",
+            "postalCode": "695001",
             "addressCountry": "IN"
           },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 8.5241,
+            "longitude": 76.9366
+          },
+          "contactPoint": [{
+            "@type": "ContactPoint",
+            "contactType": "general inquiries",
+            "email": "atiig@ieeekerala.org",
+            "areaServed": "IN-KL",
+            "availableLanguage": ["English", "Malayalam"]
+          }, {
+            "@type": "ContactPoint",
+            "contactType": "membership",
+            "email": "membership@ieeekerala.org",
+            "areaServed": "IN-KL",
+            "availableLanguage": ["English", "Malayalam"]
+          }],
+          "knowsAbout": [
+            "Assistive Technology",
+            "Inclusive Innovation",
+            "Accessible Education",
+            "Humanitarian Engineering",
+            "Disability Inclusion",
+            "Universal Design",
+            "IEEE Kerala Section programs"
+          ],
           "sameAs": [
             "https://www.linkedin.com/company/ieee-kerala-section/",
             "https://www.facebook.com/IEEEKeralaSection/",
@@ -94,14 +123,41 @@
           "url": "https://ieee-atiig.replit.app/",
           "name": "IEEE Kerala ATIIG",
           "publisher": { "@id": "https://ieee-atiig.replit.app/#organization" },
-          "inLanguage": "en-IN"
+          "inLanguage": "en-IN",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://ieee-atiig.replit.app/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
         }
       ]
     }
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <noscript>
+        <h1>IEEE Kerala ATIIG — Assistive Technology &amp; Inclusive Innovation Group</h1>
+        <p>
+          IEEE Kerala ATIIG is the official affinity group of the IEEE Kerala Section.
+          Founded in 2018 and headquartered in Thiruvananthapuram, ATIIG designs,
+          prototypes, and deploys affordable assistive technologies and inclusive-innovation
+          programs across Kerala, India — connecting 25,000+ engineers, researchers,
+          students, and community partners.
+        </p>
+        <p>
+          To view this site, please enable JavaScript. Machine-readable summaries are
+          available at <a href="/llms.txt">/llms.txt</a> and <a href="/sitemap.xml">/sitemap.xml</a>.
+          Key sections: <a href="/about">About</a>, <a href="/initiatives">Initiatives</a>,
+          <a href="/projects">Projects &amp; Impact</a>, <a href="/resources">Resources</a>,
+          <a href="/get-involved">Get Involved</a>, <a href="/news-events">News &amp; Events</a>,
+          <a href="/contact">Contact</a>.
+        </p>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

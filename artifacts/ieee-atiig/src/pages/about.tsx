@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,24 @@ export default function AboutPage() {
             url: "https://ieee-atiig.replit.app/about",
             mainEntity: { "@id": "https://ieee-atiig.replit.app/#organization" },
           },
+          faqSchema([
+            {
+              q: "When was IEEE Kerala ATIIG founded?",
+              a: "ATIIG was founded in 2018 as the assistive-technology and inclusive-innovation affinity group of the IEEE Kerala Section, headquartered in Thiruvananthapuram.",
+            },
+            {
+              q: "What is the mission of IEEE Kerala ATIIG?",
+              a: "To design and deploy affordable, accessible, and impactful assistive technologies that empower every individual in Kerala to thrive without barriers — combining empathy-led research, inclusive design, and humanitarian engineering.",
+            },
+            {
+              q: "Who leads IEEE Kerala ATIIG?",
+              a: "ATIIG is led by an elected committee of IEEE Kerala Section volunteers including a Chair, Vice-Chair, Secretary, and program leads for each of the six core initiatives.",
+            },
+            {
+              q: "How is ATIIG funded?",
+              a: "Funding comes from IEEE Kerala Section grants, IEEE humanitarian-technology fellowships, corporate and CSR partnerships, and individual contributions from members and supporters.",
+            },
+          ]),
         ]}
       />
       {/* Page Hero */}

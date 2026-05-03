@@ -68,6 +68,18 @@ export default function ProjectsPage() {
             url: "https://ieee-atiig.replit.app/projects",
             isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
           },
+          {
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            name: "IEEE Kerala ATIIG Impact Metrics",
+            description: "Aggregate impact figures for IEEE Kerala ATIIG programs: 100+ projects delivered, 25,000+ lives impacted, 50+ partners, 65+ events conducted, 18+ active assistive-technology prototypes.",
+            url: "https://ieee-atiig.replit.app/projects",
+            creator: { "@id": "https://ieee-atiig.replit.app/#organization" },
+            spatialCoverage: { "@type": "AdministrativeArea", name: "Kerala, India" },
+            temporalCoverage: "2018/..",
+            keywords: ["assistive technology", "inclusive innovation", "Kerala", "IEEE", "humanitarian engineering", "SDG"],
+            license: "https://creativecommons.org/licenses/by/4.0/",
+          },
         ]}
       />
       {/* Hero */}

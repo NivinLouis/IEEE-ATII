@@ -1,12 +1,17 @@
 {
-  "name": "IEEE Kerala ATIIG",
+  "name": "IEEE Kerala ATIIG — Assistive Technology & Inclusive Innovation Group",
   "short_name": "IEEE ATIIG",
-  "description": "IEEE Kerala ATIIG — Advancing Technology for Industry, Impact & Growth.",
+  "description": "Official IEEE Kerala Section affinity group designing affordable assistive technology and inclusive-innovation programs across Kerala, India.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
+  "lang": "en-IN",
+  "categories": ["education", "social", "nonprofit"],
   "background_color": "#ffffff",
   "theme_color": "#023A74",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
   ]
 }

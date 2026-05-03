@@ -53,3 +53,7 @@ User-agent: anthropic-ai
 Disallow: /
 
 Sitemap: https://ieee-atiig.replit.app/sitemap.xml
+
+# AEO / GEO machine-readable summary for LLM-driven answer engines
+# https://llmstxt.org/
+# https://ieee-atiig.replit.app/llms.txt
