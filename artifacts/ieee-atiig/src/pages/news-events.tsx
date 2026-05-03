@@ -54,12 +54,12 @@ export default function NewsEventsPage() {
     () =>
       activeCategory === "All Events"
         ? events
-        : events.filter((e) => e.category === activeCategory),
+        : events.filter((e: any) => e.category === activeCategory),
     [events, activeCategory],
   );
 
   const featuredEvent = useMemo(
-    () => events.find((e) => e.featured) ?? events[0],
+    () => events.find((e: any) => e.featured) ?? events[0],
     [events],
   );
 
@@ -148,7 +148,7 @@ export default function NewsEventsPage() {
                     <button onClick={() => setActiveCategory("All Events")} className="mt-2 text-navy font-bold hover:underline text-sm">Show all events</button>
                   </div>
                 )}
-                {filteredEvents.map((evt) => {
+                {filteredEvents.map((evt: any) => {
                   const badge = formatEventDateBadge(evt.startsAt);
                   return (
                     <div key={evt.id} className={`p-5 rounded-xl border transition-all ${evt.featured ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
@@ -267,7 +267,7 @@ export default function NewsEventsPage() {
           )}
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-testid="news-list">
-            {news.map((item, i) => (
+            {news.map((item: any, i: number) => (
               <div key={item.id} className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col group hover:shadow-lg transition-all">
                 <div className="h-48 overflow-hidden relative">
                   <img src={resolveImage(item.imageUrl, i)} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

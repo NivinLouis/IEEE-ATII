@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
+import HeroVisual from "@/components/HeroVisual";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
@@ -29,27 +30,28 @@ import {
   ResponsiveContainer 
 } from "recharts";
 
-import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
-import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 
 const stories = [
   {
     quote: "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable.",
     author: "Ananya",
     role: "Student Beneficiary",
-    img: teamImg,
+    initials: "A",
+    gradient: "from-teal via-teal to-navy",
   },
   {
     quote: "With the assistive communication device developed by the team, my son can now express himself freely for the first time.",
     author: "Priya Rajan",
     role: "Parent & Community Member",
-    img: teamImg,
+    initials: "PR",
+    gradient: "from-purple via-purple to-navy",
   },
   {
     quote: "Volunteering with IEEE ATIIG opened my eyes to inclusive design. The experience has transformed how I approach engineering problems.",
     author: "Mohammed Arif",
     role: "Volunteer Engineer",
-    img: teamImg,
+    initials: "MA",
+    gradient: "from-orange via-orange to-purple",
   },
 ];
 
@@ -152,26 +154,16 @@ export default function HomePage() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+              className="relative pb-12"
             >
-              <div className="grid grid-cols-2 gap-4">
-                <img src={heroImg} alt="Assistive technology in use" className="rounded-2xl shadow-lg w-full h-52 object-cover col-span-2" />
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5 flex flex-col justify-center">
-                  <div className="text-3xl font-black text-navy">25K+</div>
-                  <div className="text-sm font-bold text-slate-500 mt-1">Lives Impacted</div>
-                  <div className="text-xs text-teal mt-1.5 font-semibold">Across Kerala</div>
-                </div>
-                <img src={teamImg} alt="ATIIG team collaboration" className="rounded-2xl shadow-lg w-full h-36 object-cover translate-y-2" />
-              </div>
-              <div className="absolute -bottom-8 -left-8 md:-left-12 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-xl max-w-xs border-l-4 border-l-orange border-t-4 border-t-teal">
-                <p className="italic text-navy font-medium leading-snug">
-                  "Innovation with empathy. Technology with purpose. Inclusion at every step."
-                </p>
-              </div>
+              <HeroVisual
+                variant="home"
+                quote="Innovation with empathy. Technology with purpose."
+              />
             </motion.div>
           </div>
         </div>
@@ -509,12 +501,22 @@ export default function HomePage() {
             <div className="grid md:grid-cols-5 h-full">
               <div className="md:col-span-2 relative h-64 md:h-auto overflow-hidden">
                 {stories.map((s, i) => (
-                  <img
+                  <div
                     key={i}
-                    src={s.img}
-                    alt={`${s.author} — ${s.role}`}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === storyIndex ? "opacity-100" : "opacity-0"}`}
-                  />
+                    aria-hidden={i !== storyIndex}
+                    className={`absolute inset-0 transition-opacity duration-700 ${i === storyIndex ? "opacity-100" : "opacity-0"}`}
+                  >
+                    <div className={`w-full h-full bg-gradient-to-br ${s.gradient} flex items-center justify-center relative overflow-hidden`}>
+                      <div className="absolute -top-8 -left-8 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+                      <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_55%)]" />
+                      <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/15 backdrop-blur-sm ring-4 ring-white/30 flex items-center justify-center">
+                        <span className="text-white font-black text-4xl md:text-5xl tracking-wide">
+                          {s.initials}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
               <div className="md:col-span-3 p-10 md:p-14 flex flex-col justify-center">

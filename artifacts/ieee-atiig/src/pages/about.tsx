@@ -9,8 +9,7 @@ import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star, Arr
 import { FaLinkedin } from "react-icons/fa";
 import { useListTeamMembers } from "@workspace/api-client-react";
 
-import aboutHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(6)_1777748003996.png";
-import aboutVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(2)_1777748003996.png";
+import HeroVisual from "@/components/HeroVisual";
 
 export default function AboutPage() {
   const teamQuery = useListTeamMembers();
@@ -53,16 +52,11 @@ export default function AboutPage() {
               </p>
             </div>
             
-            <div className="flex-1 relative w-full">
-              <div className="grid grid-cols-2 gap-4">
-                <img src={aboutHeroImg} alt="Assistive Tech" className="rounded-2xl shadow-md h-48 w-full object-cover" />
-                <img src={aboutVariantImg} alt="Community" className="rounded-2xl shadow-md h-48 w-full object-cover translate-y-8" />
-              </div>
-              <div className="absolute -bottom-4 md:-bottom-8 -left-4 md:-left-8 bg-white p-5 rounded-xl shadow-xl border-l-4 border-purple max-w-[280px]">
-                <p className="italic text-navy font-bold text-sm">
-                  "Technology should remove barriers, not create them. — IEEE Kerala ATIIG"
-                </p>
-              </div>
+            <div className="flex-1 relative w-full pb-12">
+              <HeroVisual
+                variant="about"
+                quote="Technology should remove barriers, not create them."
+              />
             </div>
           </div>
         </div>
@@ -146,36 +140,65 @@ export default function AboutPage() {
             <p className="text-slate-300 text-lg max-w-2xl mx-auto">From a small vision to a statewide movement for inclusion.</p>
           </div>
 
-          <div className="relative max-w-5xl mx-auto">
-            {/* Timeline line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-white/20 -translate-y-1/2"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-8 relative">
-              {[
-                { year: "2016", title: "Foundation", desc: "ATIIG was formed with a vision to create inclusive technology solutions" },
-                { year: "2018", title: "First Innovations", desc: "Launched early prototypes focused on accessibility in education and mobility" },
-                { year: "2020", title: "Growing Impact", desc: "Expanded projects across Kerala and reached thousands of beneficiaries" },
-                { year: "2022", title: "Collaborations", desc: "Built strong partnerships with academia, industry, and non-profits" },
-                { year: "2024", title: "Scaling Inclusion", desc: "Accelerating inclusive innovation through new labs and programs" },
-                { year: "2025+", title: "Future Forward", desc: "Continuing our journey towards an inclusive and accessible world" }
-              ].map((item, i) => (
-                <div key={i} className={`relative flex md:block flex-col md:text-center ${i % 2 === 0 ? "md:-mt-24 md:pb-12" : "md:mt-24 md:pt-12"}`}>
-                  <div className="hidden md:block absolute left-1/2 w-4 h-4 bg-orange rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 z-10"></div>
-                  
-                  {/* Mobile timeline dot */}
-                  <div className="md:hidden w-4 h-4 bg-orange rounded-full absolute -left-2 top-2 z-10"></div>
-                  {/* Mobile timeline line */}
-                  <div className="md:hidden absolute left-0 top-0 bottom-0 w-0.5 bg-white/20 ml-[0.35rem]"></div>
-                  
-                  <div className="pl-6 md:pl-0">
-                    <div className="text-teal font-black text-2xl mb-1">{item.year}</div>
-                    <h4 className="font-bold text-lg mb-2">{item.title}</h4>
-                    <p className="text-sm text-slate-300">{item.desc}</p>
+          {(() => {
+            const milestones = [
+              { year: "2016", title: "Foundation", desc: "ATIIG was formed with a vision to create inclusive technology solutions." },
+              { year: "2018", title: "First Innovations", desc: "Launched early prototypes focused on accessibility in education and mobility." },
+              { year: "2020", title: "Growing Impact", desc: "Expanded projects across Kerala and reached thousands of beneficiaries." },
+              { year: "2022", title: "Collaborations", desc: "Built strong partnerships with academia, industry, and non-profits." },
+              { year: "2024", title: "Scaling Inclusion", desc: "Accelerating inclusive innovation through new labs and programs." },
+              { year: "2025+", title: "Future Forward", desc: "Continuing our journey towards an inclusive and accessible world." },
+            ];
+            return (
+              <div className="relative max-w-6xl mx-auto">
+                {/* Desktop horizontal timeline */}
+                <div className="hidden md:block">
+                  <div className="relative pt-2 pb-2">
+                    <div className="absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <div className="grid grid-cols-6 gap-4">
+                      {milestones.map((item, i) => (
+                        <motion.div
+                          key={item.year}
+                          initial={{ opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.08, duration: 0.4 }}
+                          className="relative flex flex-col items-center text-center"
+                        >
+                          <div className="text-teal font-black text-xl mb-3">{item.year}</div>
+                          <div className="relative z-10 w-5 h-5 rounded-full bg-orange ring-4 ring-navy shadow-[0_0_0_2px_rgba(253,123,9,0.35)]" />
+                          <div className="mt-5 bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-4 border border-white/10 w-full min-h-[140px]">
+                            <h4 className="font-bold text-base mb-2 leading-snug">{item.title}</h4>
+                            <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+
+                {/* Mobile vertical timeline */}
+                <ol className="md:hidden relative space-y-6 pl-6">
+                  <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-white/20" />
+                  {milestones.map((item, i) => (
+                    <motion.li
+                      key={item.year}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.08, duration: 0.4 }}
+                      className="relative"
+                    >
+                      <div className="absolute -left-[1.4rem] top-1.5 w-4 h-4 bg-orange rounded-full ring-4 ring-navy" />
+                      <div className="text-teal font-black text-lg">{item.year}</div>
+                      <h4 className="font-bold text-base mt-1 mb-1.5">{item.title}</h4>
+                      <p className="text-sm text-slate-300 leading-relaxed">{item.desc}</p>
+                    </motion.li>
+                  ))}
+                </ol>
+              </div>
+            );
+          })()}
         </div>
       </section>
 

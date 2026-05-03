@@ -8,8 +8,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, Filter, ArrowRight, Lightbulb, Users, BookOpen, Building, GraduationCap, Globe } from "lucide-react";
 
-import initHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(4)_1777748003995.png";
-import initVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(3)_1777748003997.png";
+import HeroVisual from "@/components/HeroVisual";
 
 const allInitiatives = [
   {
@@ -122,8 +121,8 @@ export default function InitiativesPage() {
               </div>
             </div>
             
-            <div className="flex-1">
-              <img src={initHeroImg} alt="Initiatives in action" className="rounded-2xl shadow-lg w-full h-[400px] object-cover" />
+            <div className="flex-1 relative w-full pb-12">
+              <HeroVisual variant="initiatives" />
             </div>
           </div>
         </div>
@@ -231,8 +230,31 @@ export default function InitiativesPage() {
       {activeTab === "All" && <section className="py-24 bg-white" data-testid="initiatives-featured">
         <div className="container mx-auto px-4">
           <div className="bg-navy rounded-3xl overflow-hidden shadow-xl flex flex-col lg:flex-row">
-            <div className="lg:w-1/2">
-              <img src={initVariantImg} alt="Innovation Lab" className="w-full h-full object-cover min-h-[400px]" />
+            <div className="lg:w-1/2 relative min-h-[400px] bg-gradient-to-br from-[#023A74] via-[#642396] to-[#01A0A0] overflow-hidden">
+              <div className="absolute -top-16 -left-16 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-orange/30 rounded-full blur-3xl" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.18),transparent_55%)]" />
+              <div className="relative h-full flex flex-col items-center justify-center text-white px-8 py-12">
+                <div className="w-24 h-24 rounded-2xl bg-white/15 backdrop-blur-sm ring-2 ring-white/30 flex items-center justify-center mb-6">
+                  <Lightbulb className="w-12 h-12 text-orange" />
+                </div>
+                <div className="text-5xl md:text-6xl font-black tracking-tight">18+</div>
+                <div className="text-sm font-bold uppercase tracking-widest text-white/80 mt-2">Active Prototypes</div>
+                <div className="mt-8 grid grid-cols-3 gap-4 text-center max-w-sm">
+                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
+                    <div className="text-xl font-black text-orange">4.3K+</div>
+                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Lives</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
+                    <div className="text-xl font-black text-teal">12</div>
+                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Partners</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
+                    <div className="text-xl font-black text-white">8</div>
+                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Patents</div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center text-white">
               <span className="text-orange font-bold tracking-widest uppercase mb-4 text-sm">Featured Initiative</span>
