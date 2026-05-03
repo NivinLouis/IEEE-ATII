@@ -65,6 +65,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* IEEE Kerala ATIIG brand colors registered as Tailwind theme colors so
+     utilities like bg-navy, text-teal, from-navy, to-teal, via-purple,
+     border-orange/40 and opacity modifiers all work natively. */
+  --color-navy: #023A74;
+  --color-purple: #642396;
+  --color-orange: #FD7B09;
+  --color-teal: #01A0A0;
 }
 
 /* IEEE Kerala ATIIG Brand Theme */
@@ -246,18 +254,11 @@
   }
 }
 
-/* Brand color utilities */
-.text-navy { color: #023A74; }
-.text-purple { color: #642396; }
-.text-orange { color: #FD7B09; }
-.text-teal { color: #01A0A0; }
-.bg-navy { background-color: #023A74; }
-.bg-purple { background-color: #642396; }
-.bg-orange { background-color: #FD7B09; }
-.bg-teal { background-color: #01A0A0; }
-.border-navy { border-color: #023A74; }
-.border-orange { border-color: #FD7B09; }
-.border-teal { border-color: #01A0A0; }
+/* Brand color utilities are now generated automatically by Tailwind v4 from
+   the --color-navy / --color-purple / --color-orange / --color-teal tokens
+   declared in @theme above. This enables bg-, text-, border-, ring-, from-,
+   to-, via-, divide-, outline-, fill-, stroke- variants plus opacity
+   modifiers (e.g. bg-navy/60, from-purple/80) for all four brand colors. */
 
 /* Scroll reveal animation */
 .reveal {
