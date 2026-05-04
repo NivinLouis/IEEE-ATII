@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const siteUrl = (process.env.VITE_SITE_URL ?? "https://ieee-atiig.replit.app").replace(/\/+$/, "");
+const siteUrl = (process.env.VITE_SITE_URL ?? "https://atiig.ieeekerala.org").replace(/\/+$/, "");
 const today = new Date().toISOString().slice(0, 10);
 const outDir = path.resolve("dist/public");
 const indexPath = path.join(outDir, "index.html");

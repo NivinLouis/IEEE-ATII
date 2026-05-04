@@ -35,8 +35,8 @@ export default function AboutPage() {
             "@context": "https://schema.org",
             "@type": "AboutPage",
             name: "About IEEE Kerala ATIIG",
-            url: "https://ieee-atiig.replit.app/about",
-            mainEntity: { "@id": "https://ieee-atiig.replit.app/#organization" },
+            url: "https://atiig.ieeekerala.org/about",
+            mainEntity: { "@id": "https://atiig.ieeekerala.org/#organization" },
           },
           faqSchema([
             {

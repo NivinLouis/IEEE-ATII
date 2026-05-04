@@ -61,19 +61,19 @@ Disallow: /
 User-agent: anthropic-ai
 Disallow: /
 
-Sitemap: https://ieee-atiig.replit.app/sitemap.xml
+Sitemap: https://atiig.ieeekerala.org/sitemap.xml
 
 # AEO / GEO machine-readable summary for LLM-driven answer engines
 # https://llmstxt.org/
-# https://ieee-atiig.replit.app/llms.txt
-# LLMs: https://ieee-atiig.replit.app/llms.txt
+# https://atiig.ieeekerala.org/llms.txt
+# LLMs: https://atiig.ieeekerala.org/llms.txt
 
 # AI usage policy (training, retrieval, citation guidance)
-# https://ieee-atiig.replit.app/ai.txt
-# AI-Usage: https://ieee-atiig.replit.app/ai.txt
+# https://atiig.ieeekerala.org/ai.txt
+# AI-Usage: https://atiig.ieeekerala.org/ai.txt
 
 # Security contact (RFC 9116)
-# https://ieee-atiig.replit.app/.well-known/security.txt
+# https://atiig.ieeekerala.org/.well-known/security.txt
 
 # Site credits
-# https://ieee-atiig.replit.app/humans.txt
+# https://atiig.ieeekerala.org/humans.txt

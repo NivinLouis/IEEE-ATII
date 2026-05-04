@@ -38,8 +38,8 @@ export default function ResourcesPage() {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "IEEE Kerala ATIIG Resources",
-            url: "https://ieee-atiig.replit.app/resources",
-            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+            url: "https://atiig.ieeekerala.org/resources",
+            isPartOf: { "@id": "https://atiig.ieeekerala.org/#website" },
           },
         ]}
       />

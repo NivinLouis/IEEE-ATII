@@ -104,7 +104,7 @@ A full 8-page website for the IEEE Kerala Assistive Technology & Inclusive Innov
 - `public/sitemap.xml` lists all 11 indexable routes with priorities.
 - `public/site.webmanifest` for PWA / install metadata.
 - `SEO` helpers: `breadcrumbSchema()`, `faqSchema()`, `eventSchema()` exported from `SEO.tsx`.
-- Site URL constant: `https://ieee-atiig.replit.app` (update in `SEO.tsx` and `sitemap.xml` when production domain changes).
+- Site URL constant: `https://atiig.ieeekerala.org` (update in `SEO.tsx` and `sitemap.xml` when production domain changes).
 
 ### CMS / Dynamic Content (News, Events, Team)
 News articles, events, and team members are now stored in PostgreSQL and served via the API server, rather than hardcoded in the React pages.

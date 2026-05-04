@@ -106,8 +106,8 @@ export default function ContactPage() {
             "@context": "https://schema.org",
             "@type": "ContactPage",
             name: "Contact IEEE Kerala ATIIG",
-            url: "https://ieee-atiig.replit.app/contact",
-            mainEntity: { "@id": "https://ieee-atiig.replit.app/#organization" },
+            url: "https://atiig.ieeekerala.org/contact",
+            mainEntity: { "@id": "https://atiig.ieeekerala.org/#organization" },
           },
         ]}
       />

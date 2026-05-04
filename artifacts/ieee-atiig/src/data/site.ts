@@ -2,7 +2,7 @@ import type { Event, NewsItem, TeamMember } from "@workspace/api-client-react";
 
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL?.replace(/\/+$/, "") ??
-  "https://ieee-atiig.replit.app";
+  "https://atiig.ieeekerala.org";
 
 export const SITE_NAME = "IEEE Kerala ATIIG";
 export const SITE_CANONICAL_NAME =
