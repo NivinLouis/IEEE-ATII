@@ -44,8 +44,8 @@ jobs:
       - name: Build IEEE ATIIG site
         env:
           PORT: 5173
-          BASE_PATH: /
-          VITE_SITE_URL: https://atiig.ieeekerala.org
+          BASE_PATH: /IEEE-ATII/
+          VITE_SITE_URL: https://robinfrancis186.github.io/IEEE-ATII
         run: pnpm --dir artifacts/ieee-atiig run build
 
       - name: Configure GitHub Pages

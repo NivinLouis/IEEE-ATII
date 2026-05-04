@@ -19,7 +19,9 @@ Core areas:
 
 ## Website
 
-Canonical site: [[https://atiig.ieeekerala.org](https://robinfrancis186.github.io/IEEE-ATII/)]([https://atiig.ieeekerala.org](https://robinfrancis186.github.io/IEEE-ATII/))
+GitHub Pages site: [https://robinfrancis186.github.io/IEEE-ATII/](https://robinfrancis186.github.io/IEEE-ATII/)
+
+Canonical custom-domain target: [https://atiig.ieeekerala.org](https://atiig.ieeekerala.org)
 
 Local frontend app:
 
@@ -30,7 +32,7 @@ PORT=5173 BASE_PATH=/ corepack pnpm --dir artifacts/ieee-atiig run dev
 Production build:
 
 ```bash
-PORT=5173 BASE_PATH=/ VITE_SITE_URL=https://atiig.ieeekerala.org corepack pnpm --dir artifacts/ieee-atiig run build
+PORT=5173 BASE_PATH=/IEEE-ATII/ VITE_SITE_URL=https://robinfrancis186.github.io/IEEE-ATII corepack pnpm --dir artifacts/ieee-atiig run build
 ```
 
 The build emits static files to:
@@ -79,4 +81,3 @@ The site includes:
 - shadcn/Radix UI components
 - Framer Motion
 - pnpm workspace
-
