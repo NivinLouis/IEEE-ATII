@@ -19,7 +19,7 @@ Core areas:
 
 ## Website
 
-Canonical site: [https://atiig.ieeekerala.org](https://atiig.ieeekerala.org)
+Canonical site: [[https://atiig.ieeekerala.org](https://robinfrancis186.github.io/IEEE-ATII/)]([https://atiig.ieeekerala.org](https://robinfrancis186.github.io/IEEE-ATII/))
 
 Local frontend app:
 
