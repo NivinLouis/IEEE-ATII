@@ -131,17 +131,17 @@ export function Header() {
       )}
       data-testid="header-main"
     >
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-4">
+      <div className="container mx-auto px-4 h-16 sm:h-20 flex items-center justify-between gap-4">
         <Link to="/" className="flex-shrink-0" data-testid="link-logo-header">
           <img
             src={currentLogo}
             alt="IEEE Kerala ATIIG Logo"
-            className="h-14 w-auto object-contain logo-img"
+            className="h-11 sm:h-14 w-auto object-contain logo-img"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden xl:flex flex-1 justify-center">
+        <div className="hidden 2xl:flex flex-1 justify-center">
           <NavigationMenu>
             <NavigationMenuList className="gap-1">
               {NAV_ITEMS.map((item) => {
@@ -225,7 +225,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="xl:hidden text-navy hover:bg-slate-100"
+                className="2xl:hidden text-navy hover:bg-slate-100"
                 data-testid="btn-mobile-menu"
               >
                 <Menu className="w-6 h-6" />

@@ -131,13 +131,13 @@ export default function HomePage() {
         ]}
       />
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-50 pt-20 pb-24 lg:pt-32 lg:pb-32" data-testid="home-hero">
+      <section className="relative overflow-hidden bg-slate-50 pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-28 lg:pb-32" data-testid="home-hero">
         <div className="absolute top-20 left-10 w-64 h-64 bg-teal/10 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-20 w-80 h-80 bg-orange/10 rounded-full blur-3xl" />
         <div className="absolute top-40 right-1/3 w-40 h-40 bg-purple/10 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -147,17 +147,17 @@ export default function HomePage() {
               <p className="text-teal font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
                 Innovation with Empathy. Technology with Purpose.
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-navy leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-navy leading-tight mb-6">
                 Building an Inclusive Tomorrow for All
               </h1>
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                 We design and deploy affordable, accessible, and impactful assistive technologies, fostering an inclusive ecosystem where innovation empowers every individual to thrive without barriers.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-navy hover:bg-navy/90 text-white font-bold h-14 px-8 text-base">
+              <div className="flex flex-col min-[480px]:flex-row gap-4">
+                <Button asChild size="lg" className="w-full min-[480px]:w-auto bg-navy hover:bg-navy/90 text-white font-bold h-14 px-8 text-base">
                   <Link to="/initiatives">Explore Initiatives</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-2 border-navy text-navy hover:bg-navy/5 font-bold h-14 px-8 text-base">
+                <Button asChild variant="outline" size="lg" className="w-full min-[480px]:w-auto border-2 border-navy text-navy hover:bg-navy/5 font-bold h-14 px-8 text-base">
                   <Link to="/get-involved">Get Involved</Link>
                 </Button>
               </div>
@@ -170,15 +170,15 @@ export default function HomePage() {
               className="relative"
             >
               <div className="grid grid-cols-2 gap-4">
-                <img src={heroImg} alt="Assistive technology in use" className="rounded-2xl shadow-lg w-full h-52 object-cover col-span-2" />
+                <img src={heroImg} alt="Assistive technology in use" className="rounded-2xl shadow-lg w-full h-44 sm:h-52 object-cover col-span-2" />
                 <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5 flex flex-col justify-center">
                   <div className="text-3xl font-black text-navy">25K+</div>
                   <div className="text-sm font-bold text-slate-500 mt-1">Lives Impacted</div>
                   <div className="text-xs text-teal mt-1.5 font-semibold">Across Kerala</div>
                 </div>
-                <img src={teamImg} alt="ATIIG team collaboration" className="rounded-2xl shadow-lg w-full h-36 object-cover translate-y-2" />
+                <img src={teamImg} alt="ATIIG team collaboration" className="rounded-2xl shadow-lg w-full h-36 object-cover sm:translate-y-2" />
               </div>
-              <div className="absolute -bottom-8 -left-8 md:-left-12 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-xl max-w-xs border-l-4 border-l-orange border-t-4 border-t-teal">
+              <div className="relative mt-4 bg-white/90 backdrop-blur-md p-5 sm:p-6 rounded-xl shadow-xl max-w-none sm:max-w-xs border-l-4 border-l-orange border-t-4 border-t-teal md:absolute md:-bottom-8 md:-left-12 md:mt-0">
                 <p className="italic text-navy font-medium leading-snug">
                   "Innovation with empathy. Technology with purpose. Inclusion at every step."
                 </p>
