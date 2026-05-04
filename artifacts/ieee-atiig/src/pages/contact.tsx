@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ export default function ContactPage() {
         setMessage("");
         setAgreed(false);
       },
-      onError: (err) => {
+      onError: (err: unknown) => {
         toast({
           title: "Could not send your message",
           description:
@@ -92,8 +93,8 @@ export default function ContactPage() {
   return (
     <Layout>
       <SEO
-        title="Contact IEEE Kerala ATIIG | Reach Our Team"
-        description="Get in touch with IEEE Kerala ATIIG. Contact us about volunteering, partnerships, research collaboration, workshops, or general inquiries. Based in Thiruvananthapuram, Kerala."
+        title={routeMeta["/contact"].title}
+        description={routeMeta["/contact"].description}
         path="/contact"
         keywords="contact IEEE Kerala, IEEE Kerala address, IEEE Kerala email, IEEE Thiruvananthapuram"
         schemas={[
@@ -172,7 +173,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">Email</h3>
-                    <a href="mailto:hello@ieeekerala.org" className="text-slate-600 hover:text-navy font-medium text-lg">hello@ieeekerala.org</a>
+                    <a href="mailto:atiig@ieeekerala.org" className="text-slate-600 hover:text-navy font-medium text-lg">atiig@ieeekerala.org</a>
                   </div>
                 </div>
                 

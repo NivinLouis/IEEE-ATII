@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import volunteerImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png";
@@ -32,8 +33,8 @@ export default function GetInvolvedPage() {
   return (
     <Layout>
       <SEO
-        title="Get Involved | Join IEEE Kerala ATIIG"
-        description="Join IEEE Kerala ATIIG as a volunteer, IEEE member, partner, or sponsor. Help shape engineering education, research, and humanitarian technology across Kerala."
+        title={routeMeta["/get-involved"].title}
+        description={routeMeta["/get-involved"].description}
         path="/get-involved"
         keywords="join IEEE Kerala, IEEE volunteer Kerala, IEEE membership Kerala, IEEE partnership Kerala"
         schemas={[

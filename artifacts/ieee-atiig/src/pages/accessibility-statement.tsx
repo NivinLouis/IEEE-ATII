@@ -1,12 +1,13 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 
 export default function AccessibilityStatementPage() {
   return (
     <Layout>
       <SEO
-        title="Accessibility Statement | IEEE Kerala ATIIG"
-        description="IEEE Kerala ATIIG's commitment to web accessibility, WCAG 2.1 AA compliance, and how to report accessibility issues."
+        title={routeMeta["/accessibility"].title}
+        description={routeMeta["/accessibility"].description}
         path="/accessibility"
         schemas={[
           breadcrumbSchema([
@@ -53,11 +54,11 @@ export default function AccessibilityStatementPage() {
               <h2 className="text-xl font-bold text-navy mb-3">Feedback</h2>
               <p>
                 We welcome your feedback on the accessibility of this site. If you encounter barriers or have suggestions, please contact us at{" "}
-                <a href="mailto:hello@ieeekerala.org" className="text-teal hover:underline font-medium">
-                  hello@ieeekerala.org
+                <a href="mailto:atiig@ieeekerala.org" className="text-teal hover:underline font-medium">
+                  atiig@ieeekerala.org
                 </a>{" "}
                 or call{" "}
-                <a href="tel:+917994542630" className="text-teal hover:underline font-medium">
+                <a href="tel:+9179945426300" className="text-teal hover:underline font-medium">
                   +91 79945 426 300
                 </a>. We aim to respond to accessibility feedback within 5 business days.
               </p>

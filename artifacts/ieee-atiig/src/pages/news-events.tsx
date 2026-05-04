@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema, eventSchema } from "@/components/SEO";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -7,6 +7,13 @@ import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
 import { useListNews, useListEvents } from "@workspace/api-client-react";
+import {
+  asArrayOrFallback,
+  fallbackEvents,
+  fallbackNews,
+  routeMeta,
+  SITE_URL,
+} from "@/data/site";
 
 import newsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(3)_1777748003995.png";
 import newsVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(7)_1777748003997.png";
@@ -47,8 +54,8 @@ export default function NewsEventsPage() {
   const eventsQuery = useListEvents();
   const newsQuery = useListNews();
 
-  const events = eventsQuery.data ?? [];
-  const news = newsQuery.data ?? [];
+  const events = asArrayOrFallback(eventsQuery.data, fallbackEvents);
+  const news = asArrayOrFallback(newsQuery.data, fallbackNews);
 
   const filteredEvents = useMemo(
     () =>
@@ -77,8 +84,8 @@ export default function NewsEventsPage() {
   return (
     <Layout>
       <SEO
-        title="News & Events | IEEE Kerala ATIIG"
-        description="Latest news, upcoming workshops, technical events, and conferences from IEEE Kerala ATIIG. Browse the calendar, filter by category, and join the next event."
+        title={routeMeta["/news-events"].title}
+        description={routeMeta["/news-events"].description}
         path="/news-events"
         keywords="IEEE Kerala events, IEEE Kerala news, engineering events Kerala, IEEE workshops Kerala 2026"
         schemas={[
@@ -90,9 +97,20 @@ export default function NewsEventsPage() {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "IEEE Kerala ATIIG News & Events",
-            url: "https://ieee-atiig.replit.app/news-events",
-            isPartOf: { "@id": "https://ieee-atiig.replit.app/#website" },
+            url: `${SITE_URL}/news-events`,
+            isPartOf: { "@id": `${SITE_URL}/#website` },
           },
+          eventSchema(
+            events.slice(0, 6).map((event) => ({
+              name: event.title,
+              startDate: event.startsAt,
+              locationName: event.location,
+              description: event.description ?? event.title,
+              url: event.registrationUrl?.startsWith("http")
+                ? event.registrationUrl
+                : `${SITE_URL}${event.registrationUrl ?? "/news-events"}`,
+            })),
+          ),
         ]}
       />
       {/* Hero */}
@@ -163,8 +181,8 @@ export default function NewsEventsPage() {
                             <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {evt.location}</div>
                             <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {evt.time}</div>
                           </div>
-                          <Button size="sm" variant={evt.featured ? "default" : "outline"} className={evt.featured ? "bg-orange hover:bg-orange/90 text-white font-bold" : "font-bold text-navy"}>
-                            Register
+                          <Button asChild size="sm" variant={evt.featured ? "default" : "outline"} className={evt.featured ? "bg-orange hover:bg-orange/90 text-white font-bold" : "font-bold text-navy"}>
+                            <a href={evt.registrationUrl ?? "/get-involved#join"}>Register</a>
                           </Button>
                         </div>
                       </div>
@@ -266,8 +284,10 @@ export default function NewsEventsPage() {
                       </div>
                     </div>
 
-                    <Button className="w-full bg-orange hover:bg-orange/90 text-white font-bold h-12 text-base mt-auto">
-                      Register Now <ArrowRight className="ml-2 w-5 h-5" />
+                    <Button asChild className="w-full bg-orange hover:bg-orange/90 text-white font-bold h-12 text-base mt-auto">
+                      <a href={featuredEvent.registrationUrl ?? "/get-involved#join"}>
+                        Register Now <ArrowRight className="ml-2 w-5 h-5" />
+                      </a>
                     </Button>
                   </div>
                 </div>

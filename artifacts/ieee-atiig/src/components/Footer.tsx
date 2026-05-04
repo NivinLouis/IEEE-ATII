@@ -76,7 +76,7 @@ export function Footer() {
               <li><Link to="/contact#faq" className="text-slate-300 hover:text-purple transition-colors">FAQs</Link></li>
             </ul>
             <address className="not-italic text-sm text-slate-300 space-y-2">
-              <p className="hover:text-white transition-colors"><a href="mailto:hello@ieeekerala.org">hello@ieeekerala.org</a></p>
+              <p className="hover:text-white transition-colors"><a href="mailto:atiig@ieeekerala.org">atiig@ieeekerala.org</a></p>
               <p className="hover:text-white transition-colors"><a href="tel:+9179945426300">+91 79945 426 300</a></p>
               <p>Thiruvananthapuram, Kerala, India</p>
             </address>

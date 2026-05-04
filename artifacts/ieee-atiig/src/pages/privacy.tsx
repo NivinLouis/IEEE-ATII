@@ -1,12 +1,13 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 
 export default function PrivacyPage() {
   return (
     <Layout>
       <SEO
-        title="Privacy Policy | IEEE Kerala ATIIG"
-        description="How IEEE Kerala ATIIG collects, uses, and protects your personal information."
+        title={routeMeta["/privacy"].title}
+        description={routeMeta["/privacy"].description}
         path="/privacy"
         schemas={[
           breadcrumbSchema([
@@ -60,8 +61,8 @@ export default function PrivacyPage() {
               <h2 className="text-xl font-bold text-navy mb-3">Contact</h2>
               <p>
                 For any privacy-related queries, please contact us at{" "}
-                <a href="mailto:hello@ieeekerala.org" className="text-teal hover:underline font-medium">
-                  hello@ieeekerala.org
+                <a href="mailto:atiig@ieeekerala.org" className="text-teal hover:underline font-medium">
+                  atiig@ieeekerala.org
                 </a>.
               </p>
             </section>

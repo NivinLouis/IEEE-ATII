@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -24,8 +25,8 @@ export default function ResourcesPage() {
   return (
     <Layout>
       <SEO
-        title="Resources | Guides, Toolkits & Learning Materials | IEEE Kerala ATIIG"
-        description="Free engineering resources from IEEE Kerala ATIIG: technical guides, project toolkits, recorded workshops, research templates, and IEEE membership materials. Filter by topic."
+        title={routeMeta["/resources"].title}
+        description={routeMeta["/resources"].description}
         path="/resources"
         keywords="IEEE Kerala resources, engineering guides Kerala, IEEE toolkits, engineering learning materials"
         schemas={[

@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { StatCounter } from "@/components/StatCounter";
 import { Button } from "@/components/ui/button";
@@ -53,8 +54,8 @@ export default function ProjectsPage() {
   return (
     <Layout>
       <SEO
-        title="Projects & Impact | IEEE Kerala ATIIG"
-        description="See the measurable impact of IEEE Kerala ATIIG: 25,000+ engineers reached, 200+ workshops delivered, 50+ research collaborations, and humanitarian technology projects spanning energy, water, and disaster response."
+        title={routeMeta["/projects"].title}
+        description={routeMeta["/projects"].description}
         path="/projects"
         keywords="IEEE Kerala projects, IEEE Kerala impact, engineering projects Kerala, IEEE humanitarian technology"
         schemas={[

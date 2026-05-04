@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import SEO, {
+  breadcrumbSchema,
+  faqSchema,
+  organizationSchema,
+  websiteSchema,
+} from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
 import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
 import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
@@ -30,6 +35,7 @@ import {
   Tooltip as RechartsTooltip, 
   ResponsiveContainer 
 } from "recharts";
+import { routeMeta } from "@/data/site";
 
 
 const stories = [
@@ -92,16 +98,18 @@ export default function HomePage() {
   return (
     <Layout>
       <SEO
-        title="IEEE Kerala ATIIG — Advancing Technology for Industry, Impact & Growth"
-        description="IEEE Kerala ATIIG connects 25,000+ engineers across Kerala through industry partnerships, research initiatives, technical workshops, and humanitarian projects. Join the leading IEEE affinity group in Kerala."
+        title={routeMeta["/"].title}
+        description={routeMeta["/"].description}
         path="/"
         keywords="IEEE Kerala, ATIIG, IEEE Kerala Section, engineering Kerala, technical workshops, IEEE membership Kerala, humanitarian technology Kerala"
         schemas={[
+          organizationSchema(),
+          websiteSchema(),
           breadcrumbSchema([{ name: "Home", path: "/" }]),
           faqSchema([
             {
               q: "What is IEEE Kerala ATIIG?",
-              a: "IEEE Kerala ATIIG (Advancing Technology for Industry, Impact & Growth) is the official affinity group of the IEEE Kerala Section. It connects 25,000+ engineers, students, and industry professionals through technical workshops, research initiatives, industry partnerships, and humanitarian projects across Kerala, India.",
+              a: "IEEE Kerala ATIIG (Assistive Technology & Inclusive Innovation Group) is the official affinity group of the IEEE Kerala Section. It connects engineers, students, researchers, volunteers, and community partners through assistive technology, inclusive education, accessibility programs, and humanitarian engineering projects across Kerala, India.",
             },
             {
               q: "Who can join IEEE Kerala ATIIG?",
@@ -136,9 +144,9 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="max-w-2xl"
             >
-              <h2 className="text-teal font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
+              <p className="text-teal font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
                 Innovation with Empathy. Technology with Purpose.
-              </h2>
+              </p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-navy leading-tight mb-6">
                 Building an Inclusive Tomorrow for All
               </h1>

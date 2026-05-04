@@ -8,17 +8,22 @@ import { motion } from "framer-motion";
 import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star, ArrowRight } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa";
 import { useListTeamMembers } from "@workspace/api-client-react";
+import {
+  asArrayOrFallback,
+  fallbackTeamMembers,
+  routeMeta,
+} from "@/data/site";
 
 import HeroVisual from "@/components/HeroVisual";
 
 export default function AboutPage() {
   const teamQuery = useListTeamMembers();
-  const teamMembers = teamQuery.data ?? [];
+  const teamMembers = asArrayOrFallback(teamQuery.data, fallbackTeamMembers);
   return (
     <Layout>
       <SEO
-        title="About IEEE Kerala ATIIG | Mission, Vision & Leadership"
-        description="Founded in 2018, IEEE Kerala ATIIG is the affinity group of IEEE Kerala Section dedicated to bridging industry and academia. Learn about our mission, leadership team, and the 25,000+ engineers we serve."
+        title={routeMeta["/about"].title}
+        description={routeMeta["/about"].description}
         path="/about"
         keywords="IEEE Kerala ATIIG about, IEEE Kerala mission, IEEE Kerala leadership, IEEE Kerala Section history"
         schemas={[
@@ -228,7 +233,7 @@ export default function AboutPage() {
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">The dedicated minds driving our mission forward.</p>
           </div>
 
-          {teamQuery.isLoading && (
+          {teamQuery.isLoading && teamMembers.length === 0 && (
             <div className="text-center py-10 text-slate-400 font-medium" data-testid="team-loading">Loading team…</div>
           )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="team-list">

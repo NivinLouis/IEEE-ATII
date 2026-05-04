@@ -8,6 +8,9 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: GoogleOther
+Allow: /
+
 User-agent: DuckDuckBot
 Allow: /
 
@@ -42,6 +45,12 @@ Allow: /
 User-agent: Claude-Web
 Allow: /
 
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
 # Block training-only scrapers that don't drive citations
 User-agent: GPTBot
 Disallow: /
@@ -57,9 +66,11 @@ Sitemap: https://ieee-atiig.replit.app/sitemap.xml
 # AEO / GEO machine-readable summary for LLM-driven answer engines
 # https://llmstxt.org/
 # https://ieee-atiig.replit.app/llms.txt
+# LLMs: https://ieee-atiig.replit.app/llms.txt
 
 # AI usage policy (training, retrieval, citation guidance)
 # https://ieee-atiig.replit.app/ai.txt
+# AI-Usage: https://ieee-atiig.replit.app/ai.txt
 
 # Security contact (RFC 9116)
 # https://ieee-atiig.replit.app/.well-known/security.txt

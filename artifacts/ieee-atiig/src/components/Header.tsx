@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { ArrowRight, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,6 +19,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { routeMeta } from "@/data/site";
 import colorLogo from "@assets/ATII_CLR_1777748066607.png";
 import blackLogo from "@assets/ATII_BLK_1777748066607.png";
 
@@ -87,6 +96,8 @@ export function Header() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const [textOnly, setTextOnly] = useState(false);
 
   useEffect(() => {
@@ -106,6 +117,11 @@ export function Header() {
   }, []);
 
   const currentLogo = textOnly ? blackLogo : colorLogo;
+  const searchResults = Object.entries(routeMeta).filter(([path, meta]) => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return ["/", "/initiatives", "/projects", "/get-involved"].includes(path);
+    return `${meta.title} ${meta.description} ${path}`.toLowerCase().includes(needle);
+  });
 
   return (
     <header
@@ -190,6 +206,7 @@ export function Header() {
             size="icon"
             className="hidden sm:flex text-navy hover:text-orange hover:bg-slate-100"
             aria-label="Search"
+            onClick={() => setSearchOpen(true)}
             data-testid="btn-search"
           >
             <Search className="w-5 h-5" />
@@ -272,6 +289,10 @@ export function Header() {
                   <Button
                     variant="outline"
                     className="w-full justify-start text-navy border-slate-200"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setSearchOpen(true);
+                    }}
                     data-testid="btn-mobile-search"
                   >
                     <Search className="w-4 h-4 mr-2" /> Search
@@ -294,6 +315,55 @@ export function Header() {
           </Sheet>
         </div>
       </div>
+      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <DialogContent className="max-w-2xl rounded-xl border-slate-200 bg-white p-0 overflow-hidden">
+          <DialogHeader className="p-6 pb-3 border-b border-slate-100">
+            <DialogTitle className="text-2xl font-black text-navy">Search IEEE Kerala ATIIG</DialogTitle>
+            <DialogDescription>
+              Find initiatives, projects, resources, events, and ways to get involved.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-6 pt-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search for accessibility, workshops, projects..."
+                className="h-12 pl-11 text-base"
+                autoFocus
+              />
+            </div>
+            <div className="mt-5 grid gap-2">
+              {searchResults.map(([path, meta]) => (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={() => setSearchOpen(false)}
+                  className="group rounded-lg border border-slate-100 p-4 transition-colors hover:border-orange/40 hover:bg-orange/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="font-black text-navy group-hover:text-orange transition-colors">
+                        {meta.title}
+                      </div>
+                      <p className="mt-1 text-sm text-slate-600 leading-relaxed">
+                        {meta.description}
+                      </p>
+                    </div>
+                    <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-slate-400 group-hover:text-orange transition-colors" />
+                  </div>
+                </Link>
+              ))}
+              {searchResults.length === 0 && (
+                <div className="rounded-lg border border-dashed border-slate-200 p-6 text-center text-slate-500">
+                  No matching pages found. Try “projects”, “volunteer”, “resources”, or “events”.
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </header>
   );
 }

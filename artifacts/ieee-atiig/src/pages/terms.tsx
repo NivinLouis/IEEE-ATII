@@ -1,12 +1,13 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 
 export default function TermsPage() {
   return (
     <Layout>
       <SEO
-        title="Terms of Use | IEEE Kerala ATIIG"
-        description="Terms governing your use of the IEEE Kerala ATIIG website and services."
+        title={routeMeta["/terms"].title}
+        description={routeMeta["/terms"].description}
         path="/terms"
         schemas={[
           breadcrumbSchema([
@@ -60,8 +61,8 @@ export default function TermsPage() {
               <h2 className="text-xl font-bold text-navy mb-3">Contact</h2>
               <p>
                 Questions regarding these terms may be directed to{" "}
-                <a href="mailto:hello@ieeekerala.org" className="text-teal hover:underline font-medium">
-                  hello@ieeekerala.org
+                <a href="mailto:atiig@ieeekerala.org" className="text-teal hover:underline font-medium">
+                  atiig@ieeekerala.org
                 </a>.
               </p>
             </section>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import { routeMeta } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,8 +73,8 @@ export default function InitiativesPage() {
   return (
     <Layout>
       <SEO
-        title="Initiatives | IEEE Kerala ATIIG Programs & Projects"
-        description="Explore IEEE Kerala ATIIG's initiatives spanning industry-academia partnerships, applied research, technical workshops, and humanitarian technology projects. Filter by status and join an active program."
+        title={routeMeta["/initiatives"].title}
+        description={routeMeta["/initiatives"].description}
         path="/initiatives"
         keywords="IEEE Kerala initiatives, IEEE Kerala workshops, IEEE Kerala research, IEEE Kerala humanitarian projects"
         schemas={[
