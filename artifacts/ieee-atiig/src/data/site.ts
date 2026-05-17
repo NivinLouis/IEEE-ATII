@@ -1,4 +1,4 @@
-import type { Event, NewsItem, TeamMember } from "@workspace/api-client-react";
+import type { Event, TeamMember } from "@workspace/api-client-react";
 
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL?.replace(/\/+$/, "") ??
@@ -171,42 +171,6 @@ export const fallbackEvents: Event[] = [
     featured: false,
     registrationUrl: "/resources#videos",
     createdAt: "2026-05-03T00:00:00.000Z",
-  },
-];
-
-export const fallbackNews: NewsItem[] = [
-  {
-    id: 1,
-    title: "ATIIG Expands Accessible Campus Program Across Kerala",
-    description:
-      "The Accessible Campus Program will support student-led audits, retrofit recommendations, and inclusive-design mentoring across partner institutions.",
-    badge: "Program",
-    badgeColor: "bg-teal",
-    imageUrl: "team",
-    publishedAt: "2026-05-03T00:00:00.000Z",
-    createdAt: "2026-05-03T00:00:00.000Z",
-  },
-  {
-    id: 2,
-    title: "New Assistive Technology Toolkit Released for Student Teams",
-    description:
-      "The toolkit includes practical checklists, prototyping templates, user-interview guidance, and evaluation rubrics for inclusive engineering projects.",
-    badge: "Resource",
-    badgeColor: "bg-purple",
-    imageUrl: "news-hero",
-    publishedAt: "2026-04-22T00:00:00.000Z",
-    createdAt: "2026-04-22T00:00:00.000Z",
-  },
-  {
-    id: 3,
-    title: "Volunteer Network Crosses 120 Active Contributors",
-    description:
-      "Students, educators, industry engineers, and accessibility advocates are now contributing to ATIIG programs across research, education, and outreach.",
-    badge: "Community",
-    badgeColor: "bg-orange",
-    imageUrl: "news-variant",
-    publishedAt: "2026-04-10T00:00:00.000Z",
-    createdAt: "2026-04-10T00:00:00.000Z",
   },
 ];
 

@@ -81,3 +81,99 @@ The site includes:
 - shadcn/Radix UI components
 - Framer Motion
 - pnpm workspace
+
+## Changelog 17/05/26
+
+Added the initial Sanity CMS migration path for the news section. Studio is intended to remain a separate deployment from the frontend application.
+
+### Sanity Studio Setup
+
+Create a Sanity project and dataset, then configure the Studio environment using:
+
+```bash
+SANITY_STUDIO_PROJECT_ID=your-project-id
+SANITY_STUDIO_DATASET=production
+```
+
+These values match the example file at:
+
+```text
+artifacts/sanity-studio/.env.example
+```
+
+Run the Studio locally with:
+
+```bash
+pnpm --filter @workspace/sanity-studio run dev
+```
+
+Build the Studio with:
+
+```bash
+pnpm --filter @workspace/sanity-studio run build
+```
+
+The Studio schemas added for the news migration are:
+
+```text
+artifacts/sanity-studio/schemaTypes/category.ts
+artifacts/sanity-studio/schemaTypes/newsArticle.ts
+```
+
+### Frontend Sanity Setup
+
+Configure the frontend app with:
+
+```bash
+VITE_SITE_URL=https://atiig.ieeekerala.org
+VITE_SANITY_PROJECT_ID=your-project-id
+VITE_SANITY_DATASET=production
+VITE_SANITY_API_VERSION=2025-02-19
+VITE_SANITY_PREVIEW_TOKEN=
+```
+
+These values match the example file at:
+
+```text
+artifacts/ieee-atiig/.env.example
+```
+
+Run the frontend locally with:
+
+```bash
+PORT=3000 BASE_PATH=/ pnpm --filter @workspace/ieee-atiig run dev
+```
+
+After publishing at least one `News Category` and one `News Article` in Sanity:
+
+- `/news-events` renders the published article list
+- `/news/<slug>` renders the article detail page
+
+News articles are ordered by `publishedAt` in descending order. Empty states are shown if Sanity is not configured or if no articles are published.
+
+### Preview Guidance
+
+The current frontend includes only a basic preview toggle path and should not be treated as the final production preview solution.
+
+For a proper draft preview setup:
+
+1. Keep Studio deployed separately.
+2. Do not expose a long-lived Sanity read token in the browser for production.
+3. Add a backend preview endpoint such as `/api/sanity/preview`.
+4. Store the Sanity read token only on the server, for example as `SANITY_API_READ_TOKEN`.
+5. When preview is active, query Sanity with:
+
+```text
+perspective: 'drafts'
+useCdn: false
+```
+
+This project currently uses a Vite SPA that fetches directly from Sanity for published content. Secure draft preview therefore requires a server-side or edge layer to mediate preview requests.
+
+Reference documentation used for the implementation approach:
+
+- [Drafts](https://www.sanity.io/docs/drafts)
+- [Presenting and previewing content](https://www.sanity.io/docs/content-lake/presenting-and-previewing-content)
+- [Implementing draft mode](https://www.sanity.io/docs/visual-editing/implementing-draft-mode)
+- [Querying content with @sanity/client](https://www.sanity.io/docs/apis-and-sdks/js-client-querying)
+- [Presenting Portable Text](https://www.sanity.io/docs/developer-guides/presenting-block-text)

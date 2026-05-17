@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["sanity.config.ts", "sanity.cli.ts", "schemaTypes/**/*"],
+  "exclude": ["node_modules", "dist"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["esnext", "dom"],
+    "moduleResolution": "bundler",
+    "types": ["node"]
+  }
+}

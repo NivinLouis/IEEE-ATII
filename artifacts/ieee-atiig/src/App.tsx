@@ -11,6 +11,7 @@ import ProjectsPage from "@/pages/projects";
 import ResourcesPage from "@/pages/resources";
 import GetInvolvedPage from "@/pages/get-involved";
 import NewsEventsPage from "@/pages/news-events";
+import NewsArticlePage from "@/pages/news-article";
 import ContactPage from "@/pages/contact";
 import PrivacyPage from "@/pages/privacy";
 import TermsPage from "@/pages/terms";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/resources" element={<ResourcesPage />} />
       <Route path="/get-involved" element={<GetInvolvedPage />} />
       <Route path="/news-events" element={<NewsEventsPage />} />
+      <Route path="/news/:slug" element={<NewsArticlePage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />

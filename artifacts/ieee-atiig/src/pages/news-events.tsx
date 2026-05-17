@@ -1,46 +1,34 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, eventSchema } from "@/components/SEO";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
-import { useListNews, useListEvents } from "@workspace/api-client-react";
+import { useListEvents } from "@workspace/api-client-react";
 import {
   asArrayOrFallback,
   fallbackEvents,
-  fallbackNews,
   routeMeta,
   SITE_URL,
 } from "@/data/site";
+import { useNewsArticles } from "@/lib/sanity/hooks";
+import {
+  formatNewsDate,
+  getNewsBadgeStyles,
+  getPrimaryCategoryLabel,
+  getSanityImageProps,
+} from "@/lib/sanity/presentation";
+import { sanityConfigured } from "@/lib/sanity/client";
 
 import newsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(3)_1777748003995.png";
 import newsVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(7)_1777748003997.png";
 import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
 import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 
-const FALLBACK_IMAGES: Record<string, string> = {
-  "news-hero": newsHeroImg,
-  "news-variant": newsVariantImg,
-  hero: heroImg,
-  team: teamImg,
-};
-
-const FALLBACK_ROTATION = [newsHeroImg, teamImg, heroImg, newsVariantImg];
-
-function resolveImage(url: string, index: number): string {
-  if (FALLBACK_IMAGES[url]) return FALLBACK_IMAGES[url];
-  if (/^https?:\/\//i.test(url) || url.startsWith("/")) return url;
-  return FALLBACK_ROTATION[index % FALLBACK_ROTATION.length];
-}
-
 const MONTH_ABBR = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
-function formatNewsDate(value: string | Date): string {
-  const d = typeof value === "string" ? new Date(value) : value;
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
 
 function formatEventDateBadge(value: string | Date): { month: string; day: string } {
   const d = typeof value === "string" ? new Date(value) : value;
@@ -52,10 +40,10 @@ export default function NewsEventsPage() {
   const [activeCategory, setActiveCategory] = useState("All Events");
 
   const eventsQuery = useListEvents();
-  const newsQuery = useListNews();
+  const newsQuery = useNewsArticles();
 
   const events = asArrayOrFallback(eventsQuery.data, fallbackEvents);
-  const news = asArrayOrFallback(newsQuery.data, fallbackNews);
+  const news = newsQuery.data ?? [];
 
   const filteredEvents = useMemo(
     () =>
@@ -323,30 +311,61 @@ export default function NewsEventsPage() {
             <h2 className="text-3xl md:text-4xl font-black text-navy">Latest News & Announcements</h2>
           </div>
 
-          {newsQuery.isLoading && (
+          {newsQuery.isLoading ? (
             <div className="text-center py-10 text-slate-400 font-medium">Loading news…</div>
-          )}
+          ) : !sanityConfigured ? (
+            <NewsStateBlock
+              eyebrow="Sanity setup pending"
+              title="News CMS is not configured in this frontend yet."
+              description="Add the Sanity project environment variables for this app, then publish your first article from the Studio to populate this section."
+            />
+          ) : news.length === 0 ? (
+            <NewsStateBlock
+              eyebrow="No published articles"
+              title="The newsroom is ready, but there are no published news articles yet."
+              description="Create categories and publish your first rich-text article in Sanity Studio. Published items will appear here in descending order by published date."
+            />
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-testid="news-list">
+              {news.map((item) => {
+                const image = getSanityImageProps(item.coverImage);
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-testid="news-list">
-            {news.map((item: any, i: number) => (
-              <div key={item.id} className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col group hover:shadow-lg transition-all">
-                <div className="h-48 overflow-hidden relative">
-                  <img src={resolveImage(item.imageUrl, i)} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className={`absolute top-4 left-4 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded ${item.badgeColor}`}>
-                    {item.badge}
-                  </div>
-                </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="text-xs font-bold text-slate-500 mb-3">{formatNewsDate(item.publishedAt)}</div>
-                  <h3 className="font-bold text-navy text-lg mb-3 leading-snug group-hover:text-teal transition-colors">{item.title}</h3>
-                  <p className="text-slate-600 text-sm mb-6 flex-1 line-clamp-3">{item.description}</p>
-                  <Link to="/news-events" className="text-navy font-bold text-sm inline-flex items-center group-hover:text-orange transition-colors mt-auto">
-                    Read More <ArrowRight className="ml-1 w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+                return (
+                  <article key={item._id} className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col group hover:shadow-lg transition-all">
+                    <div className="h-48 overflow-hidden relative bg-slate-200">
+                      {image?.src ? (
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          width={image.width}
+                          height={image.height}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          style={image.placeholder ? { backgroundImage: `url(${image.placeholder})`, backgroundSize: "cover" } : undefined}
+                        />
+                      ) : (
+                        <div className="flex h-full items-end bg-[linear-gradient(135deg,rgba(2,58,116,0.92),rgba(2,58,116,0.68),rgba(11,184,173,0.72))] p-5">
+                          <span className="max-w-[10rem] text-sm font-bold leading-5 text-white/85">
+                            Visual pending in Sanity
+                          </span>
+                        </div>
+                      )}
+                      <div className={`absolute top-4 left-4 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded ${getNewsBadgeStyles(item.categories)}`}>
+                        {getPrimaryCategoryLabel(item.categories)}
+                      </div>
+                    </div>
+                    <div className="p-6 flex flex-col flex-1">
+                      <div className="text-xs font-bold text-slate-500 mb-3">{formatNewsDate(item.publishedAt)}</div>
+                      <h3 className="font-bold text-navy text-lg mb-3 leading-snug group-hover:text-teal transition-colors">{item.title}</h3>
+                      <p className="text-slate-600 text-sm mb-6 flex-1 line-clamp-3">{item.excerpt}</p>
+                      <Link to={`/news/${item.slug}`} className="text-navy font-bold text-sm inline-flex items-center group-hover:text-orange transition-colors mt-auto">
+                        Read Article <ArrowRight className="ml-1 w-4 h-4" />
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

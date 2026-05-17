@@ -2,6 +2,9 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const siteUrl = (process.env.VITE_SITE_URL ?? "https://atiig.ieeekerala.org").replace(/\/+$/, "");
+const sanityProjectId = process.env.VITE_SANITY_PROJECT_ID;
+const sanityDataset = process.env.VITE_SANITY_DATASET;
+const sanityApiVersion = process.env.VITE_SANITY_API_VERSION ?? "2025-02-19";
 const today = new Date().toISOString().slice(0, 10);
 const outDir = path.resolve("dist/public");
 const indexPath = path.join(outDir, "index.html");
@@ -86,6 +89,51 @@ const routes = {
   },
 };
 
+async function fetchSanityArticleRoutes() {
+  if (!sanityProjectId || !sanityDataset) return {};
+
+  const query = `*[_type == "newsArticle" && defined(slug.current)] | order(publishedAt desc) {
+    "slug": slug.current,
+    title,
+    excerpt,
+    seoTitle,
+    seoDescription
+  }`;
+
+  const url = new URL(
+    `https://${sanityProjectId}.apicdn.sanity.io/v${sanityApiVersion}/data/query/${sanityDataset}`,
+  );
+  url.searchParams.set("query", query);
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.warn(`Skipping Sanity article prerender: ${response.status} ${response.statusText}`);
+      return {};
+    }
+
+    const payload = await response.json();
+    const articles = Array.isArray(payload.result) ? payload.result : [];
+
+    return Object.fromEntries(
+      articles
+        .filter((item) => typeof item?.slug === "string" && item.slug.length > 0)
+        .map((item) => [
+          `/news/${item.slug}`,
+          {
+            title: item.seoTitle || `${item.title} | IEEE Kerala ATIIG`,
+            description: item.seoDescription || item.excerpt || "Latest updates from IEEE Kerala ATIIG.",
+            priority: "0.7",
+            changefreq: "weekly",
+          },
+        ]),
+    );
+  } catch (error) {
+    console.warn("Skipping Sanity article prerender because the dataset could not be queried.", error);
+    return {};
+  }
+}
+
 function escapeHtml(value) {
   return value
     .replaceAll("&", "&amp;")
@@ -145,9 +193,11 @@ function withRouteMeta(baseHtml, routePath, meta) {
   return html;
 }
 
+const articleRoutes = await fetchSanityArticleRoutes();
+const allRoutes = { ...routes, ...articleRoutes };
 const baseHtml = await readFile(indexPath, "utf8");
 
-for (const [routePath, meta] of Object.entries(routes)) {
+for (const [routePath, meta] of Object.entries(allRoutes)) {
   const html = withRouteMeta(baseHtml, routePath, meta);
   if (routePath === "/") {
     await writeFile(indexPath, html);
@@ -160,7 +210,7 @@ for (const [routePath, meta] of Object.entries(routes)) {
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${Object.entries(routes)
+${Object.entries(allRoutes)
   .map(
     ([routePath, meta]) => `  <url>
     <loc>${siteUrl}${routePath}</loc>
@@ -174,4 +224,4 @@ ${Object.entries(routes)
 `;
 
 await writeFile(path.join(outDir, "sitemap.xml"), sitemap);
-console.log(`Prerendered SEO metadata for ${Object.keys(routes).length} routes.`);
+console.log(`Prerendered SEO metadata for ${Object.keys(allRoutes).length} routes.`);
