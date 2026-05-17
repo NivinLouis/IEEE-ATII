@@ -34,6 +34,10 @@ export function getPrimaryCategoryLabel(categories: SanityCategory[]) {
   return categories[0]?.title ?? "News";
 }
 
+export function getPrimaryEventCategoryLabel(categories: SanityCategory[]) {
+  return categories[0]?.title ?? "Events";
+}
+
 export function getSanityImageProps(image?: SanityImage) {
   const src = image?.asset?.url;
   if (!src) return null;

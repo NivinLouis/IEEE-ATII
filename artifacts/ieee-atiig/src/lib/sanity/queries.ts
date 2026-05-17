@@ -59,3 +59,24 @@ export const newsArticleQuery = `
     }
   }
 `;
+
+export const eventListQuery = `
+  *[_type == "event" && defined(startsAt) && startsAt >= now()]
+    | order(startsAt asc) {
+      _id,
+      title,
+      location,
+      displayTime,
+      startsAt,
+      description,
+      featured,
+      registrationUrl,
+      registrationLabel,
+      categories[]->{
+        _id,
+        title,
+        "slug": slug.current,
+        description
+      }
+    }
+`;

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchNewsArticle, fetchNewsArticles } from "./api";
+import { fetchEvents, fetchNewsArticle, fetchNewsArticles } from "./api";
 import { isSanityPreviewActive, sanityConfigured } from "./client";
 
 export function useNewsArticles() {
@@ -19,5 +19,15 @@ export function useNewsArticle(slug: string) {
     queryKey: ["sanity-news-article", slug, preview],
     queryFn: () => fetchNewsArticle(slug),
     enabled: sanityConfigured && Boolean(slug),
+  });
+}
+
+export function useEvents() {
+  const preview = isSanityPreviewActive();
+
+  return useQuery({
+    queryKey: ["sanity-events", preview],
+    queryFn: fetchEvents,
+    enabled: sanityConfigured,
   });
 }

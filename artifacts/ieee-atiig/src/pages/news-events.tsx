@@ -7,17 +7,16 @@ import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
-import { useListEvents } from "@workspace/api-client-react";
 import {
-  asArrayOrFallback,
   fallbackEvents,
   routeMeta,
   SITE_URL,
 } from "@/data/site";
-import { useNewsArticles } from "@/lib/sanity/hooks";
+import { useEvents, useNewsArticles } from "@/lib/sanity/hooks";
 import {
   formatNewsDate,
   getNewsBadgeStyles,
+  getPrimaryEventCategoryLabel,
   getPrimaryCategoryLabel,
   getSanityImageProps,
 } from "@/lib/sanity/presentation";
@@ -39,17 +38,41 @@ export default function NewsEventsPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [activeCategory, setActiveCategory] = useState("All Events");
 
-  const eventsQuery = useListEvents();
+  const eventsQuery = useEvents();
   const newsQuery = useNewsArticles();
 
-  const events = asArrayOrFallback(eventsQuery.data, fallbackEvents);
+  const events = useMemo(() => {
+    if (!sanityConfigured) return fallbackEvents;
+    return eventsQuery.data && eventsQuery.data.length > 0
+      ? eventsQuery.data
+      : fallbackEvents;
+  }, [eventsQuery.data]);
   const news = newsQuery.data ?? [];
+
+  const eventCategories = useMemo(() => {
+    const categories = new Set<string>();
+    for (const event of events) {
+      if ("categories" in event && Array.isArray(event.categories)) {
+        for (const category of event.categories) {
+          if (category?.title) categories.add(category.title);
+        }
+      } else if ("category" in event && typeof event.category === "string") {
+        categories.add(event.category);
+      }
+    }
+
+    return ["All Events", ...Array.from(categories)];
+  }, [events]);
 
   const filteredEvents = useMemo(
     () =>
       activeCategory === "All Events"
         ? events
-        : events.filter((e: any) => e.category === activeCategory),
+        : events.filter((e: any) =>
+            "categories" in e && Array.isArray(e.categories)
+              ? e.categories.some((category: any) => category?.title === activeCategory)
+              : e.category === activeCategory,
+          ),
     [events, activeCategory],
   );
 
@@ -63,7 +86,13 @@ export default function NewsEventsPage() {
     const workshopDates: Date[] = [];
     for (const e of events) {
       const d = new Date(e.startsAt);
-      if (e.category === "Workshops") workshopDates.push(d);
+      const primaryCategory =
+        "categories" in e && Array.isArray(e.categories)
+          ? getPrimaryEventCategoryLabel(e.categories)
+          : "category" in e && typeof e.category === "string"
+            ? e.category
+            : "Events";
+      if (primaryCategory === "Workshops") workshopDates.push(d);
       else eventDates.push(d);
     }
     return { event: eventDates, workshop: workshopDates };
@@ -157,7 +186,7 @@ export default function NewsEventsPage() {
                 {filteredEvents.map((evt: any) => {
                   const badge = formatEventDateBadge(evt.startsAt);
                   return (
-                    <div key={evt.id} className={`p-5 rounded-xl border transition-all ${evt.featured ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
+                    <div key={evt._id ?? evt.id} className={`p-5 rounded-xl border transition-all ${evt.featured ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
                       <div className="flex gap-4">
                         <div className="w-16 flex-shrink-0 text-center">
                           <div className={`text-xs font-black uppercase ${evt.featured ? 'text-orange' : 'text-slate-500'}`}>{badge.month}</div>
@@ -167,10 +196,10 @@ export default function NewsEventsPage() {
                           <h3 className="font-bold text-navy mb-2 leading-tight">{evt.title}</h3>
                           <div className="text-xs text-slate-500 space-y-1 mb-4">
                             <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {evt.location}</div>
-                            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {evt.time}</div>
+                            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {"displayTime" in evt ? evt.displayTime : evt.time}</div>
                           </div>
                           <Button asChild size="sm" variant={evt.featured ? "default" : "outline"} className={evt.featured ? "bg-orange hover:bg-orange/90 text-white font-bold" : "font-bold text-navy"}>
-                            <a href={evt.registrationUrl ?? "/get-involved#join"}>Register</a>
+                            <a href={evt.registrationUrl ?? "/get-involved#join"}>{"registrationLabel" in evt && evt.registrationLabel ? evt.registrationLabel : "Register"}</a>
                           </Button>
                         </div>
                       </div>
@@ -227,7 +256,7 @@ export default function NewsEventsPage() {
                     <div className="space-y-2.5 mb-5 text-slate-300 font-medium text-sm">
                       <div className="flex items-center gap-3">
                         <CalendarIcon className="w-4 h-4 text-teal shrink-0" />
-                        <span>{new Date(featuredEvent.startsAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} • {featuredEvent.time}</span>
+                        <span>{new Date(featuredEvent.startsAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} • {"displayTime" in featuredEvent ? featuredEvent.displayTime : featuredEvent.time}</span>
                       </div>
                       <div className="flex items-start gap-3">
                         <MapPin className="w-4 h-4 text-teal shrink-0 mt-0.5" />
@@ -291,7 +320,7 @@ export default function NewsEventsPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-3">
             <span className="text-slate-500 font-bold self-center mr-2">Browse by:</span>
-            {["All Events", "Webinars", "Workshops", "Hackathons", "Community", "Conferences"].map((cat) => (
+            {eventCategories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -331,7 +360,14 @@ export default function NewsEventsPage() {
                 const image = getSanityImageProps(item.coverImage);
 
                 return (
-                  <article key={item._id} className="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col group hover:shadow-lg transition-all">
+                  <article
+                    key={item._id}
+                    className={`rounded-2xl overflow-hidden border flex flex-col group transition-all ${
+                      item.featured
+                        ? "bg-orange/5 border-orange shadow-sm hover:shadow-md"
+                        : "bg-slate-50 border-slate-100 hover:shadow-lg"
+                    }`}
+                  >
                     <div className="h-48 overflow-hidden relative bg-slate-200">
                       {image?.src ? (
                         <img

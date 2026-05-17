@@ -36,3 +36,16 @@ export interface SanityNewsArticleSummary {
 export interface SanityNewsArticle extends SanityNewsArticleSummary {
   body: unknown[];
 }
+
+export interface SanityEventSummary {
+  _id: string;
+  title: string;
+  categories: SanityCategory[];
+  location: string;
+  displayTime: string;
+  startsAt: string;
+  description?: string;
+  featured: boolean;
+  registrationUrl?: string;
+  registrationLabel?: string;
+}
