@@ -28,8 +28,8 @@
 minimumReleaseAge: 1440
 
 packages:
-  - artifacts/ieee-atiig
-  - artifacts/sanity-studio
+  - .
+  - sanity-studio
 
 catalog:
   '@tailwindcss/vite': ^4.1.14
