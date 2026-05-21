@@ -10,6 +10,7 @@ out-tsc
 
 # dependencies
 node_modules
+.pnpm-store
 
 # IDEs and editors
 /.idea
@@ -53,3 +54,13 @@ Thumbs.db
 .env.*
 !.env.example
 !.env.test
+
+# Vite / Frontend
+artifacts/ieee-atiig/dist
+artifacts/ieee-atiig/dist-ssr
+artifacts/ieee-atiig/*.local
+
+# Sanity Studio
+artifacts/sanity-studio/dist
+artifacts/sanity-studio/.sanity
+
