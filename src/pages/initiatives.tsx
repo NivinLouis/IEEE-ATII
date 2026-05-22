@@ -266,90 +266,64 @@ export default function InitiativesPage() {
           </div>
         </div>
       </section>
+      <section className="py-32 bg-white relative overflow-hidden" data-testid="initiatives-journey">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 -skew-x-12 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
 
-      {/* Featured Initiative — only shown when viewing all */}
-      {activeTab === "All" && <section className="py-24 bg-white" data-testid="initiatives-featured">
-        <div className="container mx-auto px-4">
-          <div className="bg-navy rounded-3xl overflow-hidden shadow-xl flex flex-col lg:flex-row">
-            <div className="lg:w-1/2 relative min-h-[400px] bg-gradient-to-br from-[#023A74] via-[#642396] to-[#01A0A0] overflow-hidden">
-              <div className="absolute -top-16 -left-16 w-72 h-72 bg-white/10 rounded-full blur-3xl" />
-              <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-orange/30 rounded-full blur-3xl" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.18),transparent_55%)]" />
-              <div className="relative h-full flex flex-col items-center justify-center text-white px-8 py-12">
-                <div className="w-24 h-24 rounded-2xl bg-white/15 backdrop-blur-sm ring-2 ring-white/30 flex items-center justify-center mb-6">
-                  <Lightbulb className="w-12 h-12 text-orange" />
-                </div>
-                <div className="text-5xl md:text-6xl font-black tracking-tight">18+</div>
-                <div className="text-sm font-bold uppercase tracking-widest text-white/80 mt-2">Active Prototypes</div>
-                <div className="mt-8 grid grid-cols-3 gap-4 text-center max-w-sm">
-                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
-                    <div className="text-xl font-black text-orange">4.3K+</div>
-                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Lives</div>
-                  </div>
-                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
-                    <div className="text-xl font-black text-teal">12</div>
-                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Partners</div>
-                  </div>
-                  <div className="bg-white/10 rounded-lg py-3 px-2 ring-1 ring-white/15">
-                    <div className="text-xl font-black text-white">8</div>
-                    <div className="text-[10px] font-semibold text-white/70 mt-1 uppercase tracking-wider">Patents</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center text-white">
-              <span className="text-orange font-bold tracking-widest uppercase mb-4 text-sm">Featured Initiative</span>
-              <h2 className="text-4xl md:text-5xl font-black mb-6">AT Innovation Lab</h2>
-              <p className="text-slate-300 text-lg mb-8 leading-relaxed">
-                The AT Innovation Lab serves as a central hub where engineers, designers, and persons with disabilities co-create solutions. From low-cost prosthetics to communication devices, we're building the future of inclusive hardware.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-6 mb-10">
-                <div>
-                  <div className="text-3xl font-black text-teal mb-1">18</div>
-                  <div className="text-sm font-semibold text-slate-400 uppercase tracking-wide">Prototypes Built</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-black text-purple mb-1">5</div>
-                  <div className="text-sm font-semibold text-slate-400 uppercase tracking-wide">Patents Filed</div>
-                </div>
-              </div>
-              
-              <div>
-                <Button asChild className="bg-orange hover:bg-orange/90 text-white font-bold h-14 px-8 text-base">
-                  <Link to="/projects#featured">View Lab Projects <ArrowRight className="ml-2 w-5 h-5" /></Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>}
-
-      {/* Our Program Journey */}
-      <section className="py-24 bg-slate-50" data-testid="initiatives-journey">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Our Program Approach</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">How we move from identifying a problem to delivering sustainable impact.</p>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-24">
+            <h2 className="text-4xl md:text-5xl font-black text-navy mb-6 tracking-tight">Our Program Approach</h2>
+            <div className="w-20 h-1.5 bg-orange mx-auto mb-8 rounded-full" />
+            <p className="text-xl text-slate-600 leading-relaxed">
+              We follow a rigorous, user-centered methodology to move from identifying a problem to delivering sustainable social impact.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-6xl mx-auto relative">
-            <div className="hidden md:block absolute top-12 left-10 right-10 h-1 bg-slate-200 z-0"></div>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12 max-w-7xl mx-auto relative">
+            {/* The Connecting Line - Desktop Only */}
+            <div className="hidden md:block absolute top-16 left-[10%] right-[10%] h-0.5 border-t-2 border-dashed border-slate-200 z-0" />
             
             {[
-              { num: "01", title: "Discover", desc: "Identify real-world needs through community engagement and research", color: "bg-navy" },
-              { num: "02", title: "Design", desc: "Co-create solutions with users, experts and stakeholders", color: "bg-teal" },
-              { num: "03", title: "Develop", desc: "Build and prototype using accessible and inclusive design principles", color: "bg-purple" },
-              { num: "04", title: "Deploy", desc: "Implement solutions in communities and institutions", color: "bg-orange" },
-              { num: "05", title: "Impact", desc: "Measure impact, learn and continuously improve for sustainable change", color: "bg-navy" }
+              { num: "01", title: "Discover", desc: "Identify real-world needs through community engagement and rigorous research.", color: "bg-navy", hColor: "group-hover:text-navy", icon: <Search className="w-5 h-5" /> },
+              { num: "02", title: "Design", desc: "Co-create solutions with users, experts and stakeholders using inclusive principles.", color: "bg-teal", hColor: "group-hover:text-teal", icon: <Lightbulb className="w-5 h-5" /> },
+              { num: "03", title: "Develop", desc: "Build and prototype iteratively, ensuring accessibility is baked into the core.", color: "bg-purple", hColor: "group-hover:text-purple", icon: <Building className="w-5 h-5" /> },
+              { num: "04", title: "Deploy", desc: "Implement solutions directly in communities, institutions, and the field.", color: "bg-orange", hColor: "group-hover:text-orange", icon: <Globe className="w-5 h-5" /> },
+              { num: "05", title: "Impact", desc: "Measure results, gather feedback, and scale for long-term sustainable change.", color: "bg-navy", hColor: "group-hover:text-navy", icon: <Users className="w-5 h-5" /> }
             ].map((step, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-center text-center">
-                <div className={`w-24 h-24 rounded-full ${step.color} text-white flex items-center justify-center text-2xl font-black mb-6 shadow-lg border-4 border-slate-50`}>
-                  {step.num}
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.6 }}
+                className="relative z-10 flex flex-col items-center group text-center"
+              >
+                {/* Connector for Mobile */}
+                {i < 4 && <div className="md:hidden absolute bottom-[-2rem] left-1/2 -translate-x-1/2 w-0.5 h-8 bg-slate-200" />}
+
+                <div className="relative mb-8">
+                  {/* Outer Pulse Effect */}
+                  <div className={`absolute inset-0 rounded-full ${step.color} opacity-20 scale-125 blur-md group-hover:scale-150 transition-transform duration-500`} />
+                  
+                  {/* Main Circle */}
+                  <div className={`w-20 h-20 lg:w-24 lg:h-24 rounded-full ${step.color} text-white flex items-center justify-center text-2xl font-black shadow-xl border-4 border-white relative z-10 transition-transform duration-500 group-hover:-translate-y-2`}>
+                    {step.num}
+                  </div>
+
+                  {/* Icon Small Badge */}
+                  <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center text-navy z-20 border border-slate-100 group-hover:bg-slate-50 transition-colors">
+                    {step.icon}
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-navy mb-3">{step.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
-              </div>
+
+                <h3 className={`text-lg lg:text-xl font-black text-black mb-4 ${step.hColor} transition-colors`}>
+                  {step.title}
+                </h3>
+                <p className="text-slate-500 text-sm lg:text-base leading-relaxed px-2">
+                  {step.desc}
+                </p>
+              </motion.div>
             ))}
           </div>
         </div>
