@@ -25,7 +25,7 @@ export function PartnerCarousel() {
   ));
 
   return (
-    <section className="py-20 bg-slate-50 border-y border-slate-100" data-testid="partner-carousel">
+    <section className="py-20 bg-white border-b border-slate-100" data-testid="partner-carousel">
       <div className="container mx-auto px-4 mb-12 text-center">
         <h2 className="text-sm font-bold text-slate-400 uppercase tracking-[0.3em]">Our Partners in Innovation</h2>
       </div>

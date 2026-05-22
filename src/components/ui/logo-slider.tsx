@@ -72,12 +72,12 @@ export const LogoSlider = ({
             >
                 {/* Progressive Blur Overlay - Left */}
                 {showBlur && (
-                    <div className="absolute top-0 bottom-0 left-0 w-48 z-20 pointer-events-none bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent" />
+                    <div className="absolute top-0 bottom-0 left-0 w-48 z-20 pointer-events-none bg-gradient-to-r from-white via-white/80 to-transparent" />
                 )}
 
                 {/* Progressive Blur Overlay - Right */}
                 {showBlur && (
-                    <div className="absolute top-0 bottom-0 right-0 w-48 z-20 pointer-events-none bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent" />
+                    <div className="absolute top-0 bottom-0 right-0 w-48 z-20 pointer-events-none bg-gradient-to-l from-white via-white/80 to-transparent" />
                 )}
 
                 {/* Logo Track */}
