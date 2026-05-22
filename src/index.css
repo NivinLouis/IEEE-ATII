@@ -322,17 +322,55 @@
   box-shadow: 0 12px 32px hsl(215 74% 22% / 0.15);
 }
 
-/* Partner logo carousel */
-@keyframes scroll-left {
+/* LogoSlider Component Styles */
+.logo-slider {
+  --speed: 60;
+  --count: 8;
+  --blurs: 8;
+  --blur: 1;
+}
+
+@keyframes logo-slider-scroll {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(-33.333%); }
 }
-.partner-scroll {
-  animation: scroll-left 30s linear infinite;
+
+.logo-slider__track {
+  display: flex;
+  width: max-content;
+  animation: logo-slider-scroll calc(var(--speed) * 1s) linear infinite;
 }
-.partner-scroll:hover {
+
+.logo-slider__container[data-direction="right"] .logo-slider__track {
+  animation-direction: reverse;
+}
+
+.logo-slider__container[data-pause-on-hover="true"]:hover .logo-slider__track {
   animation-play-state: paused;
 }
+
+.logo-slider__item {
+  width: 160px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.logo-slider__blur {
+  background: white;
+  mask-image: linear-gradient(to right, black, transparent);
+  -webkit-mask-image: linear-gradient(to right, black, transparent);
+}
+
+.logo-slider__blur div {
+  background: white;
+  opacity: calc(1 / var(--blurs) * var(--blur));
+  mask-image: linear-gradient(to right, black, transparent);
+  -webkit-mask-image: linear-gradient(to right, black, transparent);
+}
+
 
 /* Gradient text */
 .gradient-text {

@@ -62,7 +62,7 @@ const colorTokens: Record<
 const variants: Record<HeroVisualVariant, VariantSpec> = {
   home: {
     badgeIcon: Accessibility,
-    headlineStat: "25K+",
+    headlineStat: "800+",
     headlineLabel: "Lives Impacted",
     headlineSub: "across Kerala & beyond",
     centerIcons: [
@@ -117,12 +117,20 @@ interface HeroVisualProps {
   variant?: HeroVisualVariant;
   quote?: string;
   className?: string;
+  customHeadlineStat?: string;
+  customHeadlineLabel?: string;
+  customHeadlineSub?: string;
+  hideRevolvingIcons?: boolean;
 }
 
 export default function HeroVisual({
   variant = "home",
   quote,
   className,
+  customHeadlineStat,
+  customHeadlineLabel,
+  customHeadlineSub,
+  hideRevolvingIcons = false,
 }: HeroVisualProps) {
   const spec = variants[variant];
   const BadgeIcon = spec.badgeIcon;
@@ -156,37 +164,39 @@ export default function HeroVisual({
           <div className="absolute inset-0 -m-28 rounded-full border border-navy/5" />
 
           {/* Slow rotating icon halo */}
-          <motion.div
-            animate={prefersReducedMotion ? undefined : { rotate: 360 }}
-            transition={{ duration: 40, ease: "linear", repeat: Infinity }}
-            className="absolute inset-0 -m-20"
-          >
-            {spec.centerIcons.map(({ Icon, color, ring }, i) => {
-              const angle = (i * 360) / spec.centerIcons.length;
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute top-1/2 left-1/2"
-                  style={{
-                    transform: `rotate(${angle}deg) translateY(-110px) rotate(-${angle}deg)`,
-                    marginLeft: -22,
-                    marginTop: -22,
-                  }}
-                >
+          {!hideRevolvingIcons && (
+            <motion.div
+              animate={prefersReducedMotion ? undefined : { rotate: 360 }}
+              transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+              className="absolute inset-0 -m-20"
+            >
+              {spec.centerIcons.map(({ Icon, color, ring }, i) => {
+                const angle = (i * 360) / spec.centerIcons.length;
+                return (
                   <motion.div
-                    animate={prefersReducedMotion ? undefined : { rotate: -360 }}
-                    transition={{ duration: 40, ease: "linear", repeat: Infinity }}
-                    className={cn(
-                      "w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center ring-2",
-                      ring,
-                    )}
+                    key={i}
+                    className="absolute top-1/2 left-1/2"
+                    style={{
+                      transform: `rotate(${angle}deg) translateY(-110px) rotate(-${angle}deg)`,
+                      marginLeft: -22,
+                      marginTop: -22,
+                    }}
                   >
-                    <Icon className={cn("w-5 h-5", color)} />
+                    <motion.div
+                      animate={prefersReducedMotion ? undefined : { rotate: -360 }}
+                      transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+                      className={cn(
+                        "w-11 h-11 rounded-full bg-white shadow-md flex items-center justify-center ring-2",
+                        ring,
+                      )}
+                    >
+                      <Icon className={cn("w-5 h-5", color)} />
+                    </motion.div>
                   </motion.div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
 
           {/* Core medallion */}
           <div
@@ -198,13 +208,13 @@ export default function HeroVisual({
           >
             <BadgeIcon className="w-7 h-7 text-orange mb-2" />
             <div className="text-3xl font-black tracking-tight leading-none">
-              {spec.headlineStat}
+              {customHeadlineStat ?? spec.headlineStat}
             </div>
             <div className="text-[11px] font-semibold uppercase tracking-wider text-white/80 mt-1.5">
-              {spec.headlineLabel}
+              {customHeadlineLabel ?? spec.headlineLabel}
             </div>
             <div className="text-[10px] text-white/60 mt-1 px-4 text-center leading-tight">
-              {spec.headlineSub}
+              {customHeadlineSub ?? spec.headlineSub}
             </div>
           </div>
         </div>

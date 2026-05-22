@@ -55,24 +55,26 @@ export function StatCounter({ value, label, icon, color = "navy", className = ""
   return (
     <motion.div 
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`flex flex-col items-center justify-center p-6 text-center ${className}`}
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={`group flex flex-col items-center justify-center p-3 sm:p-5 border-slate-100 transition-all duration-300 ${className}`}
       data-testid={`stat-counter-${label.replace(/\s+/g, '-').toLowerCase()}`}
     >
       {icon && (
-        <div className={`mb-3 ${colorClasses[color]} opacity-90`}>
+        <div className={`mb-2.5 p-2 rounded-lg transition-all duration-500 bg-slate-50 group-hover:bg-white group-hover:shadow-sm ${colorClasses[color]}`}>
           {icon}
         </div>
       )}
       <div
-        className={`text-4xl md:text-5xl font-black mb-2 tracking-tight tabular-nums ${colorClasses[color]}`}
+        className={`text-2xl lg:text-3xl font-black mb-1 tracking-tight tabular-nums transition-colors duration-300 ${colorClasses[color]}`}
         aria-label={value}
       >
         {text}
       </div>
-      <div className={`font-semibold tracking-wide uppercase text-sm ${color === "white" ? "text-white/80" : "text-slate-600"}`}>
+      <div className={`font-bold tracking-widest uppercase text-[9px] sm:text-[10px] leading-tight text-center transition-colors duration-300 ${color === "white" ? "text-white/80" : "text-slate-400 group-hover:text-slate-700"}`}>
         {label}
       </div>
     </motion.div>

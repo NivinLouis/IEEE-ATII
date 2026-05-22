@@ -7,11 +7,10 @@ import SEO, {
   websiteSchema,
 } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
-import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
-import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
+import { TestimonialsCard } from "@/components/ui/testimonials-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -38,27 +37,24 @@ import {
 import { routeMeta } from "@/data/site";
 
 
-const stories = [
+const testimonialItems = [
   {
-    quote: "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable.",
-    author: "Ananya",
-    role: "Student Beneficiary",
-    initials: "A",
-    gradient: "from-teal via-teal to-navy",
+    id: 1,
+    title: "Ananya, Student Beneficiary",
+    description: "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable.",
+    image: "from-teal via-teal to-navy",
   },
   {
-    quote: "With the assistive communication device developed by the team, my son can now express himself freely for the first time.",
-    author: "Priya Rajan",
-    role: "Parent & Community Member",
-    initials: "PR",
-    gradient: "from-purple via-purple to-navy",
+    id: 2,
+    title: "Priya Rajan, Parent & Community Member",
+    description: "With the assistive communication device developed by the team, my son can now express himself freely for the first time.",
+    image: "from-purple via-purple to-navy",
   },
   {
-    quote: "Volunteering with IEEE ATIIG opened my eyes to inclusive design. The experience has transformed how I approach engineering problems.",
-    author: "Mohammed Arif",
-    role: "Volunteer Engineer",
-    initials: "MA",
-    gradient: "from-orange via-orange to-purple",
+    id: 3,
+    title: "Mohammed Arif, Volunteer Engineer",
+    description: "Volunteering with IEEE ATIIG opened my eyes to inclusive design. The experience has transformed how I approach engineering problems.",
+    image: "from-orange via-orange to-purple",
   },
 ];
 
@@ -80,21 +76,6 @@ const pieData = [
 ];
 
 export default function HomePage() {
-  const [storyIndex, setStoryIndex] = useState(0);
-
-  const prevStory = useCallback(() => {
-    setStoryIndex((i) => (i - 1 + stories.length) % stories.length);
-  }, []);
-
-  const nextStory = useCallback(() => {
-    setStoryIndex((i) => (i + 1) % stories.length);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(nextStory, 6000);
-    return () => clearInterval(interval);
-  }, [nextStory]);
-
   return (
     <Layout>
       <SEO
@@ -131,55 +112,48 @@ export default function HomePage() {
         ]}
       />
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-50 pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-28 lg:pb-32" data-testid="home-hero">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-teal/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-20 w-80 h-80 bg-orange/10 rounded-full blur-3xl" />
-        <div className="absolute top-40 right-1/3 w-40 h-40 bg-purple/10 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-slate-50 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-28 lg:pb-32" data-testid="home-hero">
+        <div className="absolute top-10 left-10 w-96 h-96 bg-teal/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-orange/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 right-1/4 w-80 h-80 bg-purple/10 rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <div className="max-w-4xl mx-auto flex flex-col items-center">
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="max-w-2xl"
+              className="flex flex-col items-center"
             >
-              <p className="text-teal font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
-                Innovation with Empathy. Technology with Purpose.
-              </p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-navy leading-tight mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.5rem] font-black text-navy leading-[1.05] mb-6 max-w-5xl px-2">
                 Building an Inclusive Tomorrow for All
               </h1>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              
+              <p className="text-lg sm:text-xl text-slate-600 mb-10 leading-relaxed max-w-3xl px-4">
                 We design and deploy affordable, accessible, and impactful assistive technologies, fostering an inclusive ecosystem where innovation empowers every individual to thrive without barriers.
               </p>
-              <div className="flex flex-col min-[480px]:flex-row gap-4">
-                <Button asChild size="lg" className="w-full min-[480px]:w-auto bg-navy hover:bg-navy/90 text-white font-bold h-14 px-8 text-base">
+              
+              <div className="flex flex-col min-[480px]:flex-row gap-4 justify-center w-full min-[480px]:w-auto px-4">
+                <Button asChild size="lg" className="w-full min-[480px]:w-auto bg-navy hover:bg-navy/90 text-white font-bold h-14 px-10 text-lg shadow-lg shadow-navy/20">
                   <Link to="/initiatives">Explore Initiatives</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="w-full min-[480px]:w-auto border-2 border-navy text-navy hover:bg-navy/5 font-bold h-14 px-8 text-base">
+                <Button asChild variant="outline" size="lg" className="w-full min-[480px]:w-auto border-2 border-navy text-navy hover:bg-navy/5 font-bold h-14 px-10 text-lg bg-transparent">
                   <Link to="/get-involved">Get Involved</Link>
                 </Button>
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative"
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-16 w-full max-w-xl px-4"
             >
-              <div className="grid grid-cols-2 gap-4">
-                <img src={heroImg} alt="Assistive technology in use" className="rounded-2xl shadow-lg w-full h-44 sm:h-52 object-cover col-span-2" />
-                <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5 flex flex-col justify-center">
-                  <div className="text-3xl font-black text-navy">25K+</div>
-                  <div className="text-sm font-bold text-slate-500 mt-1">Lives Impacted</div>
-                  <div className="text-xs text-teal mt-1.5 font-semibold">Across Kerala</div>
+              <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-slate-100/80 relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                  Our Creed
                 </div>
-                <img src={teamImg} alt="ATIIG team collaboration" className="rounded-2xl shadow-lg w-full h-36 object-cover sm:translate-y-2" />
-              </div>
-              <div className="relative mt-4 bg-white/90 backdrop-blur-md p-5 sm:p-6 rounded-xl shadow-xl max-w-none sm:max-w-xs border-l-4 border-l-orange border-t-4 border-t-teal md:absolute md:-bottom-8 md:-left-12 md:mt-0">
-                <p className="italic text-navy font-medium leading-snug">
+                <p className="italic text-navy font-semibold text-base sm:text-lg leading-relaxed text-center">
                   "Innovation with empathy. Technology with purpose. Inclusion at every step."
                 </p>
               </div>
@@ -191,29 +165,53 @@ export default function HomePage() {
       {/* Stats Bar */}
       <section className="bg-white border-y border-slate-100 relative z-20" data-testid="home-stats">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
-            <StatCounter value="100+" label="Projects Delivered" color="navy" />
-            <StatCounter value="25K+" label="Lives Impacted" color="orange" />
-            <StatCounter value="50+" label="Partners & Collaborators" color="purple" />
-            <StatCounter value="65+" label="Events Conducted" color="teal" />
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            <StatCounter 
+              value="45+" 
+              label="Volunteers" 
+              color="purple" 
+              icon={<Users className="w-6 h-6" />}
+              className="border-r border-b md:border-b-0"
+            />
+            <StatCounter 
+              value="800+" 
+              label="Lives Impacted" 
+              color="purple" 
+              icon={<HeartHandshake className="w-6 h-6" />}
+              className="md:border-r border-b md:border-b-0"
+            />
+            <StatCounter 
+              value="10+" 
+              label="Partners & Collaborators" 
+              color="purple" 
+              icon={<Globe className="w-6 h-6" />}
+              className="border-r"
+            />
+            <StatCounter 
+              value="3K+" 
+              label="Devices Delivered" 
+              color="purple" 
+              icon={<FlaskConical className="w-6 h-6" />}
+            />
           </div>
         </div>
       </section>
 
       {/* Focus Areas */}
-      <section className="py-24 bg-slate-50" data-testid="home-focus-areas">
+      <section className="py-24 bg-slate-50/50" data-testid="home-focus-areas">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Our Focus Areas</h2>
-            <p className="text-lg text-slate-600">Driving systemic change through strategic interventions across multiple domains.</p>
+            <h2 className="text-3xl md:text-5xl font-black text-navy mb-6 tracking-tight">Our Focus Areas</h2>
+            <div className="w-20 h-1.5 bg-orange mx-auto mb-8 rounded-full" />
+            <p className="text-lg text-slate-600 leading-relaxed">Driving systemic change through strategic interventions across multiple domains.</p>
           </div>
 
-          <p className="text-center text-sm text-slate-500 mb-8 -mt-10 inline-flex items-center gap-2 mx-auto justify-center w-full" aria-hidden="true">
-            <span className="inline-flex items-center gap-1.5 bg-orange/10 text-orange font-bold px-3 py-1.5 rounded-full text-xs uppercase tracking-wider">
-              Tip
-            </span>
-            Hover or tap a card to flip and reveal what we do.
-          </p>
+          <div className="flex justify-center mb-10">
+            <p className="inline-flex items-center gap-2.5 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-100 text-[11px] font-bold text-slate-500 uppercase tracking-widest" aria-hidden="true">
+              <span className="flex h-2 w-2 rounded-full bg-orange animate-pulse" />
+              Hover or tap a card to explore details
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {[
               {
@@ -222,7 +220,7 @@ export default function HomePage() {
                 subtitle: "Developing cutting-edge accessible solutions.",
                 description: "We design, prototype, and test affordable assistive technology with universities, hospitals, and community partners across Kerala.",
                 features: ["Applied AT prototypes", "Open hardware projects", "Cross-college research", "Publications & patents"],
-                color: "navy" as const,
+                color: "purple" as const,
                 ctaHref: "/initiatives",
               },
               {
@@ -240,7 +238,7 @@ export default function HomePage() {
                 subtitle: "Empowering grassroots through awareness.",
                 description: "We bring assistive tech and disability awareness directly to villages, schools, and self-help groups across Kerala.",
                 features: ["Awareness camps", "SHG partnerships", "Volunteer drives", "Local-language outreach"],
-                color: "orange" as const,
+                color: "purple" as const,
                 ctaHref: "/get-involved",
               },
               {
@@ -267,7 +265,7 @@ export default function HomePage() {
                 subtitle: "Training the next generation of innovators.",
                 description: "Workshops, mentorship, and hands-on bootcamps that equip students and professionals to lead inclusive innovation.",
                 features: ["Hands-on workshops", "Mentor matching", "Industry guest series", "Skill certificates"],
-                color: "navy" as const,
+                color: "purple" as const,
                 ctaHref: "/resources",
               },
             ].map((item, i) => (
@@ -300,108 +298,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Our Initiatives */}
-      <section className="py-24 bg-white" data-testid="home-initiatives">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div className="max-w-2xl">
-              <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Our Initiatives</h2>
-              <p className="text-lg text-slate-600">Action-oriented programs designed to break down barriers and build a more inclusive society.</p>
-            </div>
-            <Button asChild className="bg-navy hover:bg-navy/90 text-white font-bold px-6 shrink-0">
-              <Link to="/initiatives">All Initiatives</Link>
-            </Button>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "AT Innovation Lab", theme: "navy",
-                desc: "Developing and prototyping assistive devices using emerging tech.",
-                stats: ["18 Projects", "4.3K+ Impacted", "12 Partners"]
-              },
-              {
-                title: "Community Outreach", theme: "teal",
-                desc: "Collaborating with communities to deliver inclusive solutions.",
-                stats: ["65+ Events", "8.7K+ Reached", "20+ Volunteers"]
-              },
-              {
-                title: "Inclusive Education", theme: "purple",
-                desc: "Promoting inclusive learning environments and tools.",
-                stats: ["35+ Institutions", "6.1K+ Benefited", "80+ Sessions"]
-              },
-              {
-                title: "Accessible Campus", theme: "orange",
-                desc: "Making campuses universally inclusive through audits.",
-                stats: ["15+ Campuses", "2.8K+ Users", "10+ Audits"]
-              },
-              {
-                title: "Capacity Building", theme: "teal",
-                desc: "Mentoring and hands-on training to build skills in AT.",
-                stats: ["40+ Workshops", "3.9K+ Participants", "25+ Mentors"]
-              },
-              {
-                title: "Humanitarian Tech", theme: "navy",
-                desc: "Designing solutions for disaster response and remote settings.",
-                stats: ["10+ Deployments", "1.6K+ Impacted", "8+ Partners"]
-              }
-            ].map((init, i) => {
-              const borderColors = {
-                navy: "border-l-navy",
-                teal: "border-l-teal",
-                purple: "border-l-purple",
-                orange: "border-l-orange"
-              };
-              const bgColors = {
-                navy: "bg-navy/5",
-                teal: "bg-teal/5",
-                purple: "bg-purple/5",
-                orange: "bg-orange/5"
-              };
-              const textColors = {
-                navy: "text-navy",
-                teal: "text-teal",
-                purple: "text-purple",
-                orange: "text-orange"
-              };
-
-              return (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className={`bg-white rounded-xl shadow-sm border border-slate-100 border-l-4 ${borderColors[init.theme as keyof typeof borderColors]} p-6 flex flex-col h-full card-hover`}
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold text-navy">{init.title}</h3>
-                    <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">Active</span>
-                  </div>
-                  <p className="text-slate-600 mb-6 flex-1 text-sm">{init.desc}</p>
-                  
-                  <div className={`grid grid-cols-3 gap-2 mb-6 p-3 rounded-lg ${bgColors[init.theme as keyof typeof bgColors]}`}>
-                    {init.stats.map((stat, j) => {
-                      const [val, label] = stat.split(" ");
-                      return (
-                        <div key={j} className="text-center">
-                          <div className={`font-bold text-sm ${textColors[init.theme as keyof typeof textColors]}`}>{val}</div>
-                          <div className="text-[10px] text-slate-500 font-medium uppercase truncate">{label}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <Link to={`/initiatives#${init.title.toLowerCase().replace(/\s+/g, '-')}`} className={`font-bold text-sm inline-flex items-center group ${textColors[init.theme as keyof typeof textColors]}`}>
-                    Explore Initiative <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Impact at a Glance */}
       <section className="py-24 bg-slate-50" data-testid="home-impact">
         <div className="container mx-auto px-4">
@@ -410,7 +306,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-orange mb-2">25K+</div>
+                <div className="text-3xl font-black text-purple mb-2">25K+</div>
                 <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Lives Impacted</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
@@ -418,11 +314,11 @@ export default function HomePage() {
                 <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Projects Delivered</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-teal mb-2">50+</div>
+                <div className="text-3xl font-black text-purple mb-2">50+</div>
                 <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Partners</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-navy mb-2">120+</div>
+                <div className="text-3xl font-black text-purple mb-2">120+</div>
                 <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Volunteers</div>
               </div>
             </div>
@@ -517,110 +413,70 @@ export default function HomePage() {
       </section>
 
       {/* Stories of Change */}
-      <section className="py-24 bg-slate-50" data-testid="home-stories" aria-label="Stories of Change carousel">
+      <section className="py-24 bg-slate-50" data-testid="home-stories">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden border border-slate-100">
-            <div className="grid md:grid-cols-5 h-full">
-              <div className="md:col-span-2 relative h-64 md:h-auto overflow-hidden">
-                {stories.map((s, i) => (
-                  <div
-                    key={i}
-                    aria-hidden={i !== storyIndex}
-                    className={`absolute inset-0 transition-opacity duration-700 ${i === storyIndex ? "opacity-100" : "opacity-0"}`}
-                  >
-                    <div className={`w-full h-full bg-gradient-to-br ${s.gradient} flex items-center justify-center relative overflow-hidden`}>
-                      <div className="absolute -top-8 -left-8 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-                      <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_55%)]" />
-                      <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/15 backdrop-blur-sm ring-4 ring-white/30 flex items-center justify-center">
-                        <span className="text-white font-black text-4xl md:text-5xl tracking-wide">
-                          {s.initials}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="md:col-span-3 p-10 md:p-14 flex flex-col justify-center">
-                <h2 className="text-sm font-bold tracking-widest text-teal uppercase mb-6">Stories of Change</h2>
-                <div className="relative min-h-[140px]">
-                  {stories.map((s, i) => (
-                    <div
-                      key={i}
-                      className={`transition-all duration-500 ${i === storyIndex ? "opacity-100 translate-y-0" : "opacity-0 absolute inset-0 translate-y-2 pointer-events-none"}`}
-                      aria-hidden={i !== storyIndex}
-                    >
-                      <blockquote className="text-xl md:text-2xl font-medium text-navy leading-relaxed mb-8 italic">
-                        "{s.quote}"
-                      </blockquote>
-                      <div className="font-bold text-lg text-slate-800">— {s.author}, <span className="font-medium text-slate-500">{s.role}</span></div>
-                    </div>
-                  ))}
-                </div>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-navy mb-6 tracking-tight">Stories of Change</h2>
+          
+            <p className="text-lg text-slate-600 leading-relaxed">Hear from those whose lives have been transformed by inclusive innovation.</p>
+          </div>
 
-                <div className="mt-10 flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={prevStory}
-                      aria-label="Previous story"
-                      className="w-8 h-8 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-navy text-slate-400 hover:text-navy transition-colors"
-                    >
-                      ‹
-                    </button>
-                    <div className="flex gap-2" role="tablist" aria-label="Story slides">
-                      {stories.map((_, i) => (
-                        <button
-                          key={i}
-                          role="tab"
-                          aria-selected={i === storyIndex}
-                          aria-label={`Story ${i + 1} of ${stories.length}`}
-                          onClick={() => setStoryIndex(i)}
-                          className={`h-2 rounded-full transition-all duration-300 ${i === storyIndex ? "w-8 bg-orange" : "w-2 bg-slate-200 hover:bg-slate-300"}`}
-                        />
-                      ))}
-                    </div>
-                    <button
-                      onClick={nextStory}
-                      aria-label="Next story"
-                      className="w-8 h-8 rounded-full border-2 border-slate-200 flex items-center justify-center hover:border-navy text-slate-400 hover:text-navy transition-colors"
-                    >
-                      ›
-                    </button>
-                  </div>
-                  <Button variant="link" className="text-navy font-bold" asChild>
-                    <Link to="/projects#impact">Read More Stories <ArrowRight className="ml-2 w-4 h-4" /></Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
+          <div className="flex justify-center">
+            <TestimonialsCard 
+              items={testimonialItems} 
+              width={800} 
+              className="w-full max-w-4xl"
+              autoPlay={true}
+              showCounter={false}
+            />
+          </div>
+          
+          <div className="mt-12 text-center">
+            <Button variant="link" className="text-navy font-bold text-lg group" asChild>
+              <Link to="/projects#impact">Read More Impact Stories <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" /></Link>
+            </Button>
           </div>
         </div>
       </section>
 
       {/* Be Part of Change CTA */}
-      <section className="py-24 relative overflow-hidden" data-testid="home-cta">
-        <div className="absolute inset-0 bg-gradient-to-br from-navy to-teal" />
-        
+      <section className="py-24 bg-white relative overflow-hidden" data-testid="home-cta">
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-10">Be a Part of the Change</h2>
-          
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12 max-w-4xl mx-auto">
-            {["Volunteer your time", "Mentor innovators", "Sponsor a cause", "Support our mission"].map((text, i) => (
-              <div key={i} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 text-white font-medium flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-orange" />
-                {text}
-              </div>
-            ))}
-          </div>
-          
-          <Button asChild size="lg" className="bg-orange hover:bg-orange/90 text-white font-bold h-16 px-10 text-lg shadow-xl shadow-orange/20">
-            <Link to="/get-involved">Join Us Today <ArrowRight className="ml-2 w-5 h-5" /></Link>
-          </Button>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-navy mb-6 tracking-tight">Be a Part of the Change</h2>
+            <div className="w-20 h-1.5 bg-orange mx-auto mb-12 rounded-full" />
+            
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-16 max-w-6xl mx-auto">
+              {[
+                { text: "Volunteer your time", icon: <Users className="w-6 h-6 text-teal" /> },
+                { text: "Mentor innovators", icon: <FlaskConical className="w-6 h-6 text-teal" /> },
+                { text: "Sponsor a cause", icon: <HeartHandshake className="w-6 h-6 text-teal" /> },
+                { text: "Support our mission", icon: <Globe className="w-6 h-6 text-teal" /> }
+              ].map((item, i) => (
+                <div key={i} className="bg-slate-50 border border-slate-100 rounded-2xl px-6 py-8 text-navy font-bold flex flex-col items-center gap-4 hover:border-orange/20 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="p-4 bg-white rounded-xl shadow-sm group-hover:bg-slate-50 transition-colors">
+                    {item.icon}
+                  </div>
+                  <span className="text-xs sm:text-sm uppercase tracking-wider text-slate-600 group-hover:text-navy text-center">{item.text}</span>
+                </div>
+              ))}
+            </div>
+            
+            <Button asChild size="lg" className="bg-navy hover:bg-navy/90 text-white font-black h-16 px-12 text-lg shadow-xl shadow-navy/20 rounded-xl group transition-all duration-300">
+              <Link to="/get-involved" className="flex items-center">
+                Join Us Today <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </Link>
+            </Button>
+          </motion.div>
         </div>
       </section>
 
       <PartnerCarousel />
-      <NewsletterStrip />
     </Layout>
   );
 }

@@ -23,9 +23,6 @@ const colorMap: Record<
     text: string;
     bg: string;
     border: string;
-    dotShadow: string;
-    pulseClass: string;
-    keyframeName: string;
     ctaText: string;
     ctaHover: string;
   }
@@ -34,9 +31,6 @@ const colorMap: Record<
     text: "text-navy",
     bg: "bg-navy/10",
     border: "border-navy/20",
-    dotShadow: "rgba(2, 58, 116, 0.55)",
-    pulseClass: "card-flip-pulse-navy",
-    keyframeName: "card-flip-pulse-kf-navy",
     ctaText: "group-hover/start:text-navy",
     ctaHover: "hover:bg-navy/10",
   },
@@ -44,9 +38,6 @@ const colorMap: Record<
     text: "text-teal",
     bg: "bg-teal/10",
     border: "border-teal/20",
-    dotShadow: "rgba(1, 160, 160, 0.55)",
-    pulseClass: "card-flip-pulse-teal",
-    keyframeName: "card-flip-pulse-kf-teal",
     ctaText: "group-hover/start:text-teal",
     ctaHover: "hover:bg-teal/10",
   },
@@ -54,9 +45,6 @@ const colorMap: Record<
     text: "text-orange",
     bg: "bg-orange/10",
     border: "border-orange/20",
-    dotShadow: "rgba(253, 123, 9, 0.55)",
-    pulseClass: "card-flip-pulse-orange",
-    keyframeName: "card-flip-pulse-kf-orange",
     ctaText: "group-hover/start:text-orange",
     ctaHover: "hover:bg-orange/10",
   },
@@ -64,9 +52,6 @@ const colorMap: Record<
     text: "text-purple",
     bg: "bg-purple/10",
     border: "border-purple/20",
-    dotShadow: "rgba(100, 35, 150, 0.55)",
-    pulseClass: "card-flip-pulse-purple",
-    keyframeName: "card-flip-pulse-kf-purple",
     ctaText: "group-hover/start:text-purple",
     ctaHover: "hover:bg-purple/10",
   },
@@ -115,28 +100,24 @@ export default function CardFlip({
             "transition-shadow duration-500",
           )}
         >
-          <div className="relative h-full bg-gradient-to-b from-slate-50 to-white">
-            {/* Animated brand-colored pulse rings */}
-            <div className="absolute inset-0 flex items-start justify-center pt-20">
-              <div className="relative flex h-[100px] w-[200px] items-center justify-center">
-                {[...Array(8)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      "absolute h-[50px] w-[50px] rounded-full opacity-0",
-                      tokens.pulseClass,
-                    )}
-                    style={{ animationDelay: `${i * 0.35}s` }}
-                  />
-                ))}
+          <div className="relative h-full bg-gradient-to-b from-slate-50/50 to-white">
+            {/* Subtle background decoration */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0 opacity-[0.4] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]">
+                <div className="h-full w-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]" />
               </div>
+              {icon && (
+                <div className={cn("w-32 h-32 opacity-[0.05] transition-transform duration-700 group-hover:scale-110", tokens.text)}>
+                  {icon}
+                </div>
+              )}
             </div>
 
             {/* Icon badge */}
             {icon && (
               <div
                 className={cn(
-                  "absolute top-5 left-5 w-14 h-14 rounded-xl flex items-center justify-center",
+                  "absolute top-5 left-5 w-14 h-14 rounded-xl flex items-center justify-center shadow-sm",
                   tokens.bg,
                   tokens.text,
                 )}
@@ -252,21 +233,6 @@ export default function CardFlip({
           )}
         </div>
       </div>
-
-      <style>{`
-        @keyframes ${tokens.keyframeName} {
-          0%   { transform: scale(0.4); opacity: 0; box-shadow: 0 0 50px ${tokens.dotShadow}; }
-          50%  { transform: scale(1);   opacity: 0.9; box-shadow: 0 8px 20px ${tokens.dotShadow}; }
-          100% { transform: scale(1.6); opacity: 0;   box-shadow: 0 10px 20px transparent; }
-        }
-        .${tokens.pulseClass} {
-          animation: ${tokens.keyframeName} 3.2s linear infinite;
-          background: ${tokens.dotShadow};
-        }
-        .group:hover .${tokens.pulseClass} {
-          animation-duration: 2s;
-        }
-      `}</style>
     </div>
   );
 }
