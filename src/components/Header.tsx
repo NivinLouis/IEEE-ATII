@@ -177,7 +177,7 @@ export function Header() {
                     >
                       {item.title}
                     </button>
-                    <div className="pointer-events-none absolute left-0 top-full z-50 mt-2 w-[280px] opacity-0 translate-y-1 transition duration-150 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0">
+                    <div className="absolute left-0 top-full z-50 w-[280px] pt-2 opacity-0 translate-y-1 transition duration-150 group-hover:opacity-100 group-hover:translate-y-0">
                       <ul className="grid gap-1 rounded-md border border-slate-100 bg-white p-3 shadow-lg">
                         {item.dropdown.map((subItem) => (
                           <li key={subItem.title}>
