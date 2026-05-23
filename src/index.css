@@ -279,6 +279,68 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Accessibility menu effects */
+html.v-font-10 body {
+  font-size: 110%;
+}
+
+html.v-font-20 body {
+  font-size: 120%;
+}
+
+html.v-font-30 body {
+  font-size: 130%;
+}
+
+html.v-line-15 body {
+  line-height: 1.5;
+}
+
+html.v-line-20 body {
+  line-height: 1.6;
+}
+
+html.v-line-25 body {
+  line-height: 1.75;
+}
+
+html.v-align-left body {
+  text-align: left;
+}
+
+html.v-align-right body {
+  text-align: right;
+}
+
+html.v-align-center body {
+  text-align: center;
+}
+
+html.v-align-justify body {
+  text-align: justify;
+}
+
+html.dyslexic-font body {
+  font-family: "OpenDyslexic", "Comic Sans MS", "Arial", sans-serif;
+}
+
+html.grayscale-mode {
+  filter: grayscale(1);
+}
+
+html.stop-animations *,
+html.stop-animations *::before,
+html.stop-animations *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html.big-cursor,
+html.big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cpath fill='black' stroke='white' stroke-width='1.5' d='M4 3l17 25 2-10 9 2z'/%3E%3C/svg%3E") 4 4, auto !important;
+}
+
 /* High contrast mode */
 .high-contrast {
   filter: contrast(1.5) brightness(0.9);
