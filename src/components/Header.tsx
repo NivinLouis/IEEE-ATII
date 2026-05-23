@@ -12,10 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -24,7 +22,6 @@ import colorLogo from "@assets/ATII_CLR_1777748066607.png";
 import blackLogo from "@assets/ATII_BLK_1777748066607.png";
 
 const NAV_ITEMS = [
-  { title: "Home", href: "/", dropdown: null },
   {
     title: "About Us",
     href: "/about",
@@ -141,7 +138,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden 2xl:flex flex-1 justify-center">
+        <div className="hidden xl:flex flex-1 justify-center">
           <NavigationMenu>
             <NavigationMenuList className="gap-1">
               {NAV_ITEMS.map((item) => {
@@ -168,23 +165,25 @@ export function Header() {
                 }
 
                 return (
-                  <NavigationMenuItem key={item.title}>
-                    <NavigationMenuTrigger
+                  <NavigationMenuItem key={item.title} className="relative group">
+                    <button
+                      type="button"
                       className={cn(
-                        "font-semibold text-navy bg-transparent hover:bg-slate-100 hover:text-orange transition-colors",
-                        isActive && "text-orange nav-link-active bg-slate-50"
+                        "inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-md transition-colors",
+                        "text-navy bg-transparent hover:bg-slate-100 hover:text-orange",
+                        isActive && "text-orange bg-slate-50 nav-link-active"
                       )}
                       data-testid={`nav-dropdown-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
                     >
                       {item.title}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[280px] gap-1 p-3 bg-white shadow-lg rounded-md border border-slate-100">
+                    </button>
+                    <div className="pointer-events-none absolute left-0 top-full z-50 mt-2 w-[280px] opacity-0 translate-y-1 transition duration-150 group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0">
+                      <ul className="grid gap-1 rounded-md border border-slate-100 bg-white p-3 shadow-lg">
                         {item.dropdown.map((subItem) => (
                           <li key={subItem.title}>
                             <Link
                               to={subItem.href}
-                              className="block select-none rounded-md p-3 text-sm font-medium text-navy leading-none no-underline outline-none transition-colors hover:bg-slate-100 hover:text-orange focus:bg-slate-100 focus:text-orange"
+                              className="block select-none rounded-md p-3 text-sm font-medium leading-none no-underline outline-none transition-colors text-navy hover:bg-slate-100 hover:text-orange focus:bg-slate-100 focus:text-orange"
                               data-testid={`nav-sublink-${subItem.title.toLowerCase().replace(/\s+/g, "-")}`}
                             >
                               {subItem.title}
@@ -192,7 +191,7 @@ export function Header() {
                           </li>
                         ))}
                       </ul>
-                    </NavigationMenuContent>
+                    </div>
                   </NavigationMenuItem>
                 );
               })}
@@ -225,7 +224,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="2xl:hidden text-navy hover:bg-slate-100"
+                className="xl:hidden text-navy hover:bg-slate-100"
                 data-testid="btn-mobile-menu"
               >
                 <Menu className="w-6 h-6" />
