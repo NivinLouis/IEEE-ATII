@@ -12,6 +12,7 @@ export interface CardFlipProps {
   description: string;
   features: string[];
   color?: CardFlipColor;
+  featured?: boolean;
   ctaLabel?: string;
   ctaHref?: string;
   className?: string;
@@ -64,6 +65,7 @@ export default function CardFlip({
   description,
   features,
   color = "navy",
+  featured = false,
   ctaLabel = "Learn more",
   ctaHref,
   className,
@@ -75,6 +77,7 @@ export default function CardFlip({
     <div
       className={cn(
         "group relative h-[340px] w-full [perspective:2000px]",
+        featured && "lg:-translate-y-2 lg:scale-[1.02]",
         className,
       )}
       onMouseEnter={() => setIsFlipped(true)}
@@ -95,35 +98,37 @@ export default function CardFlip({
             "absolute inset-0 h-full w-full",
             "[backface-visibility:hidden] [transform:rotateY(0deg)]",
             "overflow-hidden rounded-2xl",
-            "bg-white border border-slate-200",
-            "shadow-sm group-hover:shadow-lg",
+            "bg-gradient-to-br from-navy via-[#063f79] to-teal border border-navy/15",
+            "shadow-lg shadow-navy/15",
             "transition-shadow duration-500",
           )}
         >
-          <div className="relative h-full bg-gradient-to-b from-slate-50/50 to-white">
+          <div className={cn("relative h-full bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_36%),radial-gradient(circle_at_bottom_left,rgba(1,160,160,0.06),transparent_28%)]")}>
             {/* Subtle background decoration */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="absolute inset-0 opacity-[0.4] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]">
+              <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)] opacity-[0.2]">
                 <div className="h-full w-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]" />
               </div>
-              {icon && (
-                <div className={cn("w-32 h-32 opacity-[0.05] transition-transform duration-700 group-hover:scale-110", tokens.text)}>
-                  {icon}
-                </div>
-              )}
             </div>
 
             {/* Icon badge */}
             {icon && (
               <div
                 className={cn(
-                  "absolute top-5 left-5 w-14 h-14 rounded-xl flex items-center justify-center shadow-sm",
-                  tokens.bg,
-                  tokens.text,
+                  "absolute top-5 left-5 w-14 h-14 rounded-xl flex items-center justify-center shadow-sm transition-colors duration-200",
+                  featured
+                    ? "bg-white/15 backdrop-blur-md text-white border border-white/20"
+                    : cn(tokens.bg, "text-white", "group-hover:bg-white group-hover:text-navy")
                 )}
                 aria-hidden="true"
               >
                 {icon}
+              </div>
+            )}
+
+            {featured && (
+              <div className="absolute top-5 left-24 inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md border border-white/20">
+                Featured
               </div>
             )}
 
@@ -133,26 +138,22 @@ export default function CardFlip({
               onClick={() => setIsFlipped((f) => !f)}
               className={cn(
                 "absolute top-5 right-5 z-10 inline-flex items-center justify-center",
-                "h-9 w-9 rounded-lg bg-white/80 hover:bg-white",
-                "border border-slate-200 shadow-sm",
+                "h-9 w-9 rounded-lg bg-transparent border border-white/10 text-white",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange",
-                "transition-transform duration-300 hover:-rotate-12 hover:scale-110",
-                tokens.text,
+                "transition-transform duration-200 hover:scale-105 hover:bg-white/10",
               )}
               aria-label={`Flip card to see details about ${title}`}
               aria-pressed={isFlipped}
             >
-              <Repeat2 className="h-4 w-4" aria-hidden="true" />
+              <Repeat2 className="h-4 w-4 text-inherit" aria-hidden="true" />
             </button>
           </div>
 
           {/* Front footer */}
-          <div className="absolute right-0 bottom-0 left-0 p-5 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none">
+          <div className="absolute right-0 bottom-0 left-0 p-5 pointer-events-none bg-gradient-to-t from-navy/80 via-navy/50 to-transparent">
             <div className="space-y-1">
-              <h3 className="font-bold text-lg text-navy leading-snug tracking-tight">
-                {title}
-              </h3>
-              <p className="line-clamp-2 text-sm text-slate-600">{subtitle}</p>
+              <h3 className="font-bold text-lg text-white leading-snug tracking-tight">{title}</h3>
+              <p className="line-clamp-2 text-sm text-white/80">{subtitle}</p>
             </div>
           </div>
         </div>
@@ -163,15 +164,15 @@ export default function CardFlip({
             "absolute inset-0 h-full w-full",
             "[backface-visibility:hidden] [transform:rotateY(180deg)]",
             "rounded-2xl p-6",
-            "bg-white border-2",
-            tokens.border,
-            "shadow-md flex flex-col",
+            featured
+              ? "bg-white border-2 border-teal/25 shadow-md shadow-navy/10 flex flex-col"
+              : cn("bg-white border-2", tokens.border, "shadow-md flex flex-col"),
           )}
           aria-hidden={!isFlipped}
         >
           <div className="flex-1 space-y-5">
             <div className="space-y-2">
-              <h3 className="font-bold text-lg text-navy leading-snug tracking-tight">
+              <h3 className={cn("font-bold text-lg leading-snug tracking-tight", featured ? "text-navy" : "text-navy")}>
                 {title}
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">

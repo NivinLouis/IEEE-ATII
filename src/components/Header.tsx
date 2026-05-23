@@ -37,7 +37,6 @@ const NAV_ITEMS = [
     href: "/initiatives",
     dropdown: [
       { title: "All Initiatives", href: "/initiatives" },
-      { title: "AT Innovation Lab", href: "/initiatives#innovation-lab" },
       { title: "Community Outreach", href: "/initiatives#outreach" },
       { title: "Inclusive Education", href: "/initiatives#education" },
       { title: "Accessible Campus", href: "/initiatives#campus" },

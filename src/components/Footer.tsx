@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaLinkedin, FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import whiteLogo from "@assets/ATII_WHITE_1777748066607.png";
 
 export function Footer() {
@@ -16,16 +16,16 @@ export function Footer() {
               "Innovation with Empathy.<br/>Technology with Purpose."
             </p>
             <div className="flex space-x-4 pt-2">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="LinkedIn" data-testid="social-linkedin">
+              <a href="https://www.linkedin.com/company/ieee-assistive-technology-inclusive-innovation-group/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="LinkedIn" data-testid="social-linkedin">
                 <FaLinkedin className="w-5 h-5" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Facebook" data-testid="social-facebook">
-                <FaFacebook className="w-5 h-5" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Instagram" data-testid="social-instagram">
+              <a href="https://www.instagram.com/ieeeatii" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Instagram" data-testid="social-instagram">
                 <FaInstagram className="w-5 h-5" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="YouTube" data-testid="social-youtube">
+              <a href="https://chat.whatsapp.com/ETz8TLchShU95RHFCgWCq0?mode=hqctswi" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="WhatsApp" data-testid="social-whatsapp">
+                <FaWhatsapp className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@ieeeatii" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="YouTube" data-testid="social-youtube">
                 <FaYoutube className="w-5 h-5" />
               </a>
             </div>
@@ -34,7 +34,6 @@ export function Footer() {
           {/* Column 2 */}
           <div>
             <h3 className="text-xl font-bold mb-6 flex items-center">
-              <span className="w-8 h-1 bg-orange mr-3 inline-block"></span>
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -50,7 +49,6 @@ export function Footer() {
           {/* Column 3 */}
           <div>
             <h3 className="text-xl font-bold mb-6 flex items-center">
-              <span className="w-8 h-1 bg-teal mr-3 inline-block"></span>
               Get Involved
             </h3>
             <ul className="space-y-3">
@@ -65,7 +63,6 @@ export function Footer() {
           {/* Column 4 */}
           <div>
             <h3 className="text-xl font-bold mb-6 flex items-center">
-              <span className="w-8 h-1 bg-purple mr-3 inline-block"></span>
               Resources & Contact
             </h3>
             <ul className="space-y-3 mb-6 border-b border-white/10 pb-6">
