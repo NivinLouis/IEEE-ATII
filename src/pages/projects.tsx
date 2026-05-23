@@ -3,6 +3,7 @@ import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { StatCounter } from "@/components/StatCounter";
+import { TestimonialsCard } from "@/components/ui/testimonials-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,9 +16,7 @@ import {
 import KeralaMap from "@/components/KeralaMap.jsx";
 import projectsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(8)_1777748003996.png";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
-import communityImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(5)_1777748003997.png";
-import impactImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(6)_1777748003997.png";
-import workshopImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(8)_1777748003997.png";
+import { testimonialItems } from "@/data/testimonials";
 
 const lineData = [
   { year: "2020", impact: 2.1 },
@@ -317,74 +316,53 @@ export default function ProjectsPage() {
       </section>
 
       {/* Stories of Change */}
-      <section id="impact" className="py-24 bg-white" data-testid="projects-stories">
+      <section id="impact" className="py-24 bg-slate-50" data-testid="projects-stories">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Stories of Change</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">Real impact measured in changed lives.</p>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-5xl font-black text-navy mb-6 tracking-tight">Stories of Change</h2>
+            <p className="text-lg text-slate-600 leading-relaxed">Hear from those whose lives have been transformed by inclusive innovation.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Arun",
-                role: "Sparsh Prosthetic Hand User",
-                quote: "From Dependence to Independence — Sparsh gives me the freedom I never thought possible. I can now work and live with confidence again.",
-                color: "border-orange",
-                img: communityImg,
-              },
-              {
-                name: "Ananya",
-                role: "Student Beneficiary",
-                quote: "Learning Without Barriers — The assistive learning tools helped me continue my education and achieve my dreams.",
-                color: "border-purple",
-                img: impactImg,
-              },
-              {
-                name: "Sajeer/Mohammed",
-                role: "Mobility Device Users",
-                quote: "Mobility Restored — The mobility device built by IEEE Kerala changed my life. I can travel independently to support my family.",
-                color: "border-teal",
-                img: workshopImg,
-              }
-            ].map((story, i) => (
-              <div key={i} className={`bg-slate-50 rounded-3xl border-t-4 ${story.color} overflow-hidden`}>
-                <div className="h-40 overflow-hidden">
-                  <img src={story.img} alt={story.name} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-8 relative">
-                  <div className={`absolute -top-5 left-8 w-10 h-10 rounded-full ${story.color.replace('border-', 'bg-')} text-white flex items-center justify-center font-serif text-3xl shadow-md pt-1`}>
-                    "
-                  </div>
-                  <p className="text-slate-700 font-medium leading-relaxed mb-6 mt-2">
-                    {story.quote}
-                  </p>
-                  <div className="font-bold text-navy text-lg">{story.name}</div>
-                  <div className="text-sm text-slate-500 font-medium">{story.role}</div>
-                </div>
-              </div>
-            ))}
+          <div className="flex justify-center">
+            <TestimonialsCard 
+              items={testimonialItems} 
+              width={800} 
+              className="w-full max-w-4xl"
+              autoPlay={true}
+              showCounter={false}
+            />
           </div>
         </div>
       </section>
 
       {/* SDG Alignment */}
-      <section id="sdg" className="py-20 bg-slate-900 text-white" data-testid="projects-sdg">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-black mb-10">Aligned with UN Sustainable Development Goals</h2>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+      <section id="sdg" className="py-24 bg-white relative overflow-hidden" data-testid="projects-sdg">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <div className="max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-navy mb-6 tracking-tight">Aligned with UN Sustainable Development Goals</h2>
+            <div className="w-20 h-1.5 bg-orange mx-auto mb-8 rounded-full" />
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Our projects directly support global goals for health, education, inclusion, innovation, and partnerships.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 md:gap-6 max-w-6xl mx-auto">
             {[
-              { num: "3", bg: "bg-[#4C9F38]", title: "Good Health" },
-              { num: "4", bg: "bg-[#C5192D]", title: "Quality Education" },
-              { num: "8", bg: "bg-[#A21942]", title: "Economic Growth" },
-              { num: "9", bg: "bg-[#FD6925]", title: "Innovation" },
-              { num: "10", bg: "bg-[#DD1367]", title: "Reduced Inequalities" },
-              { num: "11", bg: "bg-[#FD9D24]", title: "Sustainable Cities" },
-              { num: "17", bg: "bg-[#19486A]", title: "Partnerships" }
+              { num: "3", title: "Good Health" },
+              { num: "4", title: "Quality Education" },
+              { num: "8", title: "Economic Growth" },
+              { num: "9", title: "Innovation" },
+              { num: "10", title: "Reduced Inequalities" },
+              { num: "11", title: "Sustainable Cities" },
+              { num: "17", title: "Partnerships" }
             ].map((sdg, i) => (
-              <div key={i} className={`w-20 h-20 md:w-24 md:h-24 ${sdg.bg} rounded-lg flex flex-col items-center justify-center p-2 shadow-lg transform hover:scale-110 transition-transform cursor-pointer`}>
-                <span className="text-sm font-black opacity-80">SDG</span>
-                <span className="text-3xl font-black">{sdg.num}</span>
+              <div key={i} className="bg-slate-50 border border-slate-100 rounded-2xl px-6 py-8 text-navy font-bold flex flex-col items-center gap-4 hover:border-orange/20 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                <div className="p-4 bg-white rounded-xl shadow-sm group-hover:bg-slate-50 transition-colors border border-slate-100">
+                  <span className="block text-xs font-black tracking-[0.25em] text-slate-500 text-center leading-none">SDG</span>
+                  <span className="block text-4xl font-black leading-none mt-1 text-navy text-center">{sdg.num}</span>
+                </div>
+                <div className="text-xs sm:text-sm uppercase tracking-wider text-slate-600 group-hover:text-navy text-center min-h-[2.5rem] flex items-center justify-center">
+                  {sdg.title}
+                </div>
               </div>
             ))}
           </div>
@@ -394,17 +372,34 @@ export default function ProjectsPage() {
       <PartnerCarousel />
 
       {/* CTA */}
-      <section className="py-20 bg-teal text-center" data-testid="projects-cta">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-8">Be a Part of Inclusive Impact</h2>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="bg-navy hover:bg-navy/90 text-white font-bold px-8 h-14 text-base shadow-xl">
-              <Link to="/get-involved#partner">Partner With Us</Link>
-            </Button>
-            <Button asChild size="lg" className="bg-orange hover:bg-orange/90 text-white font-bold px-8 h-14 text-base shadow-xl">
-              <Link to="/get-involved">Join Us</Link>
-            </Button>
-          </div>
+      <section className="py-24 bg-white relative overflow-hidden" data-testid="projects-cta">
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-black text-navy mb-6 tracking-tight">Be a Part of Inclusive Impact</h2>
+            <div className="w-20 h-1.5 bg-orange mx-auto mb-12 rounded-full" />
+
+            <div className="max-w-3xl mx-auto mb-12 text-slate-600 text-lg leading-relaxed">
+              Partner with us to build accessible solutions, or join our community to help deliver inclusive impact across Kerala.
+            </div>
+
+            <div className="flex flex-col min-[480px]:flex-row gap-3 justify-center w-full min-[480px]:w-auto px-4">
+              <Button asChild size="lg" className="w-full min-[480px]:w-auto bg-navy hover:bg-navy/90 text-white font-black h-12 px-8 text-base shadow-lg shadow-navy/15 rounded-lg group transition-all duration-300">
+                <Link to="/get-involved#partner" className="flex items-center justify-center">
+                  Partner With Us
+                </Link>
+              </Button>
+              <Button asChild size="lg" className="w-full min-[480px]:w-auto bg-orange hover:bg-orange/90 text-white font-black h-12 px-8 text-base shadow-lg rounded-lg group transition-all duration-300">
+                <Link to="/get-involved" className="flex items-center justify-center">
+                  Join Us
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

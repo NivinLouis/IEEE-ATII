@@ -35,28 +35,7 @@ import {
   ResponsiveContainer 
 } from "recharts";
 import { routeMeta } from "@/data/site";
-
-
-const testimonialItems = [
-  {
-    id: 1,
-    title: "Ananya, Student Beneficiary",
-    description: "The learning tools introduced by IEEE Kerala changed the way I study and participate. I feel included, confident and capable.",
-    image: "from-teal via-teal to-navy",
-  },
-  {
-    id: 2,
-    title: "Priya Rajan, Parent & Community Member",
-    description: "With the assistive communication device developed by the team, my son can now express himself freely for the first time.",
-    image: "from-purple via-purple to-navy",
-  },
-  {
-    id: 3,
-    title: "Mohammed Arif, Volunteer Engineer",
-    description: "Volunteering with IEEE ATIIG opened my eyes to inclusive design. The experience has transformed how I approach engineering problems.",
-    image: "from-orange via-orange to-purple",
-  },
-];
+import { testimonialItems } from "@/data/testimonials";
 
 const lineData = [
   { year: "2020", impact: 2.1 },
