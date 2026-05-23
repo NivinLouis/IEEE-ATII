@@ -49,7 +49,7 @@ coverage/
 /typings/
 
 
-/src/assets/*
+
 !/src/assets/.gitkeep
 
 

@@ -12,7 +12,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer 
 } from "recharts";
 
-import KeralaMap from "@/components/KeralaMap";
+import KeralaMap from "@/components/KeralaMap.jsx";
 import projectsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(8)_1777748003996.png";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
 import communityImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(5)_1777748003997.png";
@@ -123,38 +123,38 @@ export default function ProjectsPage() {
       {/* Map & Categories */}
       <section className="py-24 bg-slate-50" data-testid="projects-categories">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5">
+          <div className="mb-16">
+            <div className="max-w-6xl mx-auto">
               <KeralaMap />
             </div>
-            
-            <div className="lg:col-span-7">
-              <h2 className="text-3xl font-black text-navy mb-8">Project Categories</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { title: "Assistive Devices", count: "16+", icon: <Activity className="w-6 h-6 text-navy" /> },
-                  { title: "Inclusive Education", count: "14+", icon: <BookOpen className="w-6 h-6 text-purple" /> },
-                  { title: "Accessibility Tools", count: "12+", icon: <WheelchairIcon className="w-6 h-6 text-teal" /> },
-                  { title: "Livelihood & Skills", count: "9+", icon: <Briefcase className="w-6 h-6 text-orange" /> },
-                  { title: "Community Inclusion", count: "7+", icon: <Users className="w-6 h-6 text-navy" /> },
-                  { title: "Research & Innovation", count: "8+", icon: <FlaskConical className="w-6 h-6 text-teal" /> }
-                ].map((cat, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-orange transition-colors cursor-pointer group"
-                  >
-                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange/10 transition-colors">
-                      {cat.icon}
-                    </div>
-                    <h3 className="font-bold text-navy text-lg mb-1">{cat.title}</h3>
-                    <div className="text-slate-500 font-medium text-sm">{cat.count} Projects</div>
-                  </motion.div>
-                ))}
-              </div>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-black text-navy mb-8">Project Categories</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { title: "Assistive Devices", count: "16+", icon: <Activity className="w-6 h-6 text-navy" /> },
+                { title: "Inclusive Education", count: "14+", icon: <BookOpen className="w-6 h-6 text-purple" /> },
+                { title: "Accessibility Tools", count: "12+", icon: <WheelchairIcon className="w-6 h-6 text-teal" /> },
+                { title: "Livelihood & Skills", count: "9+", icon: <Briefcase className="w-6 h-6 text-orange" /> },
+                { title: "Community Inclusion", count: "7+", icon: <Users className="w-6 h-6 text-navy" /> },
+                { title: "Research & Innovation", count: "8+", icon: <FlaskConical className="w-6 h-6 text-teal" /> }
+              ].map((cat, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-orange transition-colors cursor-pointer group"
+                >
+                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange/10 transition-colors">
+                    {cat.icon}
+                  </div>
+                  <h3 className="font-bold text-navy text-lg mb-1">{cat.title}</h3>
+                  <div className="text-slate-500 font-medium text-sm">{cat.count} Projects</div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
