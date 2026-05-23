@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -96,6 +96,8 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [textOnly, setTextOnly] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const closeDropdownTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -119,6 +121,22 @@ export function Header() {
     if (!needle) return ["/", "/initiatives", "/projects", "/get-involved"].includes(path);
     return `${meta.title} ${meta.description} ${path}`.toLowerCase().includes(needle);
   });
+
+  const openDropdownMenu = (title: string) => {
+    if (closeDropdownTimer.current) {
+      window.clearTimeout(closeDropdownTimer.current);
+      closeDropdownTimer.current = null;
+    }
+    setOpenDropdown(title);
+  };
+
+  const scheduleCloseDropdown = () => {
+    if (closeDropdownTimer.current) window.clearTimeout(closeDropdownTimer.current);
+    closeDropdownTimer.current = window.setTimeout(() => {
+      setOpenDropdown(null);
+      closeDropdownTimer.current = null;
+    }, 120);
+  };
 
   return (
     <header
@@ -165,7 +183,12 @@ export function Header() {
                 }
 
                 return (
-                  <NavigationMenuItem key={item.title} className="relative group">
+                  <NavigationMenuItem
+                    key={item.title}
+                    className="relative"
+                    onMouseEnter={() => openDropdownMenu(item.title)}
+                    onMouseLeave={scheduleCloseDropdown}
+                  >
                     <button
                       type="button"
                       className={cn(
@@ -173,25 +196,33 @@ export function Header() {
                         "text-navy bg-transparent hover:bg-slate-100 hover:text-orange",
                         isActive && "text-orange bg-slate-50 nav-link-active"
                       )}
+                      aria-expanded={openDropdown === item.title}
                       data-testid={`nav-dropdown-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
                     >
                       {item.title}
                     </button>
-                    <div className="absolute left-0 top-full z-50 w-[280px] pt-2 opacity-0 translate-y-1 transition duration-150 group-hover:opacity-100 group-hover:translate-y-0">
-                      <ul className="grid gap-1 rounded-md border border-slate-100 bg-white p-3 shadow-lg">
-                        {item.dropdown.map((subItem) => (
-                          <li key={subItem.title}>
-                            <Link
-                              to={subItem.href}
-                              className="block select-none rounded-md p-3 text-sm font-medium leading-none no-underline outline-none transition-colors text-navy hover:bg-slate-100 hover:text-orange focus:bg-slate-100 focus:text-orange"
-                              data-testid={`nav-sublink-${subItem.title.toLowerCase().replace(/\s+/g, "-")}`}
-                            >
-                              {subItem.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    {openDropdown === item.title && (
+                      <div
+                        className="absolute left-0 top-[calc(100%-1px)] z-50 w-[280px] pt-1"
+                        onMouseEnter={() => openDropdownMenu(item.title)}
+                        onMouseLeave={scheduleCloseDropdown}
+                      >
+                        <ul className="grid gap-1 rounded-md border border-slate-100 bg-white p-3 shadow-lg">
+                          {item.dropdown.map((subItem) => (
+                            <li key={subItem.title}>
+                              <Link
+                                to={subItem.href}
+                                className="block select-none rounded-md p-3 text-sm font-medium leading-none no-underline outline-none transition-colors text-navy hover:bg-slate-100 hover:text-orange focus:bg-slate-100 focus:text-orange"
+                                data-testid={`nav-sublink-${subItem.title.toLowerCase().replace(/\s+/g, "-")}`}
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                {subItem.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </NavigationMenuItem>
                 );
               })}
