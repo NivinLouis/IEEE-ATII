@@ -4,6 +4,7 @@ import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
 import { useGlobalStats, useInitiativeCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -11,75 +12,6 @@ import { motion } from "framer-motion";
 import { Search, Filter, Lightbulb, Users, BookOpen, Building, Globe } from "lucide-react";
 
 import HeroVisual from "@/components/HeroVisual";
-
-const allInitiatives = [
-  {
-    id: "innovation-lab",
-    title: "AT Innovation Lab", theme: "innovation", status: "Ongoing",
-    description: "Our innovation lab develops and prototypes assistive devices and solutions using emerging technologies and user-centered design.",
-    statOneValue: "18",
-    statOneLabel: "Projects",
-    statTwoValue: "4.3K+",
-    statTwoLabel: "Lives Impacted",
-    statThreeValue: "12",
-    statThreeLabel: "Partners",
-  },
-  {
-    id: "outreach",
-    title: "Community Outreach", theme: "community", status: "Ongoing",
-    description: "We collaborate with communities to identify needs, create awareness, and deliver inclusive solutions where they are needed most.",
-    statOneValue: "65+",
-    statOneLabel: "Events",
-    statTwoValue: "8.7K+",
-    statTwoLabel: "People Reached",
-    statThreeValue: "20+",
-    statThreeLabel: "Volunteers",
-  },
-  {
-    id: "education",
-    title: "Inclusive Education", theme: "education", status: "Ongoing",
-    description: "Promoting inclusive learning environments through accessible resources, teacher training, and inclusive learning tools.",
-    statOneValue: "35+",
-    statOneLabel: "Institutions",
-    statTwoValue: "6.1K+",
-    statTwoLabel: "Students",
-    statThreeValue: "80+",
-    statThreeLabel: "Sessions",
-  },
-  {
-    id: "campus",
-    title: "Accessible Campus Program", theme: "campus", status: "Completed",
-    description: "Making campuses universally inclusive through audits, retrofitting, awareness campaigns and inclusive infrastructure advocacy.",
-    statOneValue: "15+",
-    statOneLabel: "Campuses",
-    statTwoValue: "2.8K+",
-    statTwoLabel: "Users",
-    statThreeValue: "10+",
-    statThreeLabel: "Audits",
-  },
-  {
-    id: "capacity",
-    title: "Capacity Building", theme: "education", status: "Upcoming",
-    description: "Workshops, mentoring and hands-on training to build skills in assistive technology, design thinking, and inclusive innovation.",
-    statOneValue: "40+",
-    statOneLabel: "Workshops",
-    statTwoValue: "3.9K+",
-    statTwoLabel: "Participants",
-    statThreeValue: "25+",
-    statThreeLabel: "Mentors",
-  },
-  {
-    id: "humanitarian",
-    title: "Humanitarian Technology", theme: "innovation", status: "In Planning",
-    description: "Designing low-cost, scalable assistive solutions for disaster response and refugee and underserved settings.",
-    statOneValue: "10+",
-    statOneLabel: "Deployments",
-    statTwoValue: "1.6K+",
-    statTwoLabel: "Impacted",
-    statThreeValue: "8+",
-    statThreeLabel: "Partners",
-  }
-];
 
 const statusBadge: Record<string, string> = {
   Ongoing: "bg-green-100 text-green-800",
@@ -124,9 +56,7 @@ export default function InitiativesPage() {
   const globalStatsQuery = useGlobalStats();
   const initiativeCardsQuery = useInitiativeCards();
   const globalStats = globalStatsQuery.data;
-  const initiatives = initiativeCardsQuery.data?.length
-    ? initiativeCardsQuery.data
-    : allInitiatives;
+  const initiatives = initiativeCardsQuery.data ?? [];
 
   const filtered = activeTab === "All"
     ? initiatives
@@ -210,15 +140,15 @@ export default function InitiativesPage() {
               </p>
               <div className="flex gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-orange">6</span>
+                  <span className="text-3xl font-black text-orange">{initiatives.length}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Core Programs</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-teal">{globalStats?.beneficiaries ?? "25K+"}</span>
+                  <span className="text-3xl font-black text-teal">{globalStats?.beneficiaries ?? "—"}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Beneficiaries</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-purple">{globalStats?.volunteers ?? "120+"}</span>
+                  <span className="text-3xl font-black text-purple">{globalStats?.volunteers ?? "—"}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Volunteers</span>
                 </div>
               </div>
@@ -269,6 +199,15 @@ export default function InitiativesPage() {
       {/* Initiatives Grid */}
       <section className="py-24 bg-slate-50" data-testid="initiatives-grid">
         <div className="container mx-auto px-4">
+          {!initiativeCardsQuery.isLoading && initiatives.length === 0 && (
+            <div className="mb-10">
+              <NewsStateBlock
+                eyebrow="CMS content missing"
+                title="No initiative cards are available."
+                description="Publish `initiativeCard` documents in Sanity to populate this page."
+              />
+            </div>
+          )}
           {filtered.length === 0 && (
             <div className="text-center py-16">
               <p className="text-slate-500 text-lg font-medium">No initiatives match this filter.</p>

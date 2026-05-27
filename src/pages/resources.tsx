@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
 import { useResourceGuides, useResourcePublications, useResourceStandards, useResourceVideos } from "@/lib/sanity/hooks";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -10,112 +11,34 @@ import { Search, FileText, Download, PlayCircle, BookOpen, ExternalLink, FileDow
 
 import resourcesHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(7)_1777748003996.png";
 
-const resourceGuidesFallback = [
-  {
-    title: "Inclusive Design Quick Start Guide",
-    format: "PDF",
-    description: "A practical guide for developers and designers to build accessible digital products from day one.",
-    theme: "purple",
-    href: "#guides",
-    buttonLabel: "Download",
-  },
-  {
-    title: "Assistive Technology Toolkit",
-    format: "PDF",
-    description: "Comprehensive toolkit for educators to integrate AT in mainstream classrooms effectively.",
-    theme: "teal",
-    href: "#guides",
-    buttonLabel: "Download",
-  },
-  {
-    title: "Accessibility in Education Guide",
-    format: "PDF",
-    description: "Frameworks and best practices for higher education institutions to become universally accessible.",
-    theme: "orange",
-    href: "#guides",
-    buttonLabel: "Download",
-  },
-  {
-    title: "Community Outreach Playbook",
-    format: "DOCX",
-    description: "Templates and strategies for conducting successful accessibility awareness drives.",
-    theme: "navy",
-    href: "#guides",
-    buttonLabel: "Download",
-  },
-];
-
-const resourcePublicationsFallback = [
-  {
-    type: "Research Paper",
-    theme: "navy",
-    title: "AI-based Assistive Communication for Speech Impaired Users",
-    authors: "Dr. S. Prakash, Ms. Anjali Menon",
-    year: "2024",
-    href: "#research",
-    buttonLabel: "Read PDF",
-  },
-  {
-    type: "Case Study",
-    theme: "purple",
-    title: "Implementing Low-Cost AAC Devices in Rural Schools",
-    authors: "Mr. Amal Raj, IEEE Kerala",
-    year: "2024",
-    href: "#research",
-    buttonLabel: "Read PDF",
-  },
-  {
-    type: "White Paper",
-    theme: "teal",
-    title: "The Future of Inclusive Workplaces with Assistive Tech",
-    authors: "ATIIG Research Committee",
-    year: "2023",
-    href: "#research",
-    buttonLabel: "Read PDF",
-  },
-  {
-    type: "Technical Report",
-    theme: "orange",
-    title: "Accessibility Audit of Public Websites in Kerala",
-    authors: "Ms. Fathima R., Accessibility Team",
-    year: "2023",
-    href: "#research",
-    buttonLabel: "Read PDF",
-  },
-];
-
-const resourceVideosFallback = [
-  { title: "Designing for Everyone: An Inclusive Approach", duration: "48:12", type: "Webinar", href: "#videos" },
-  { title: "Hands-on: Building Low-Cost Assistive Devices", duration: "1:12:34", type: "Workshop", href: "#videos" },
-  { title: "AI & Accessibility: Opportunities and Ethical Considerations", duration: "36:20", type: "Webinar", href: "#videos" },
-  { title: "AT Innovation Hackathon 2024 Highlights", duration: "05:49", type: "Event", href: "#videos" },
-];
-
-const resourceStandardsFallback = [
-  { title: "ISO 21001:2018 — Educational organizations management systems", href: "#standards" },
-  { title: "W3C WCAG 2.2 — Web Content Accessibility Guidelines", href: "#standards" },
-  { title: "IEEE 3017-2018 — Recommended Practice for Accessibility", href: "#standards" },
-  { title: "Rights of Persons with Disabilities (RPwD) Act, 2016", href: "#standards" },
-];
-
 export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const resourceGuidesQuery = useResourceGuides();
   const resourcePublicationsQuery = useResourcePublications();
   const resourceStandardsQuery = useResourceStandards();
   const resourceVideosQuery = useResourceVideos();
-  const resourceGuides = resourceGuidesQuery.data?.length
-    ? resourceGuidesQuery.data
-    : resourceGuidesFallback;
-  const resourcePublications = resourcePublicationsQuery.data?.length
-    ? resourcePublicationsQuery.data
-    : resourcePublicationsFallback;
-  const resourceVideos = resourceVideosQuery.data?.length
-    ? resourceVideosQuery.data
-    : resourceVideosFallback;
-  const resourceStandards = resourceStandardsQuery.data?.length
-    ? resourceStandardsQuery.data
-    : resourceStandardsFallback;
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const resourceGuides = (resourceGuidesQuery.data ?? []).filter((guide) =>
+    !normalizedQuery ||
+    [guide.title, guide.format, guide.description, guide.buttonLabel].some((value) =>
+      value.toLowerCase().includes(normalizedQuery),
+    ),
+  );
+  const resourcePublications = (resourcePublicationsQuery.data ?? []).filter((publication) =>
+    !normalizedQuery ||
+    [publication.title, publication.type, publication.authors, publication.year, publication.buttonLabel].some((value) =>
+      value.toLowerCase().includes(normalizedQuery),
+    ),
+  );
+  const resourceVideos = (resourceVideosQuery.data ?? []).filter((video) =>
+    !normalizedQuery ||
+    [video.title, video.type, video.duration].some((value) =>
+      value.toLowerCase().includes(normalizedQuery),
+    ),
+  );
+  const resourceStandards = (resourceStandardsQuery.data ?? []).filter((standard) =>
+    !normalizedQuery || standard.title.toLowerCase().includes(normalizedQuery),
+  );
 
   return (
     <Layout>
@@ -195,6 +118,15 @@ export default function ResourcesPage() {
                 </div>
                 
                 <div className="grid sm:grid-cols-2 gap-6">
+                  {resourceGuides.length === 0 && (
+                    <div className="sm:col-span-2">
+                      <NewsStateBlock
+                        eyebrow="No guide content"
+                        title="No guides or toolkits matched this view."
+                        description="Publish `resourceGuide` documents in Sanity, or clear the search filter."
+                      />
+                    </div>
+                  )}
                   {resourceGuides.map((guide, i) => {
                     const guideStyles = {
                       purple: { color: "bg-purple", border: "border-t-purple" },
@@ -236,6 +168,13 @@ export default function ResourcesPage() {
                 </div>
                 
                 <div className="space-y-4">
+                  {resourcePublications.length === 0 && (
+                    <NewsStateBlock
+                      eyebrow="No publication content"
+                      title="No publications matched this view."
+                      description="Publish `resourcePublication` documents in Sanity, or clear the search filter."
+                    />
+                  )}
                   {resourcePublications.map((pub, i) => {
                     const publicationStyles = {
                       navy: "bg-navy",
@@ -281,6 +220,15 @@ export default function ResourcesPage() {
                 </div>
                 
                 <div className="grid sm:grid-cols-2 gap-6">
+                  {resourceVideos.length === 0 && (
+                    <div className="sm:col-span-2">
+                      <NewsStateBlock
+                        eyebrow="No video content"
+                        title="No videos or webinars matched this view."
+                        description="Publish `resourceVideo` documents in Sanity, or clear the search filter."
+                      />
+                    </div>
+                  )}
                   {resourceVideos.map((vid, i) => {
                     const isExternal = /^https?:\/\//.test(vid.href);
                     const CardTag = isExternal ? "a" : Link;
@@ -316,6 +264,15 @@ export default function ResourcesPage() {
                 </div>
                 
                 <div className="grid sm:grid-cols-2 gap-4">
+                  {resourceStandards.length === 0 && (
+                    <div className="sm:col-span-2">
+                      <NewsStateBlock
+                        eyebrow="No standards content"
+                        title="No standards or guidelines matched this view."
+                        description="Publish `resourceStandard` documents in Sanity, or clear the search filter."
+                      />
+                    </div>
+                  )}
                   {resourceStandards.map((std, i) => {
                     const isExternal = /^https?:\/\//.test(std.href);
                     const CardTag = isExternal ? "a" : Link;

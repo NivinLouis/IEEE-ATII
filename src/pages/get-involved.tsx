@@ -3,6 +3,7 @@ import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
 import { useGetInvolvedCards, useGlobalStats } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import volunteerImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png";
 import { Input } from "@/components/ui/input";
@@ -20,49 +21,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const getInvolvedCardsFallback = [
-  {
-    id: "volunteer",
-    kind: "volunteer",
-    title: "Volunteer Opportunities",
-    description: "Share your time and skills to work on impactful projects that create real impact.",
-    buttonLabel: "Explore Opportunities",
-    buttonHref: "/get-involved#volunteer",
-  },
-  {
-    id: "member",
-    kind: "member",
-    title: "Become a Member",
-    description: "Join our community of innovators and changemakers.",
-    buttonLabel: "Learn More",
-    buttonHref: "/get-involved#member",
-  },
-  {
-    id: "partner",
-    kind: "partner",
-    title: "Partner With Us",
-    description: "Collaborate on initiatives that drive inclusion and innovation.",
-    buttonLabel: "Explore Partnerships",
-    buttonHref: "/get-involved#partner",
-  },
-  {
-    id: "join",
-    kind: "join",
-    title: "Join Us",
-    description: "Become part of our community and contribute your skills, ideas and energy to building a more inclusive future.",
-    buttonLabel: "Get Started",
-    buttonHref: "/get-involved#join",
-  },
-];
-
 export default function GetInvolvedPage() {
   const { toast } = useToast();
   const globalStatsQuery = useGlobalStats();
   const getInvolvedCardsQuery = useGetInvolvedCards();
   const globalStats = globalStatsQuery.data;
-  const getInvolvedCards = getInvolvedCardsQuery.data?.length
-    ? getInvolvedCardsQuery.data
-    : getInvolvedCardsFallback;
+  const getInvolvedCards = getInvolvedCardsQuery.data ?? [];
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,6 +85,15 @@ export default function GetInvolvedPage() {
       {/* Ways to Get Involved */}
       <section className="py-24 bg-white" data-testid="ways-to-get-involved">
         <div className="container mx-auto px-4">
+          {!getInvolvedCardsQuery.isLoading && getInvolvedCards.length === 0 && (
+            <div className="mb-10">
+              <NewsStateBlock
+                eyebrow="CMS content missing"
+                title="No get-involved cards are available."
+                description="Publish `getInvolvedCard` documents in Sanity to populate this section."
+              />
+            </div>
+          )}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {getInvolvedCards.map((way, i) => {
               const cardStyles = {
@@ -291,11 +264,11 @@ export default function GetInvolvedPage() {
                 <h3 className="text-xl font-black text-navy mb-6">Our Impact at a Glance</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {[
-                    { val: globalStats?.livesImpacted ?? "25K+", label: "Lives" },
-                    { val: globalStats?.projects ?? "100+", label: "Projects" },
-                    { val: globalStats?.volunteers ?? "1.2K", label: "Volunteers" },
-                    { val: globalStats?.partners ?? "50+", label: "Partners" },
-                    { val: globalStats?.states ?? "18", label: "States" }
+                    { val: globalStats?.livesImpacted ?? "—", label: "Lives" },
+                    { val: globalStats?.projects ?? "—", label: "Projects" },
+                    { val: globalStats?.volunteers ?? "—", label: "Volunteers" },
+                    { val: globalStats?.partners ?? "—", label: "Partners" },
+                    { val: globalStats?.states ?? "—", label: "States" }
                   ].map((stat, i) => (
                     <div key={i} className="text-center p-4 bg-white rounded-xl shadow-sm border border-slate-100">
                       <div className="text-2xl font-black text-navy mb-1">{stat.val}</div>

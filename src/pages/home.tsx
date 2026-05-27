@@ -6,6 +6,7 @@ import SEO, {
   websiteSchema,
 } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { TestimonialsCard } from "@/components/ui/testimonials-card";
@@ -33,69 +34,46 @@ import {
   ResponsiveContainer 
 } from "recharts";
 import { routeMeta } from "@/data/site";
-import { testimonialItems } from "@/data/testimonials";
-import { useGlobalStats, useHomePage } from "@/lib/sanity/hooks";
-
-const lineData = [
-  { year: "2020", impact: 2.1 },
-  { year: "2021", impact: 5.8 },
-  { year: "2022", impact: 9.6 },
-  { year: "2023", impact: 16.8 },
-  { year: "2024", impact: 20.5 },
-  { year: "2025", impact: 25.0 },
-];
-
-const pieData = [
-  { name: "Research", value: 30, color: "#023A74" },
-  { name: "Assistive Solutions", value: 25, color: "#642396" },
-  { name: "Community", value: 20, color: "#FD7B09" },
-  { name: "Inclusive Education", value: 15, color: "#01A0A0" },
-  { name: "Humanitarian", value: 10, color: "#475569" },
-];
-
-const statsBarFallback = [
-  { value: "45+", label: "Volunteers" },
-  { value: "800+", label: "Lives Impacted" },
-  { value: "10+", label: "Partners & Collaborators" },
-  { value: "3K+", label: "Devices Delivered" },
-];
-
-const impactHighlightsFallback = [
-  { value: "25K+", label: "Lives Impacted" },
-  { value: "100+", label: "Projects Delivered" },
-  { value: "50+", label: "Partners" },
-  { value: "120+", label: "Volunteers" },
-];
+import { useEvents, useGlobalStats, useHomePage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 
 export default function HomePage() {
   const homePageQuery = useHomePage();
   const globalStatsQuery = useGlobalStats();
+  const eventsQuery = useEvents();
+  const storiesQuery = useProjectsStoriesSection();
   const globalStats = globalStatsQuery.data;
   const statsBarData = [
-    { ...statsBarFallback[0], value: globalStats?.volunteers ?? statsBarFallback[0].value },
-    { ...statsBarFallback[1], value: globalStats?.livesImpacted ?? statsBarFallback[1].value },
-    { ...statsBarFallback[2], value: globalStats?.partners ?? statsBarFallback[2].value },
-    statsBarFallback[3],
+    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
+    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
+    { value: globalStats?.partners ?? "—", label: "Partners & Collaborators" },
+    { value: globalStats?.events ?? "—", label: "Events" },
   ];
-  const impactDistributionValueMap = new Map(
-    (homePageQuery.data?.statistics?.impactDistribution ?? []).map((item) => [item.name, item.value]),
-  );
-  const impactDistributionData = pieData.map((item) => ({
+  const impactDistributionData = (homePageQuery.data?.statistics?.impactDistribution ?? []).map((item) => ({
     ...item,
-    value: impactDistributionValueMap.get(item.name) ?? item.value,
+    color:
+      item.name === "Research"
+        ? "#023A74"
+        : item.name === "Assistive Solutions"
+          ? "#642396"
+          : item.name === "Community"
+            ? "#FD7B09"
+            : item.name === "Inclusive Education"
+              ? "#01A0A0"
+              : "#475569",
   }));
   const impactHighlightsData = [
-    { ...impactHighlightsFallback[0], value: globalStats?.livesImpacted ?? impactHighlightsFallback[0].value },
-    { ...impactHighlightsFallback[1], value: globalStats?.projects ?? impactHighlightsFallback[1].value },
-    { ...impactHighlightsFallback[2], value: globalStats?.partners ?? impactHighlightsFallback[2].value },
-    { ...impactHighlightsFallback[3], value: globalStats?.volunteers ?? impactHighlightsFallback[3].value },
+    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
+    { value: globalStats?.projects ?? "—", label: "Projects Delivered" },
+    { value: globalStats?.partners ?? "—", label: "Partners" },
+    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
   ];
-  const impactTrendValueMap = new Map(
-    (homePageQuery.data?.statistics?.impactTrend ?? []).map((item) => [item.year, item.impact]),
-  );
-  const impactTrendData = lineData.map((item) => ({
-    ...item,
-    impact: impactTrendValueMap.get(item.year) ?? item.impact,
+  const impactTrendData = homePageQuery.data?.statistics?.impactTrend ?? [];
+  const upcomingEvents = (eventsQuery.data ?? []).slice(0, 3);
+  const storiesOfChangeItems = (storiesQuery.data?.items ?? []).map((item, index) => ({
+    id: index + 1,
+    title: item.title,
+    description: item.description,
+    image: item.gradient,
   }));
 
   return (
@@ -189,29 +167,29 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4">
             <StatCounter 
-              value={statsBarData[0]?.value ?? statsBarFallback[0].value}
-              label={statsBarFallback[0].label}
+              value={statsBarData[0]?.value}
+              label={statsBarData[0]?.label}
               color="purple" 
               icon={<Users className="w-6 h-6" />}
               className="border-r border-b md:border-b-0"
             />
             <StatCounter 
-              value={statsBarData[1]?.value ?? statsBarFallback[1].value}
-              label={statsBarFallback[1].label}
+              value={statsBarData[1]?.value}
+              label={statsBarData[1]?.label}
               color="purple" 
               icon={<HeartHandshake className="w-6 h-6" />}
               className="md:border-r border-b md:border-b-0"
             />
             <StatCounter 
-              value={statsBarData[2]?.value ?? statsBarFallback[2].value}
-              label={statsBarFallback[2].label}
+              value={statsBarData[2]?.value}
+              label={statsBarData[2]?.label}
               color="purple" 
               icon={<Globe className="w-6 h-6" />}
               className="border-r"
             />
             <StatCounter 
-              value={statsBarData[3]?.value ?? statsBarFallback[3].value}
-              label={statsBarFallback[3].label}
+              value={statsBarData[3]?.value}
+              label={statsBarData[3]?.label}
               color="purple" 
               icon={<FlaskConical className="w-6 h-6" />}
             />
@@ -328,72 +306,90 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[0]?.value ?? impactHighlightsFallback[0].value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[0].label}</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[0]?.value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[0]?.label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[1]?.value ?? impactHighlightsFallback[1].value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[1].label}</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[1]?.value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[1]?.label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[2]?.value ?? impactHighlightsFallback[2].value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[2].label}</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[2]?.value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[2]?.label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[3]?.value ?? impactHighlightsFallback[3].value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[3].label}</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[3]?.value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[3]?.label}</div>
               </div>
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow-sm">
               <h3 className="text-lg font-bold text-navy mb-6 text-center">Lives Impacted Over Time (in thousands)</h3>
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={impactTrendData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                    <RechartsTooltip 
-                      contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                    />
-                    <Line type="monotone" dataKey="impact" stroke="#FD7B09" strokeWidth={4} dot={{r: 6, fill: '#FD7B09', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 8}} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              {impactTrendData.length === 0 ? (
+                <NewsStateBlock
+                  eyebrow="No chart data"
+                  title="Impact trend data is unavailable."
+                  description="Publish `homePage.statistics.impactTrend` in Sanity to populate this chart."
+                />
+              ) : (
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={impactTrendData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                      <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                      <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
+                      <RechartsTooltip 
+                        contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
+                      />
+                      <Line type="monotone" dataKey="impact" stroke="#FD7B09" strokeWidth={4} dot={{r: 6, fill: '#FD7B09', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 8}} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </div>
 
             <div className="bg-white p-6 rounded-2xl shadow-sm">
               <h3 className="text-lg font-bold text-navy mb-6 text-center">Impact by Focus Area</h3>
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={impactDistributionData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {impactDistributionData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <RechartsTooltip 
-                      contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="flex flex-wrap justify-center gap-3 mt-2">
-                {impactDistributionData.slice(0, 4).map((entry, index) => (
-                  <div key={index} className="flex items-center text-xs font-medium text-slate-600">
-                    <span className="w-3 h-3 rounded-full mr-1.5" style={{backgroundColor: entry.color}}></span>
-                    {entry.name}
+              {impactDistributionData.length === 0 ? (
+                <NewsStateBlock
+                  eyebrow="No chart data"
+                  title="Impact distribution data is unavailable."
+                  description="Publish `homePage.statistics.impactDistribution` in Sanity to populate this chart."
+                />
+              ) : (
+                <>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={impactDistributionData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={80}
+                          paddingAngle={5}
+                          dataKey="value"
+                        >
+                          {impactDistributionData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <RechartsTooltip 
+                          contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
-                ))}
-              </div>
+                  <div className="flex flex-wrap justify-center gap-3 mt-2">
+                    {impactDistributionData.slice(0, 4).map((entry, index) => (
+                      <div key={index} className="flex items-center text-xs font-medium text-slate-600">
+                        <span className="w-3 h-3 rounded-full mr-1.5" style={{backgroundColor: entry.color}}></span>
+                        {entry.name}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -410,20 +406,28 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { date: "May 15", title: "AT Innovation Hackathon 2025", loc: "UL Cyberpark, Kozhikode" },
-              { date: "May 28", title: "Webinar: Inclusive Tech for All", loc: "Online (Zoom)" },
-              { date: "Jun 10", title: "Community Accessibility Audit Drive", loc: "Kochi, Kerala" }
-            ].map((evt, i) => (
-              <div key={i} className="border border-slate-200 rounded-xl p-6 hover:border-orange transition-colors flex flex-col group">
-                <div className="text-orange font-black text-xl mb-3">{evt.date}</div>
-                <h3 className="text-lg font-bold text-navy mb-2 group-hover:text-orange transition-colors">{evt.title}</h3>
-                <p className="text-slate-500 text-sm mb-6 flex-1 flex items-start gap-2">
-                  <span className="mt-0.5">•</span> {evt.loc}
-                </p>
-                <Link to="/news-events" className="text-navy font-bold text-sm hover:underline">Learn More →</Link>
+            {upcomingEvents.length === 0 ? (
+              <div className="md:col-span-3">
+                <NewsStateBlock
+                  eyebrow="No event data"
+                  title="No upcoming events are available."
+                  description="Publish `event` documents in Sanity to populate this section."
+                />
               </div>
-            ))}
+            ) : (
+              upcomingEvents.map((evt) => (
+                <div key={evt._id} className="border border-slate-200 rounded-xl p-6 hover:border-orange transition-colors flex flex-col group">
+                  <div className="text-orange font-black text-xl mb-3">
+                    {new Date(evt.startsAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </div>
+                  <h3 className="text-lg font-bold text-navy mb-2 group-hover:text-orange transition-colors">{evt.title}</h3>
+                  <p className="text-slate-500 text-sm mb-6 flex-1 flex items-start gap-2">
+                    <span className="mt-0.5">•</span> {evt.location}
+                  </p>
+                  <Link to="/news-events" className="text-navy font-bold text-sm hover:underline">Learn More →</Link>
+                </div>
+              ))
+            )}
           </div>
           
           <div className="mt-8 text-center md:hidden">
@@ -444,13 +448,23 @@ export default function HomePage() {
           </div>
 
           <div className="flex justify-center">
-            <TestimonialsCard 
-              items={testimonialItems} 
-              width={800} 
-              className="w-full max-w-4xl"
-              autoPlay={true}
-              showCounter={false}
-            />
+            {storiesOfChangeItems.length === 0 ? (
+              <div className="w-full max-w-4xl">
+                <NewsStateBlock
+                  eyebrow="No story data"
+                  title="No stories of change are available."
+                  description="Publish `projectsStoriesSection.items` in Sanity to populate this carousel."
+                />
+              </div>
+            ) : (
+              <TestimonialsCard 
+                items={storiesOfChangeItems} 
+                width={800} 
+                className="w-full max-w-4xl"
+                autoPlay={true}
+                showCounter={false}
+              />
+            )}
           </div>
           
           <div className="mt-12 text-center">
