@@ -1,8 +1,8 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
+import { useGlobalStats, useProjectsPage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
-import { StatCounter } from "@/components/StatCounter";
 import { TestimonialsCard } from "@/components/ui/testimonials-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -14,7 +14,6 @@ import {
 } from "recharts";
 
 import KeralaMap from "@/components/KeralaMap.jsx";
-import projectsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(8)_1777748003996.png";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
 import { testimonialItems } from "@/data/testimonials";
 
@@ -49,7 +48,51 @@ const beneficiaryBarData = [
   { name: "Others", value: 7 },
 ];
 
+const projectCategoriesFallback = [
+  { kind: "assistiveDevices", title: "Assistive Devices", count: "16+" },
+  { kind: "inclusiveEducation", title: "Inclusive Education", count: "14+" },
+  { kind: "accessibilityTools", title: "Accessibility Tools", count: "12+" },
+  { kind: "livelihoodSkills", title: "Livelihood & Skills", count: "9+" },
+  { kind: "communityInclusion", title: "Community Inclusion", count: "7+" },
+  { kind: "researchInnovation", title: "Research & Innovation", count: "8+" },
+];
+
+const featuredProjectFallback = {
+  title: "Sparsh — Affordable Myoelectric Prosthetic Hand",
+  description:
+    "Sparsh is an indigenously designed, lightweight and affordable myoelectric prosthetic hand that restores grip, confidence and independence for upper-limb amputees in developing regions.",
+  tags: ["Low Cost", "Lightweight", "Multi-grip", "User-centric"],
+  metrics: [
+    { value: "1,200+", label: "Users" },
+    { value: "18", label: "States" },
+    { value: "45+", label: "Partner Orgs" },
+  ],
+  outcomes: [
+    "Enhanced daily living independence",
+    "Improved self-confidence and social inclusion",
+    "Enables education and employment opportunities",
+    "Low-cost, maintenance-light and repair ecosystem",
+  ],
+};
+
 export default function ProjectsPage() {
+  const globalStatsQuery = useGlobalStats();
+  const projectsPageQuery = useProjectsPage();
+  const projectsStoriesSectionQuery = useProjectsStoriesSection();
+  const globalStats = globalStatsQuery.data;
+  const projectCategories = projectsPageQuery.data?.projectCategories?.length
+    ? projectsPageQuery.data.projectCategories
+    : projectCategoriesFallback;
+  const featuredProject = projectsPageQuery.data?.featuredProject ?? featuredProjectFallback;
+  const storiesOfChangeItems = projectsStoriesSectionQuery.data?.items?.length
+    ? projectsStoriesSectionQuery.data.items.map((item, index) => ({
+        id: index + 1,
+        title: item.title,
+        description: item.description,
+        image: item.gradient,
+      }))
+    : testimonialItems;
+
   return (
     <Layout>
       <SEO
@@ -96,23 +139,23 @@ export default function ProjectsPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 max-w-5xl mx-auto bg-white/10 p-8 rounded-2xl backdrop-blur-sm border border-white/20">
             <div className="text-center">
-              <div className="text-4xl font-black text-orange mb-1">58+</div>
+              <div className="text-4xl font-black text-orange mb-1">{globalStats?.projects ?? "58+"}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Projects</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-teal mb-1">25K+</div>
+              <div className="text-4xl font-black text-teal mb-1">{globalStats?.livesImpacted ?? "25K+"}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Lives</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-purple mb-1">18</div>
+              <div className="text-4xl font-black text-purple mb-1">{globalStats?.states ?? "18"}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">States Reached</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-orange mb-1">120+</div>
+              <div className="text-4xl font-black text-orange mb-1">{globalStats?.partners ?? "120+"}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Partners</div>
             </div>
             <div className="text-center col-span-2 md:col-span-1">
-              <div className="text-4xl font-black text-teal mb-1">1.2K+</div>
+              <div className="text-4xl font-black text-teal mb-1">{globalStats?.volunteers ?? "1.2K+"}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Volunteers</div>
             </div>
           </div>
@@ -131,16 +174,19 @@ export default function ProjectsPage() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-black text-navy mb-8">Project Categories</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: "Assistive Devices", count: "16+", icon: <Activity className="w-6 h-6 text-navy" /> },
-                { title: "Inclusive Education", count: "14+", icon: <BookOpen className="w-6 h-6 text-purple" /> },
-                { title: "Accessibility Tools", count: "12+", icon: <WheelchairIcon className="w-6 h-6 text-teal" /> },
-                { title: "Livelihood & Skills", count: "9+", icon: <Briefcase className="w-6 h-6 text-orange" /> },
-                { title: "Community Inclusion", count: "7+", icon: <Users className="w-6 h-6 text-navy" /> },
-                { title: "Research & Innovation", count: "8+", icon: <FlaskConical className="w-6 h-6 text-teal" /> }
-              ].map((cat, i) => (
+              {projectCategories.map((cat, i) => {
+                const categoryIcons = {
+                  assistiveDevices: <Activity className="w-6 h-6 text-navy" />,
+                  inclusiveEducation: <BookOpen className="w-6 h-6 text-purple" />,
+                  accessibilityTools: <WheelchairIcon className="w-6 h-6 text-teal" />,
+                  livelihoodSkills: <Briefcase className="w-6 h-6 text-orange" />,
+                  communityInclusion: <Users className="w-6 h-6 text-navy" />,
+                  researchInnovation: <FlaskConical className="w-6 h-6 text-teal" />,
+                } as const;
+
+                return (
                 <motion.div 
-                  key={i}
+                  key={`${cat.kind}-${i}`}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -148,12 +194,12 @@ export default function ProjectsPage() {
                   className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-orange transition-colors cursor-pointer group"
                 >
                   <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange/10 transition-colors">
-                    {cat.icon}
+                    {categoryIcons[cat.kind as keyof typeof categoryIcons] ?? categoryIcons.assistiveDevices}
                   </div>
                   <h3 className="font-bold text-navy text-lg mb-1">{cat.title}</h3>
                   <div className="text-slate-500 font-medium text-sm">{cat.count} Projects</div>
                 </motion.div>
-              ))}
+              )})}
             </div>
           </div>
         </div>
@@ -170,57 +216,38 @@ export default function ProjectsPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1 relative">
                 <img src={sparshImg} alt="Sparsh Prosthetic Hand" className="rounded-3xl shadow-xl w-full object-cover aspect-[4/3]" />
-                <div className="absolute -bottom-6 -right-6 bg-navy text-white p-6 rounded-2xl shadow-lg border-4 border-white hidden md:block">
-                  <div className="text-3xl font-black text-orange mb-1">₹35K</div>
-                  <div className="text-sm font-bold uppercase tracking-wider">Avg. Cost Saved</div>
-                </div>
               </div>
               
               <div className="order-1 lg:order-2">
-                <h2 className="text-4xl font-black text-navy mb-6">Sparsh — Affordable Myoelectric Prosthetic Hand</h2>
+                <h2 className="text-4xl font-black text-navy mb-6">{featuredProject.title}</h2>
                 <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  Sparsh is an indigenously designed, lightweight and affordable myoelectric prosthetic hand that restores grip, confidence and independence for upper-limb amputees in developing regions.
+                  {featuredProject.description}
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {["Low Cost", "Lightweight", "Multi-grip", "User-centric"].map(tag => (
+                  {(featuredProject.tags ?? featuredProjectFallback.tags).map(tag => (
                     <span key={tag} className="bg-teal/10 text-teal font-bold px-3 py-1 rounded-md text-sm">{tag}</span>
                   ))}
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4 mb-8 border-y border-slate-100 py-6">
-                  <div>
-                    <div className="text-2xl font-black text-navy">1,200+</div>
-                    <div className="text-xs font-bold text-slate-500 uppercase">Users</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-black text-navy">18</div>
-                    <div className="text-xs font-bold text-slate-500 uppercase">States</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-black text-navy">45+</div>
-                    <div className="text-xs font-bold text-slate-500 uppercase">Partner Orgs</div>
-                  </div>
+                  {(featuredProject.metrics ?? featuredProjectFallback.metrics).map((metric) => (
+                    <div key={metric.label}>
+                      <div className="text-2xl font-black text-navy">{metric.value}</div>
+                      <div className="text-xs font-bold text-slate-500 uppercase">{metric.label}</div>
+                    </div>
+                  ))}
                 </div>
                 
                 <div className="mb-10 space-y-4">
                   <h3 className="font-bold text-navy text-lg mb-4">Project Outcomes:</h3>
-                  {[
-                    "Enhanced daily living independence",
-                    "Improved self-confidence and social inclusion",
-                    "Enables education and employment opportunities",
-                    "Low-cost, maintenance-light and repair ecosystem"
-                  ].map((outcome, i) => (
+                  {(featuredProject.outcomes ?? featuredProjectFallback.outcomes).map((outcome, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle2 className="w-6 h-6 text-orange shrink-0 mt-0.5" />
                       <span className="text-slate-700 font-medium">{outcome}</span>
                     </div>
                   ))}
                 </div>
-                
-                <Button className="bg-navy hover:bg-navy/90 text-white font-bold h-14 px-8 text-base w-full sm:w-auto">
-                  View Project Details <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
               </div>
             </div>
           </div>
@@ -325,7 +352,7 @@ export default function ProjectsPage() {
 
           <div className="flex justify-center">
             <TestimonialsCard 
-              items={testimonialItems} 
+              items={storiesOfChangeItems} 
               width={800} 
               className="w-full max-w-4xl"
               autoPlay={true}

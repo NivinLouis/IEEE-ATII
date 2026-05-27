@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, {
   breadcrumbSchema,
@@ -9,7 +8,6 @@ import SEO, {
 import CardFlip from "@/components/CardFlip";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
-import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { TestimonialsCard } from "@/components/ui/testimonials-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -36,6 +34,7 @@ import {
 } from "recharts";
 import { routeMeta } from "@/data/site";
 import { testimonialItems } from "@/data/testimonials";
+import { useGlobalStats, useHomePage } from "@/lib/sanity/hooks";
 
 const lineData = [
   { year: "2020", impact: 2.1 },
@@ -54,7 +53,51 @@ const pieData = [
   { name: "Humanitarian", value: 10, color: "#475569" },
 ];
 
+const statsBarFallback = [
+  { value: "45+", label: "Volunteers" },
+  { value: "800+", label: "Lives Impacted" },
+  { value: "10+", label: "Partners & Collaborators" },
+  { value: "3K+", label: "Devices Delivered" },
+];
+
+const impactHighlightsFallback = [
+  { value: "25K+", label: "Lives Impacted" },
+  { value: "100+", label: "Projects Delivered" },
+  { value: "50+", label: "Partners" },
+  { value: "120+", label: "Volunteers" },
+];
+
 export default function HomePage() {
+  const homePageQuery = useHomePage();
+  const globalStatsQuery = useGlobalStats();
+  const globalStats = globalStatsQuery.data;
+  const statsBarData = [
+    { ...statsBarFallback[0], value: globalStats?.volunteers ?? statsBarFallback[0].value },
+    { ...statsBarFallback[1], value: globalStats?.livesImpacted ?? statsBarFallback[1].value },
+    { ...statsBarFallback[2], value: globalStats?.partners ?? statsBarFallback[2].value },
+    statsBarFallback[3],
+  ];
+  const impactDistributionValueMap = new Map(
+    (homePageQuery.data?.statistics?.impactDistribution ?? []).map((item) => [item.name, item.value]),
+  );
+  const impactDistributionData = pieData.map((item) => ({
+    ...item,
+    value: impactDistributionValueMap.get(item.name) ?? item.value,
+  }));
+  const impactHighlightsData = [
+    { ...impactHighlightsFallback[0], value: globalStats?.livesImpacted ?? impactHighlightsFallback[0].value },
+    { ...impactHighlightsFallback[1], value: globalStats?.projects ?? impactHighlightsFallback[1].value },
+    { ...impactHighlightsFallback[2], value: globalStats?.partners ?? impactHighlightsFallback[2].value },
+    { ...impactHighlightsFallback[3], value: globalStats?.volunteers ?? impactHighlightsFallback[3].value },
+  ];
+  const impactTrendValueMap = new Map(
+    (homePageQuery.data?.statistics?.impactTrend ?? []).map((item) => [item.year, item.impact]),
+  );
+  const impactTrendData = lineData.map((item) => ({
+    ...item,
+    impact: impactTrendValueMap.get(item.year) ?? item.impact,
+  }));
+
   return (
     <Layout>
       <SEO
@@ -146,29 +189,29 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4">
             <StatCounter 
-              value="45+" 
-              label="Volunteers" 
+              value={statsBarData[0]?.value ?? statsBarFallback[0].value}
+              label={statsBarFallback[0].label}
               color="purple" 
               icon={<Users className="w-6 h-6" />}
               className="border-r border-b md:border-b-0"
             />
             <StatCounter 
-              value="800+" 
-              label="Lives Impacted" 
+              value={statsBarData[1]?.value ?? statsBarFallback[1].value}
+              label={statsBarFallback[1].label}
               color="purple" 
               icon={<HeartHandshake className="w-6 h-6" />}
               className="md:border-r border-b md:border-b-0"
             />
             <StatCounter 
-              value="10+" 
-              label="Partners & Collaborators" 
+              value={statsBarData[2]?.value ?? statsBarFallback[2].value}
+              label={statsBarFallback[2].label}
               color="purple" 
               icon={<Globe className="w-6 h-6" />}
               className="border-r"
             />
             <StatCounter 
-              value="3K+" 
-              label="Devices Delivered" 
+              value={statsBarData[3]?.value ?? statsBarFallback[3].value}
+              label={statsBarFallback[3].label}
               color="purple" 
               icon={<FlaskConical className="w-6 h-6" />}
             />
@@ -285,20 +328,20 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">25K+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Lives Impacted</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[0]?.value ?? impactHighlightsFallback[0].value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[0].label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">100+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Projects Delivered</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[1]?.value ?? impactHighlightsFallback[1].value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[1].label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">50+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Partners</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[2]?.value ?? impactHighlightsFallback[2].value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[2].label}</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">120+</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Volunteers</div>
+                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[3]?.value ?? impactHighlightsFallback[3].value}</div>
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsFallback[3].label}</div>
               </div>
             </div>
 
@@ -306,7 +349,7 @@ export default function HomePage() {
               <h3 className="text-lg font-bold text-navy mb-6 text-center">Lives Impacted Over Time (in thousands)</h3>
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={lineData}>
+                  <LineChart data={impactTrendData}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
                     <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
@@ -325,7 +368,7 @@ export default function HomePage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={pieData}
+                      data={impactDistributionData}
                       cx="50%"
                       cy="50%"
                       innerRadius={60}
@@ -333,7 +376,7 @@ export default function HomePage() {
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {pieData.map((entry, index) => (
+                      {impactDistributionData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -344,7 +387,7 @@ export default function HomePage() {
                 </ResponsiveContainer>
               </div>
               <div className="flex flex-wrap justify-center gap-3 mt-2">
-                {pieData.slice(0, 4).map((entry, index) => (
+                {impactDistributionData.slice(0, 4).map((entry, index) => (
                   <div key={index} className="flex items-center text-xs font-medium text-slate-600">
                     <span className="w-3 h-3 rounded-full mr-1.5" style={{backgroundColor: entry.color}}></span>
                     {entry.name}

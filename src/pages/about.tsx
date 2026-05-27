@@ -19,11 +19,14 @@ import {
   fallbackTeamMembers,
   routeMeta,
 } from "@/data/site";
+import { useGlobalStats } from "@/lib/sanity/hooks";
 
 import HeroVisual from "@/components/HeroVisual";
 
 export default function AboutPage() {
   const teamQuery = useListTeamMembers();
+  const globalStatsQuery = useGlobalStats();
+  const globalStats = globalStatsQuery.data;
   const teamMembers = asArrayOrFallback(teamQuery.data, fallbackTeamMembers);
   return (
     <Layout>
@@ -95,10 +98,10 @@ export default function AboutPage() {
       <section className="bg-white border-b border-slate-100 relative z-10" data-testid="about-stats">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
-            <StatCounter value="100+" label="Projects" color="navy" />
-            <StatCounter value="25K+" label="Lives" color="orange" />
-            <StatCounter value="50+" label="Partners" color="purple" />
-            <StatCounter value="65+" label="Events" color="teal" />
+            <StatCounter value={globalStats?.projects ?? "100+"} label="Projects" color="navy" />
+            <StatCounter value={globalStats?.livesImpacted ?? "25K+"} label="Lives" color="orange" />
+            <StatCounter value={globalStats?.partners ?? "50+"} label="Partners" color="purple" />
+            <StatCounter value={globalStats?.events ?? "65+"} label="Events" color="teal" />
           </div>
         </div>
       </section>
