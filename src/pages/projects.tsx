@@ -256,27 +256,7 @@ export default function ProjectsPage() {
               )}
             </div>
             
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-              <h3 className="text-lg font-bold text-navy mb-8 text-center">Impact by Focus Area</h3>
-              {focusPieData.length === 0 ? (
-                <NewsStateBlock
-                  eyebrow="No chart data"
-                  title="No focus-area data is available."
-                  description="Publish `homePage.statistics.impactDistribution` entries in Sanity to populate this chart."
-                />
-              ) : (
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={focusPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} paddingAngle={2} dataKey="value">
-                      {focusPieData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                    </Pie>
-                    <RechartsTooltip contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              )}
-            </div>
+            {/* Impact by Focus Area — hidden for now */}
           </div>
         </div>
       </section>
