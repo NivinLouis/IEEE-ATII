@@ -5,8 +5,8 @@ import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
-import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy, X } from "lucide-react";
 import { routeMeta, SITE_URL } from "@/data/site";
 import { useEvents, useNewsArticles, usePhotoGalleryItems } from "@/lib/sanity/hooks";
 import {
@@ -18,6 +18,7 @@ import {
   getSanityImageProps,
 } from "@/lib/sanity/presentation";
 import { sanityConfigured } from "@/lib/sanity/client";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 
 import newsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(3)_1777748003995.png";
 import newsVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(7)_1777748003997.png";
@@ -32,6 +33,7 @@ function formatEventDateBadge(value: string | Date): { month: string; day: strin
 export default function NewsEventsPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [activeCategory, setActiveCategory] = useState("All Events");
+  const [viewerImage, setViewerImage] = useState<{ src: string; alt: string; caption: string } | null>(null);
 
   const eventsQuery = useEvents();
   const newsQuery = useNewsArticles();
@@ -437,7 +439,14 @@ export default function NewsEventsPage() {
             </div>
           ) : (
             galleryItems.map((item) => (
-              <div key={item.id} className="relative shrink-0 w-[280px] md:w-[400px] aspect-video rounded-xl overflow-hidden snap-center group cursor-pointer">
+              <div
+                key={item.id}
+                className="relative shrink-0 w-[280px] md:w-[400px] aspect-video rounded-xl overflow-hidden snap-center group cursor-pointer"
+                onClick={() => setViewerImage({ src: item.img, alt: item.alt, caption: item.caption })}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setViewerImage({ src: item.img, alt: item.alt, caption: item.caption }); }}
+                role="button"
+                tabIndex={0}
+              >
                 <img src={item.img} alt={item.alt} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
                 <span className={`absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest text-white px-2.5 py-1 rounded ${item.tagClass}`}>{item.tag}</span>
@@ -452,6 +461,26 @@ export default function NewsEventsPage() {
           )}
         </div>
       </section>
+
+      {/* Image viewer dialog */}
+      <Dialog open={!!viewerImage} onOpenChange={(open) => { if (!open) setViewerImage(null); }}>
+        <DialogContent className="max-w-4xl w-[90vw] bg-black/95 border-none p-0 overflow-hidden">
+          {viewerImage && (
+            <div className="relative flex flex-col">
+              <img src={viewerImage.src} alt={viewerImage.alt} className="w-full max-h-[80vh] object-contain" />
+              {viewerImage.caption && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                  <p className="text-white text-sm font-medium">{viewerImage.caption}</p>
+                </div>
+              )}
+              <DialogClose className="absolute top-3 right-3 rounded-full bg-black/60 p-2 text-white hover:bg-black/80 transition-colors">
+                <X className="h-5 w-5" />
+                <span className="sr-only">Close</span>
+              </DialogClose>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <div id="newsletter">
         <NewsletterStrip variant="teal" />

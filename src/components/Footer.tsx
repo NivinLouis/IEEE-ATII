@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaFacebook, FaInstagram, FaYoutube, FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import whiteLogo from "@assets/ATII_WHITE_1777748066607.png";
 
 export function Footer() {
@@ -10,9 +10,9 @@ export function Footer() {
           {/* Column 1 */}
           <div className="flex flex-col space-y-6">
             <Link to="/" className="inline-block" data-testid="link-footer-logo">
-              <img src={whiteLogo} alt="IEEE Kerala ATIIG Logo" className="h-16 w-auto object-contain logo-img" />
+              <img src={whiteLogo} alt="IEEE Kerala ATIIG Logo" className="h-20 w-auto object-contain logo-img" />
             </Link>
-            <p className="text-slate-300 font-medium tracking-wide">
+            <p className="text-slate-300 font-medium tracking-wide text-base">
               "Innovation with Empathy.<br/>Technology with Purpose."
             </p>
             <div className="flex space-x-4 pt-2">
@@ -27,6 +27,9 @@ export function Footer() {
               </a>
               <a href="https://www.youtube.com/@ieeeatii" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="YouTube" data-testid="social-youtube">
                 <FaYoutube className="w-5 h-5" />
+              </a>
+              <a href="mailto:atiig@ieeekerala.org" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Email" data-testid="social-email">
+                <FaEnvelope className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -65,18 +68,13 @@ export function Footer() {
             <h3 className="text-xl font-bold mb-6 flex items-center">
               Resources & Contact
             </h3>
-            <ul className="space-y-3 mb-6 border-b border-white/10 pb-6">
+            <ul className="space-y-3 mb-6">
               <li><Link to="/resources" className="text-slate-300 hover:text-purple transition-colors">Assistive Tech Libraries</Link></li>
               <li><Link to="/resources#research" className="text-slate-300 hover:text-purple transition-colors">Research</Link></li>
               <li><Link to="/resources#standards" className="text-slate-300 hover:text-purple transition-colors">Guidelines</Link></li>
               <li><Link to="/resources#guides" className="text-slate-300 hover:text-purple transition-colors">Downloads & Guides</Link></li>
               <li><Link to="/contact#faq" className="text-slate-300 hover:text-purple transition-colors">FAQs</Link></li>
             </ul>
-            <address className="not-italic text-sm text-slate-300 space-y-2">
-              <p className="hover:text-white transition-colors"><a href="mailto:atiig@ieeekerala.org">atiig@ieeekerala.org</a></p>
-              <p className="hover:text-white transition-colors"><a href="tel:+9179945426300">+91 79945 426 300</a></p>
-              <p>Thiruvananthapuram, Kerala, India</p>
-            </address>
           </div>
         </div>
 

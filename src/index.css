@@ -280,44 +280,44 @@
 }
 
 /* Accessibility menu effects */
-html.v-font-10 body {
+html.v-font-10 {
   font-size: 110%;
 }
 
-html.v-font-20 body {
+html.v-font-20 {
   font-size: 120%;
 }
 
-html.v-font-30 body {
+html.v-font-30 {
   font-size: 130%;
 }
 
-html.v-line-15 body {
-  line-height: 1.5;
+html.v-line-15 * {
+  line-height: 1.5 !important;
 }
 
-html.v-line-20 body {
-  line-height: 1.6;
+html.v-line-20 * {
+  line-height: 1.6 !important;
 }
 
-html.v-line-25 body {
-  line-height: 1.75;
+html.v-line-25 * {
+  line-height: 1.75 !important;
 }
 
-html.v-align-left body {
-  text-align: left;
+html.v-align-left * {
+  text-align: left !important;
 }
 
-html.v-align-right body {
-  text-align: right;
+html.v-align-right * {
+  text-align: right !important;
 }
 
-html.v-align-center body {
-  text-align: center;
+html.v-align-center * {
+  text-align: center !important;
 }
 
-html.v-align-justify body {
-  text-align: justify;
+html.v-align-justify * {
+  text-align: justify !important;
 }
 
 html.dyslexic-font body {

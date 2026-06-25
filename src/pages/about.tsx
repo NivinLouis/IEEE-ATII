@@ -10,22 +10,28 @@ import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star, Arr
 import { FaLinkedin } from "react-icons/fa";
 // import { useListTeamMembers } from "@workspace/api-client-react";
 
-const useListTeamMembers = () => ({
+interface TeamMember {
+  id: string;
+  initials: string;
+  name: string;
+  role: string;
+  linkedinUrl?: string;
+}
+
+const useListTeamMembers = (): { data: TeamMember[]; isLoading: boolean } => ({
   data: [],
   isLoading: false,
 });
 
 import {
   routeMeta,
+  GLOBAL_STATS,
 } from "@/data/site";
-import { useGlobalStats } from "@/lib/sanity/hooks";
 
 import HeroVisual from "@/components/HeroVisual";
 
 export default function AboutPage() {
   const teamQuery = useListTeamMembers();
-  const globalStatsQuery = useGlobalStats();
-  const globalStats = globalStatsQuery.data;
   const teamMembers = Array.isArray(teamQuery.data) ? teamQuery.data : [];
   return (
     <Layout>
@@ -97,10 +103,10 @@ export default function AboutPage() {
       <section className="bg-white border-b border-slate-100 relative z-10" data-testid="about-stats">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
-            <StatCounter value={globalStats?.projects ?? "—"} label="Projects" color="navy" />
-            <StatCounter value={globalStats?.livesImpacted ?? "—"} label="Lives" color="orange" />
-            <StatCounter value={globalStats?.partners ?? "—"} label="Partners" color="purple" />
-            <StatCounter value={globalStats?.events ?? "—"} label="Events" color="teal" />
+            <StatCounter value={GLOBAL_STATS.projects} label="Projects" color="navy" />
+            <StatCounter value={GLOBAL_STATS.livesImpacted} label="Lives" color="orange" />
+            <StatCounter value={GLOBAL_STATS.partners} label="Partners" color="purple" />
+            <StatCounter value={GLOBAL_STATS.events} label="Events" color="teal" />
           </div>
         </div>
       </section>
@@ -173,12 +179,21 @@ export default function AboutPage() {
 
           {(() => {
             const milestones = [
-              { year: "2016", title: "Foundation", desc: "ATIIG was formed with a vision to create inclusive technology solutions." },
-              { year: "2018", title: "First Innovations", desc: "Launched early prototypes focused on accessibility in education and mobility." },
-              { year: "2020", title: "Growing Impact", desc: "Expanded projects across Kerala and reached thousands of beneficiaries." },
-              { year: "2022", title: "Collaborations", desc: "Built strong partnerships with academia, industry, and non-profits." },
-              { year: "2024", title: "Scaling Inclusion", desc: "Accelerating inclusive innovation through new labs and programs." },
-              { year: "2025+", title: "Future Forward", desc: "Continuing our journey towards an inclusive and accessible world." },
+              {
+                year: "Mar 31, 2026",
+                title: "Foundation",
+                desc: "ATIIG was founded as the official Assistive Technology & Inclusive Innovation Group of the IEEE Kerala Section, with a vision to design, prototype, and deploy affordable assistive technologies across Kerala.",
+              },
+              {
+                year: "Jun 15, 2026",
+                title: "Execom Formation",
+                desc: "The Executive Committee was constituted with representatives from industry, academia, and the disability sector to steer strategy, outreach, and program execution across the state.",
+              },
+              {
+                year: "Jul 25, 2026",
+                title: "IncluCode",
+                desc: "INCLUCODE — the first-of-its-kind accessibility software — was launched, marking ATIIG's first major open-source contribution to inclusive technology for persons with disabilities.",
+              },
             ];
             return (
               <div className="relative max-w-6xl mx-auto">
@@ -186,7 +201,7 @@ export default function AboutPage() {
                 <div className="hidden md:block">
                   <div className="relative pt-2 pb-2">
                     <div className="absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                    <div className="grid grid-cols-6 gap-4">
+                    <div className="grid grid-cols-3 gap-8">
                       {milestones.map((item, i) => (
                         <motion.div
                           key={item.year}
@@ -198,9 +213,9 @@ export default function AboutPage() {
                         >
                           <div className="text-teal font-black text-xl mb-3">{item.year}</div>
                           <div className="relative z-10 w-5 h-5 rounded-full bg-orange ring-4 ring-navy shadow-[0_0_0_2px_rgba(253,123,9,0.35)]" />
-                          <div className="mt-5 bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-4 border border-white/10 w-full min-h-[140px]">
-                            <h4 className="font-bold text-base mb-2 leading-snug">{item.title}</h4>
-                            <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
+                          <div className="mt-5 bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-6 border border-white/10 w-full min-h-[180px]">
+                            <h4 className="font-bold text-lg mb-3 leading-snug">{item.title}</h4>
+                            <p className="text-sm text-slate-300 leading-relaxed">{item.desc}</p>
                           </div>
                         </motion.div>
                       ))}
