@@ -33,20 +33,18 @@ import {
   Tooltip as RechartsTooltip, 
   ResponsiveContainer 
 } from "recharts";
-import { routeMeta } from "@/data/site";
-import { useEvents, useGlobalStats, useHomePage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useEvents, useHomePage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 
 export default function HomePage() {
   const homePageQuery = useHomePage();
-  const globalStatsQuery = useGlobalStats();
   const eventsQuery = useEvents();
   const storiesQuery = useProjectsStoriesSection();
-  const globalStats = globalStatsQuery.data;
   const statsBarData = [
-    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
-    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
-    { value: globalStats?.partners ?? "—", label: "Partners & Collaborators" },
-    { value: globalStats?.events ?? "—", label: "Events" },
+    { value: GLOBAL_STATS.volunteers, label: "Volunteers" },
+    { value: GLOBAL_STATS.livesImpacted, label: "Lives Impacted" },
+    { value: GLOBAL_STATS.partners, label: "Partners & Collaborators" },
+    { value: GLOBAL_STATS.events, label: "Events" },
   ];
   const impactDistributionData = (homePageQuery.data?.statistics?.impactDistribution ?? []).map((item) => ({
     ...item,
@@ -62,10 +60,10 @@ export default function HomePage() {
               : "#475569",
   }));
   const impactHighlightsData = [
-    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
-    { value: globalStats?.projects ?? "—", label: "Projects Delivered" },
-    { value: globalStats?.partners ?? "—", label: "Partners" },
-    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
+    { value: GLOBAL_STATS.livesImpacted, label: "Lives Impacted" },
+    { value: GLOBAL_STATS.projects, label: "Projects Delivered" },
+    { value: GLOBAL_STATS.partners, label: "Partners" },
+    { value: GLOBAL_STATS.volunteers, label: "Volunteers" },
   ];
   const impactTrendData = homePageQuery.data?.statistics?.impactTrend ?? [];
   const upcomingEvents = (eventsQuery.data ?? []).slice(0, 3);

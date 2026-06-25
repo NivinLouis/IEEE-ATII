@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
-import { useGetInvolvedCards, useGlobalStats } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useGetInvolvedCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,7 @@ import {
 
 export default function GetInvolvedPage() {
   const { toast } = useToast();
-  const globalStatsQuery = useGlobalStats();
   const getInvolvedCardsQuery = useGetInvolvedCards();
-  const globalStats = globalStatsQuery.data;
   const getInvolvedCards = getInvolvedCardsQuery.data ?? [];
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {

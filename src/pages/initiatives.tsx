@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
-import { useGlobalStats, useInitiativeCards } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useInitiativeCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
@@ -53,9 +53,7 @@ const themeStyles = {
 
 export default function InitiativesPage() {
   const [activeTab, setActiveTab] = useState("All");
-  const globalStatsQuery = useGlobalStats();
   const initiativeCardsQuery = useInitiativeCards();
-  const globalStats = globalStatsQuery.data;
   const initiatives = initiativeCardsQuery.data ?? [];
 
   const filtered = activeTab === "All"
@@ -144,11 +142,11 @@ export default function InitiativesPage() {
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Core Programs</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-teal">{globalStats?.beneficiaries ?? "—"}</span>
+                  <span className="text-3xl font-black text-teal">{GLOBAL_STATS.beneficiaries}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Beneficiaries</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-purple">{globalStats?.volunteers ?? "—"}</span>
+                  <span className="text-3xl font-black text-purple">{GLOBAL_STATS.volunteers}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Volunteers</span>
                 </div>
               </div>

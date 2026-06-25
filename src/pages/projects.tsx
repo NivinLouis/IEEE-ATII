@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
-import { useGlobalStats, useHomePage, useProjectsPage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useHomePage, useProjectsPage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { TestimonialsCard } from "@/components/ui/testimonials-card";
@@ -18,11 +18,9 @@ import KeralaMap from "@/components/KeralaMap.jsx";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
 
 export default function ProjectsPage() {
-  const globalStatsQuery = useGlobalStats();
   const homePageQuery = useHomePage();
   const projectsPageQuery = useProjectsPage();
   const projectsStoriesSectionQuery = useProjectsStoriesSection();
-  const globalStats = globalStatsQuery.data;
   const projectCategories = projectsPageQuery.data?.projectCategories ?? [];
   const featuredProject = projectsPageQuery.data?.featuredProject;
   const storiesOfChangeItems = (projectsStoriesSectionQuery.data?.items ?? []).map((item, index) => ({
@@ -92,23 +90,23 @@ export default function ProjectsPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 max-w-5xl mx-auto bg-white/10 p-8 rounded-2xl backdrop-blur-sm border border-white/20">
             <div className="text-center">
-              <div className="text-4xl font-black text-orange mb-1">{globalStats?.projects ?? "—"}</div>
+              <div className="text-4xl font-black text-orange mb-1">{GLOBAL_STATS.projects}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Projects</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-teal mb-1">{globalStats?.livesImpacted ?? "—"}</div>
+              <div className="text-4xl font-black text-teal mb-1">{GLOBAL_STATS.livesImpacted}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Lives</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-purple mb-1">{globalStats?.states ?? "—"}</div>
+              <div className="text-4xl font-black text-orange mb-1">{GLOBAL_STATS.states}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">States Reached</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-black text-orange mb-1">{globalStats?.partners ?? "—"}</div>
-              <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Partners</div>
+              <div className="text-4xl font-black text-teal mb-1">{GLOBAL_STATS.devicesDistributed}</div>
+              <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Devices Distributed</div>
             </div>
             <div className="text-center col-span-2 md:col-span-1">
-              <div className="text-4xl font-black text-teal mb-1">{globalStats?.volunteers ?? "—"}</div>
+              <div className="text-4xl font-black text-orange mb-1">{GLOBAL_STATS.volunteers}</div>
               <div className="text-xs font-bold text-slate-300 uppercase tracking-widest">Volunteers</div>
             </div>
           </div>
@@ -167,99 +165,9 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Featured Project */}
-      <section id="featured" className="py-24 bg-white" data-testid="projects-featured">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-4 mb-8">
-              <span className="bg-orange text-white text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full">Featured Project</span>
-            </div>
-            
-            {!featuredProject ? (
-              <NewsStateBlock
-                eyebrow="CMS content missing"
-                title="No featured project is available."
-                description="Publish `projectsPage.featuredProject` content in Sanity to populate this section."
-              />
-            ) : (
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1 relative">
-                <img src={sparshImg} alt="Sparsh Prosthetic Hand" className="rounded-3xl shadow-xl w-full object-cover aspect-[4/3]" />
-              </div>
-              
-              <div className="order-1 lg:order-2">
-                <h2 className="text-4xl font-black text-navy mb-6">{featuredProject.title}</h2>
-                <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                  {featuredProject.description}
-                </p>
-                
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {(featuredProject.tags ?? []).map(tag => (
-                    <span key={tag} className="bg-teal/10 text-teal font-bold px-3 py-1 rounded-md text-sm">{tag}</span>
-                  ))}
-                </div>
-                
-                <div className="grid grid-cols-3 gap-4 mb-8 border-y border-slate-100 py-6">
-                  {(featuredProject.metrics ?? []).map((metric) => (
-                    <div key={metric.label}>
-                      <div className="text-2xl font-black text-navy">{metric.value}</div>
-                      <div className="text-xs font-bold text-slate-500 uppercase">{metric.label}</div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mb-10 space-y-4">
-                  <h3 className="font-bold text-navy text-lg mb-4">Project Outcomes:</h3>
-                  {(featuredProject.outcomes ?? []).map((outcome, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-orange shrink-0 mt-0.5" />
-                      <span className="text-slate-700 font-medium">{outcome}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            )}
-          </div>
-        </div>
-      </section>
+      {/* Featured Project — hidden for now */}
 
-      {/* Impact in Numbers */}
-      <section className="py-24 bg-slate-50" data-testid="projects-data">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Impact in Numbers</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">Data-driven insights demonstrating the scale of our interventions.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-              <h3 className="text-lg font-bold text-navy mb-8 text-center">Lives Impacted Over the Years</h3>
-              {impactTrendData.length === 0 ? (
-                <NewsStateBlock
-                  eyebrow="No chart data"
-                  title="No impact trend data is available."
-                  description="Publish `homePage.statistics.impactTrend` entries in Sanity to populate this chart."
-                />
-              ) : (
-              <div className="h-72">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={impactTrendData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontWeight: 600}} />
-                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b'}} />
-                    <RechartsTooltip contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)'}} />
-                    <Line type="monotone" dataKey="impact" stroke="#01A0A0" strokeWidth={4} dot={{r: 6, fill: '#01A0A0', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 8}} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              )}
-            </div>
-            
-            {/* Impact by Focus Area — hidden for now */}
-          </div>
-        </div>
-      </section>
+      {/* Impact in Numbers — hidden for now */}
 
       {/* Stories of Change */}
       <section id="impact" className="py-24 bg-slate-50" data-testid="projects-stories">
