@@ -258,7 +258,23 @@ export default function GetInvolvedPage() {
                   <p className="text-white font-bold text-lg">"Every volunteer hour drives real change."</p>
                 </div>
               </div>
-              {/* Our Impact at a Glance — hidden for now */}
+              <div className="bg-slate-50 rounded-3xl p-8 mb-10 border border-slate-100">
+                <h3 className="text-xl font-black text-navy mb-6">Our Impact at a Glance</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {[
+                    { val: GLOBAL_STATS.livesImpacted, label: "Lives" },
+                    { val: GLOBAL_STATS.projects, label: "Projects" },
+                    { val: GLOBAL_STATS.volunteers, label: "Volunteers" },
+                    { val: GLOBAL_STATS.partners, label: "Partners" },
+                    { val: GLOBAL_STATS.states, label: "States" }
+                  ].map((stat, i) => (
+                    <div key={i} className="text-center p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                      <div className="text-2xl font-black text-navy mb-1">{stat.val}</div>
+                      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
               
               <h3 className="text-2xl font-black text-navy mb-6">Frequently Asked Questions</h3>
               <Accordion type="single" collapsible className="w-full">
