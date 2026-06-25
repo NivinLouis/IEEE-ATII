@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
@@ -15,16 +16,17 @@ const useListTeamMembers = () => ({
 });
 
 import {
-  asArrayOrFallback,
-  fallbackTeamMembers,
   routeMeta,
 } from "@/data/site";
+import { useGlobalStats } from "@/lib/sanity/hooks";
 
 import HeroVisual from "@/components/HeroVisual";
 
 export default function AboutPage() {
   const teamQuery = useListTeamMembers();
-  const teamMembers = asArrayOrFallback(teamQuery.data, fallbackTeamMembers);
+  const globalStatsQuery = useGlobalStats();
+  const globalStats = globalStatsQuery.data;
+  const teamMembers = Array.isArray(teamQuery.data) ? teamQuery.data : [];
   return (
     <Layout>
       <SEO
@@ -95,10 +97,10 @@ export default function AboutPage() {
       <section className="bg-white border-b border-slate-100 relative z-10" data-testid="about-stats">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-slate-100">
-            <StatCounter value="100+" label="Projects" color="navy" />
-            <StatCounter value="25K+" label="Lives" color="orange" />
-            <StatCounter value="50+" label="Partners" color="purple" />
-            <StatCounter value="65+" label="Events" color="teal" />
+            <StatCounter value={globalStats?.projects ?? "—"} label="Projects" color="navy" />
+            <StatCounter value={globalStats?.livesImpacted ?? "—"} label="Lives" color="orange" />
+            <StatCounter value={globalStats?.partners ?? "—"} label="Partners" color="purple" />
+            <StatCounter value={globalStats?.events ?? "—"} label="Events" color="teal" />
           </div>
         </div>
       </section>
@@ -241,6 +243,15 @@ export default function AboutPage() {
 
           {teamQuery.isLoading && teamMembers.length === 0 && (
             <div className="text-center py-10 text-slate-400 font-medium" data-testid="team-loading">Loading team…</div>
+          )}
+          {!teamQuery.isLoading && teamMembers.length === 0 && (
+            <div className="mb-10">
+              <NewsStateBlock
+                eyebrow="No leadership data"
+                title="Leadership data is unavailable."
+                description="This section no longer uses hardcoded fallback records. Connect the team data source to populate it."
+              />
+            </div>
           )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="team-list">
             {teamMembers.map((person) => (

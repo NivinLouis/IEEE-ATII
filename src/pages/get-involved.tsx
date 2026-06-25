@@ -1,7 +1,9 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
+import { useGetInvolvedCards, useGlobalStats } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import volunteerImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png";
 import { Input } from "@/components/ui/input";
@@ -12,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { Users, Star, Handshake, Heart, ArrowRight, Mail } from "lucide-react";
-import { 
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -21,6 +23,10 @@ import {
 
 export default function GetInvolvedPage() {
   const { toast } = useToast();
+  const globalStatsQuery = useGlobalStats();
+  const getInvolvedCardsQuery = useGetInvolvedCards();
+  const globalStats = globalStatsQuery.data;
+  const getInvolvedCards = getInvolvedCardsQuery.data ?? [];
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,24 +85,46 @@ export default function GetInvolvedPage() {
       {/* Ways to Get Involved */}
       <section className="py-24 bg-white" data-testid="ways-to-get-involved">
         <div className="container mx-auto px-4">
+          {!getInvolvedCardsQuery.isLoading && getInvolvedCards.length === 0 && (
+            <div className="mb-10">
+              <NewsStateBlock
+                eyebrow="CMS content missing"
+                title="No get-involved cards are available."
+                description="Publish `getInvolvedCard` documents in Sanity to populate this section."
+              />
+            </div>
+          )}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { id: "volunteer", icon: <Users className="w-8 h-8" />, title: "Volunteer Opportunities", desc: "Share your time and skills to work on impactful projects that create real impact.", color: "text-teal", bg: "bg-teal/10", btn: "Explore Opportunities" },
-              { id: "member", icon: <Star className="w-8 h-8" />, title: "Become a Member", desc: "Join our community of innovators and changemakers.", color: "text-purple", bg: "bg-purple/10", btn: "Learn More" },
-              { id: "partner", icon: <Handshake className="w-8 h-8" />, title: "Partner With Us", desc: "Collaborate on initiatives that drive inclusion and innovation.", color: "text-orange", bg: "bg-orange/10", btn: "Explore Partnerships" },
-              { id: "join", icon: <Heart className="w-8 h-8" />, title: "Join Us", desc: "Become part of our community and contribute your skills, ideas and energy to building a more inclusive future.", color: "text-navy", bg: "bg-navy/10", btn: "Get Started" },
-            ].map((way, i) => (
+            {getInvolvedCards.map((way, i) => {
+              const cardStyles = {
+                volunteer: { icon: <Users className="w-8 h-8" />, color: "text-teal", bg: "bg-teal/10" },
+                member: { icon: <Star className="w-8 h-8" />, color: "text-purple", bg: "bg-purple/10" },
+                partner: { icon: <Handshake className="w-8 h-8" />, color: "text-orange", bg: "bg-orange/10" },
+                join: { icon: <Heart className="w-8 h-8" />, color: "text-navy", bg: "bg-navy/10" },
+              } as const;
+              const style = cardStyles[way.kind as keyof typeof cardStyles] ?? cardStyles.join;
+              const isExternal = /^https?:\/\//.test(way.buttonHref);
+
+              return (
               <div key={i} id={way.id} className="bg-slate-50 rounded-2xl p-8 border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition-shadow scroll-mt-32">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${way.bg} ${way.color}`}>
-                  {way.icon}
+                <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${style.bg} ${style.color}`}>
+                  {style.icon}
                 </div>
                 <h3 className="text-xl font-bold text-navy mb-3">{way.title}</h3>
-                <p className="text-slate-600 text-sm mb-8 flex-1">{way.desc}</p>
-                <Button variant="outline" className={`w-full font-bold ${way.color.replace('text', 'border')} ${way.color} hover:bg-slate-100`}>
-                  {way.btn} →
+                <p className="text-slate-600 text-sm mb-8 flex-1">{way.description}</p>
+                <Button asChild variant="outline" className={`w-full font-bold ${style.color.replace('text', 'border')} ${style.color} hover:bg-slate-100`}>
+                  {isExternal ? (
+                    <a href={way.buttonHref} target="_blank" rel="noreferrer">
+                      {way.buttonLabel} →
+                    </a>
+                  ) : (
+                    <Link to={way.buttonHref}>
+                      {way.buttonLabel} →
+                    </Link>
+                  )}
                 </Button>
               </div>
-            ))}
+            )})}
           </div>
         </div>
       </section>
@@ -236,11 +264,11 @@ export default function GetInvolvedPage() {
                 <h3 className="text-xl font-black text-navy mb-6">Our Impact at a Glance</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {[
-                    { val: "25K+", label: "Lives" },
-                    { val: "100+", label: "Projects" },
-                    { val: "1.2K", label: "Volunteers" },
-                    { val: "50+", label: "Partners" },
-                    { val: "18", label: "States" }
+                    { val: globalStats?.livesImpacted ?? "—", label: "Lives" },
+                    { val: globalStats?.projects ?? "—", label: "Projects" },
+                    { val: globalStats?.volunteers ?? "—", label: "Volunteers" },
+                    { val: globalStats?.partners ?? "—", label: "Partners" },
+                    { val: globalStats?.states ?? "—", label: "States" }
                   ].map((stat, i) => (
                     <div key={i} className="text-center p-4 bg-white rounded-xl shadow-sm border border-slate-100">
                       <div className="text-2xl font-black text-navy mb-1">{stat.val}</div>

@@ -7,11 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
-import {
-  fallbackEvents,
-  routeMeta,
-  SITE_URL,
-} from "@/data/site";
+import { routeMeta, SITE_URL } from "@/data/site";
 import { useEvents, useNewsArticles, usePhotoGalleryItems } from "@/lib/sanity/hooks";
 import {
   formatNewsDate,
@@ -25,8 +21,6 @@ import { sanityConfigured } from "@/lib/sanity/client";
 
 import newsHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(3)_1777748003995.png";
 import newsVariantImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_22_PM_(7)_1777748003997.png";
-import heroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png";
-import teamImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(1)_1777748003996.png";
 
 const MONTH_ABBR = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
@@ -43,16 +37,11 @@ export default function NewsEventsPage() {
   const newsQuery = useNewsArticles();
   const galleryQuery = usePhotoGalleryItems();
 
-  const events = useMemo(() => {
-    if (!sanityConfigured) return fallbackEvents;
-    return eventsQuery.data && eventsQuery.data.length > 0
-      ? eventsQuery.data
-      : fallbackEvents;
-  }, [eventsQuery.data]);
+  const events = eventsQuery.data ?? [];
   const news = newsQuery.data ?? [];
-  const galleryItems = useMemo(() => {
-    if (sanityConfigured && galleryQuery.data && galleryQuery.data.length > 0) {
-      return galleryQuery.data
+  const galleryItems = useMemo(
+    () =>
+      (galleryQuery.data ?? [])
         .map((item) => {
           const image = getSanityImageProps(item.image);
           if (!image?.src) return null;
@@ -73,28 +62,17 @@ export default function NewsEventsPage() {
         caption: string;
         tag: string;
         tagClass: string;
-      }[];
-    }
-
-    return [
-      { id: "fallback-1", img: newsHeroImg, alt: "AT Innovation Hackathon 2025", caption: "AT Innovation Hackathon 2025", tag: "Hackathon", tagClass: "bg-orange" },
-      { id: "fallback-2", img: teamImg, alt: "Sparsh Demo Day in Trivandrum", caption: "Sparsh Demo Day · Trivandrum", tag: "Demo", tagClass: "bg-orange" },
-      { id: "fallback-3", img: heroImg, alt: "Inclusive Education Workshop in Kochi", caption: "Inclusive Education Workshop · Kochi", tag: "Workshop", tagClass: "bg-orange" },
-      { id: "fallback-4", img: newsVariantImg, alt: "Community Outreach in Wayanad", caption: "Community Outreach · Wayanad", tag: "Community", tagClass: "bg-orange" },
-      { id: "fallback-5", img: newsHeroImg, alt: "AI for Accessibility Webinar", caption: "AI for Accessibility Webinar", tag: "Webinar", tagClass: "bg-orange" },
-      { id: "fallback-6", img: teamImg, alt: "Volunteer Onboarding in Trivandrum", caption: "Volunteer Onboarding · Trivandrum", tag: "Volunteers", tagClass: "bg-orange" },
-    ];
-  }, [galleryQuery.data]);
+      }[],
+    [galleryQuery.data],
+  );
 
   const eventCategories = useMemo(() => {
     const categories = new Set<string>();
     for (const event of events) {
-      if ("categories" in event && Array.isArray(event.categories)) {
+      if (Array.isArray(event.categories)) {
         for (const category of event.categories) {
           if (category?.title) categories.add(category.title);
         }
-      } else if ("category" in event && typeof event.category === "string") {
-        categories.add(event.category);
       }
     }
 
@@ -105,16 +83,16 @@ export default function NewsEventsPage() {
     () =>
       activeCategory === "All Events"
         ? events
-        : events.filter((e: any) =>
-            "categories" in e && Array.isArray(e.categories)
-              ? e.categories.some((category: any) => category?.title === activeCategory)
-              : e.category === activeCategory,
+        : events.filter((e) =>
+            Array.isArray(e.categories)
+              ? e.categories.some((category) => category?.title === activeCategory)
+              : false,
           ),
     [events, activeCategory],
   );
 
   const featuredEvent = useMemo(
-    () => events.find((e: any) => e.featured) ?? events[0],
+    () => events.find((e) => e.featured) ?? events[0],
     [events],
   );
 
@@ -123,12 +101,9 @@ export default function NewsEventsPage() {
     const workshopDates: Date[] = [];
     for (const e of events) {
       const d = new Date(e.startsAt);
-      const primaryCategory =
-        "categories" in e && Array.isArray(e.categories)
-          ? getPrimaryEventCategoryLabel(e.categories)
-          : "category" in e && typeof e.category === "string"
-            ? e.category
-            : "Events";
+      const primaryCategory = Array.isArray(e.categories)
+        ? getPrimaryEventCategoryLabel(e.categories)
+        : "Events";
       if (primaryCategory === "Workshops") workshopDates.push(d);
       else eventDates.push(d);
     }
@@ -216,14 +191,16 @@ export default function NewsEventsPage() {
                 )}
                 {!eventsQuery.isLoading && filteredEvents.length === 0 && (
                   <div className="text-center py-10">
-                    <p className="text-slate-400 font-medium">No events in this category.</p>
-                    <button onClick={() => setActiveCategory("All Events")} className="mt-2 text-navy font-bold hover:underline text-sm">Show all events</button>
+                    <p className="text-slate-400 font-medium">{events.length === 0 ? "No events are published." : "No events in this category."}</p>
+                    {events.length > 0 ? (
+                      <button onClick={() => setActiveCategory("All Events")} className="mt-2 text-navy font-bold hover:underline text-sm">Show all events</button>
+                    ) : null}
                   </div>
                 )}
-                {filteredEvents.map((evt: any) => {
+                {filteredEvents.map((evt) => {
                   const badge = formatEventDateBadge(evt.startsAt);
                   return (
-                    <div key={evt._id ?? evt.id} className={`p-5 rounded-xl border transition-all ${evt.featured ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
+                    <div key={evt._id} className={`p-5 rounded-xl border transition-all ${evt.featured ? 'border-orange bg-orange/5 shadow-sm' : 'border-slate-200 hover:border-navy bg-white'}`}>
                       <div className="flex gap-4">
                         <div className="w-16 flex-shrink-0 text-center">
                           <div className={`text-xs font-black uppercase ${evt.featured ? 'text-orange' : 'text-slate-500'}`}>{badge.month}</div>
@@ -233,7 +210,7 @@ export default function NewsEventsPage() {
                           <h3 className="font-bold text-navy mb-2 leading-tight">{evt.title}</h3>
                           <div className="text-xs text-slate-500 space-y-1 mb-4">
                             <div className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> {evt.location}</div>
-                            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {"displayTime" in evt ? evt.displayTime : evt.time}</div>
+                            <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {evt.displayTime}</div>
                           </div>
                           <Button asChild size="sm" variant={evt.featured ? "default" : "outline"} className={evt.featured ? "bg-orange hover:bg-orange/90 text-white font-bold" : "font-bold text-navy"}>
                             <a href={evt.registrationUrl ?? "/get-involved#join"}>{"registrationLabel" in evt && evt.registrationLabel ? evt.registrationLabel : "Register"}</a>
@@ -293,7 +270,7 @@ export default function NewsEventsPage() {
                     <div className="space-y-2.5 mb-5 text-slate-300 font-medium text-sm">
                       <div className="flex items-center gap-3">
                         <CalendarIcon className="w-4 h-4 text-teal shrink-0" />
-                        <span>{new Date(featuredEvent.startsAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} • {"displayTime" in featuredEvent ? featuredEvent.displayTime : featuredEvent.time}</span>
+                        <span>{new Date(featuredEvent.startsAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} • {featuredEvent.displayTime}</span>
                       </div>
                       <div className="flex items-start gap-3">
                         <MapPin className="w-4 h-4 text-teal shrink-0 mt-0.5" />
@@ -450,19 +427,29 @@ export default function NewsEventsPage() {
         </div>
         
         <div className="flex w-full overflow-x-auto pb-8 hide-scrollbar gap-4 px-4 snap-x">
-          {galleryItems.map((item) => (
-            <div key={item.id} className="relative shrink-0 w-[280px] md:w-[400px] aspect-video rounded-xl overflow-hidden snap-center group cursor-pointer">
-              <img src={item.img} alt={item.alt} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
-              <span className={`absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest text-white px-2.5 py-1 rounded ${item.tagClass}`}>{item.tag}</span>
-              <div className="absolute bottom-3 left-4 right-4 text-white">
-                <p className="font-bold text-sm leading-tight drop-shadow">{item.caption}</p>
-              </div>
-              <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-white font-bold bg-orange px-4 py-2 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">View Image</span>
-              </div>
+          {galleryItems.length === 0 ? (
+            <div className="w-full">
+              <NewsStateBlock
+                eyebrow="No gallery items"
+                title="No photo gallery items are available."
+                description="Publish `photoGalleryItem` documents with images in Sanity to populate this gallery."
+              />
             </div>
-          ))}
+          ) : (
+            galleryItems.map((item) => (
+              <div key={item.id} className="relative shrink-0 w-[280px] md:w-[400px] aspect-video rounded-xl overflow-hidden snap-center group cursor-pointer">
+                <img src={item.img} alt={item.alt} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
+                <span className={`absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest text-white px-2.5 py-1 rounded ${item.tagClass}`}>{item.tag}</span>
+                <div className="absolute bottom-3 left-4 right-4 text-white">
+                  <p className="font-bold text-sm leading-tight drop-shadow">{item.caption}</p>
+                </div>
+                <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="text-white font-bold bg-orange px-4 py-2 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">View Image</span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </section>
 

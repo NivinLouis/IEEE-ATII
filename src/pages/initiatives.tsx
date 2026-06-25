@@ -2,59 +2,16 @@ import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
+import { useGlobalStats, useInitiativeCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Filter, ArrowRight, Lightbulb, Users, BookOpen, Building, GraduationCap, Globe } from "lucide-react";
+import { Search, Filter, Lightbulb, Users, BookOpen, Building, Globe } from "lucide-react";
 
 import HeroVisual from "@/components/HeroVisual";
-
-const allInitiatives = [
-  {
-    id: "innovation-lab",
-    title: "AT Innovation Lab", theme: "navy", status: "Ongoing",
-    icon: <Lightbulb className="w-6 h-6" />,
-    desc: "Our innovation lab develops and prototypes assistive devices and solutions using emerging technologies and user-centered design.",
-    stats: ["18 Projects", "4.3K+ Lives Impacted", "12 Partners"]
-  },
-  {
-    id: "outreach",
-    title: "Community Outreach", theme: "teal", status: "Ongoing",
-    icon: <Users className="w-6 h-6" />,
-    desc: "We collaborate with communities to identify needs, create awareness, and deliver inclusive solutions where they are needed most.",
-    stats: ["65+ Events", "8.7K+ People Reached", "20+ Volunteers"]
-  },
-  {
-    id: "education",
-    title: "Inclusive Education", theme: "purple", status: "Ongoing",
-    icon: <BookOpen className="w-6 h-6" />,
-    desc: "Promoting inclusive learning environments through accessible resources, teacher training, and inclusive learning tools.",
-    stats: ["35+ Institutions", "6.1K+ Students", "80+ Sessions"]
-  },
-  {
-    id: "campus",
-    title: "Accessible Campus Program", theme: "orange", status: "Completed",
-    icon: <Building className="w-6 h-6" />,
-    desc: "Making campuses universally inclusive through audits, retrofitting, awareness campaigns and inclusive infrastructure advocacy.",
-    stats: ["15+ Campuses", "2.8K+ Users", "10+ Audits"]
-  },
-  {
-    id: "capacity",
-    title: "Capacity Building", theme: "teal", status: "Upcoming",
-    icon: <GraduationCap className="w-6 h-6" />,
-    desc: "Workshops, mentoring and hands-on training to build skills in assistive technology, design thinking, and inclusive innovation.",
-    stats: ["40+ Workshops", "3.9K+ Participants", "25+ Mentors"]
-  },
-  {
-    id: "humanitarian",
-    title: "Humanitarian Technology", theme: "navy", status: "In Planning",
-    icon: <Globe className="w-6 h-6" />,
-    desc: "Designing low-cost, scalable assistive solutions for disaster response and refugee and underserved settings.",
-    stats: ["10+ Deployments", "1.6K+ Impacted", "8+ Partners"]
-  }
-];
 
 const statusBadge: Record<string, string> = {
   Ongoing: "bg-green-100 text-green-800",
@@ -63,12 +20,47 @@ const statusBadge: Record<string, string> = {
   "In Planning": "bg-amber-100 text-amber-800",
 };
 
+const themeStyles = {
+  innovation: {
+    border: "border-l-navy",
+    bg: "bg-navy/10",
+    text: "text-navy",
+    statBg: "bg-navy/5",
+    icon: <Lightbulb className="w-6 h-6" />,
+  },
+  education: {
+    border: "border-l-purple",
+    bg: "bg-purple/10",
+    text: "text-purple",
+    statBg: "bg-purple/5",
+    icon: <BookOpen className="w-6 h-6" />,
+  },
+  community: {
+    border: "border-l-teal",
+    bg: "bg-teal/10",
+    text: "text-teal",
+    statBg: "bg-teal/5",
+    icon: <Users className="w-6 h-6" />,
+  },
+  campus: {
+    border: "border-l-orange",
+    bg: "bg-orange/10",
+    text: "text-orange",
+    statBg: "bg-orange/5",
+    icon: <Building className="w-6 h-6" />,
+  },
+} as const;
+
 export default function InitiativesPage() {
   const [activeTab, setActiveTab] = useState("All");
+  const globalStatsQuery = useGlobalStats();
+  const initiativeCardsQuery = useInitiativeCards();
+  const globalStats = globalStatsQuery.data;
+  const initiatives = initiativeCardsQuery.data ?? [];
 
   const filtered = activeTab === "All"
-    ? allInitiatives
-    : allInitiatives.filter((i) => i.status === activeTab);
+    ? initiatives
+    : initiatives.filter((i) => i.status === activeTab);
 
   return (
     <Layout>
@@ -95,8 +87,8 @@ export default function InitiativesPage() {
             "@type": "ItemList",
             name: "IEEE Kerala ATIIG Programs",
             itemListOrder: "https://schema.org/ItemListOrderAscending",
-            numberOfItems: allInitiatives.length,
-            itemListElement: allInitiatives.map((init, i) => ({
+            numberOfItems: initiatives.length,
+            itemListElement: initiatives.map((init, i) => ({
               "@type": "ListItem",
               position: i + 1,
               name: init.title,
@@ -105,7 +97,7 @@ export default function InitiativesPage() {
                 "@type": "Service",
                 name: init.title,
                 serviceType: init.title,
-                description: init.desc,
+                description: init.description,
                 provider: { "@id": "https://atiig.ieeekerala.org/#organization" },
                 areaServed: { "@type": "AdministrativeArea", name: "Kerala, India" },
                 url: `https://atiig.ieeekerala.org/initiatives#${init.id}`,
@@ -148,15 +140,15 @@ export default function InitiativesPage() {
               </p>
               <div className="flex gap-6 mb-8">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-orange">6</span>
+                  <span className="text-3xl font-black text-orange">{initiatives.length}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Core Programs</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-teal">25K+</span>
+                  <span className="text-3xl font-black text-teal">{globalStats?.beneficiaries ?? "—"}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Beneficiaries</span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-3xl font-black text-purple">120+</span>
+                  <span className="text-3xl font-black text-purple">{globalStats?.volunteers ?? "—"}</span>
                   <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Volunteers</span>
                 </div>
               </div>
@@ -207,6 +199,15 @@ export default function InitiativesPage() {
       {/* Initiatives Grid */}
       <section className="py-24 bg-slate-50" data-testid="initiatives-grid">
         <div className="container mx-auto px-4">
+          {!initiativeCardsQuery.isLoading && initiatives.length === 0 && (
+            <div className="mb-10">
+              <NewsStateBlock
+                eyebrow="CMS content missing"
+                title="No initiative cards are available."
+                description="Publish `initiativeCard` documents in Sanity to populate this page."
+              />
+            </div>
+          )}
           {filtered.length === 0 && (
             <div className="text-center py-16">
               <p className="text-slate-500 text-lg font-medium">No initiatives match this filter.</p>
@@ -215,13 +216,12 @@ export default function InitiativesPage() {
           )}
           <div className="grid md:grid-cols-2 gap-8">
             {filtered.map((init, i) => {
-              const themeStyles = {
-                navy: { border: "border-l-navy", bg: "bg-navy/10", text: "text-navy", statBg: "bg-navy/5" },
-                teal: { border: "border-l-teal", bg: "bg-teal/10", text: "text-teal", statBg: "bg-teal/5" },
-                purple: { border: "border-l-purple", bg: "bg-purple/10", text: "text-purple", statBg: "bg-purple/5" },
-                orange: { border: "border-l-orange", bg: "bg-orange/10", text: "text-orange", statBg: "bg-orange/5" }
-              };
-              const style = themeStyles[init.theme as keyof typeof themeStyles];
+              const style = themeStyles[init.theme as keyof typeof themeStyles] ?? themeStyles.innovation;
+              const stats = [
+                { value: init.statOneValue, label: init.statOneLabel },
+                { value: init.statTwoValue, label: init.statTwoLabel },
+                { value: init.statThreeValue, label: init.statThreeLabel },
+              ];
 
               return (
                 <motion.div 
@@ -235,31 +235,25 @@ export default function InitiativesPage() {
                   <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-4">
                       <div className={`w-14 h-14 rounded-full flex items-center justify-center ${style.bg} ${style.text}`}>
-                        {init.icon}
+                        {style.icon}
                       </div>
                       <h3 className="text-2xl font-bold text-navy">{init.title}</h3>
                     </div>
                     <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${statusBadge[init.status] ?? "bg-slate-100 text-slate-600"}`}>{init.status}</span>
                   </div>
                   
-                  <p className="text-slate-600 mb-8 flex-1 text-lg leading-relaxed">{init.desc}</p>
+                  <p className="text-slate-600 mb-8 flex-1 text-lg leading-relaxed">{init.description}</p>
                   
-                  <div className="grid grid-cols-3 gap-4 mb-8">
-                    {init.stats.map((stat, j) => {
-                      const [val, ...labelParts] = stat.split(" ");
-                      const label = labelParts.join(" ");
+                  <div className="grid grid-cols-3 gap-4">
+                    {stats.map((stat, j) => {
                       return (
                         <div key={j} className={`p-4 rounded-xl text-center ${style.statBg}`}>
-                          <div className={`font-black text-xl mb-1 ${style.text}`}>{val}</div>
-                          <div className="text-xs text-slate-500 font-bold uppercase leading-tight">{label}</div>
+                          <div className={`font-black text-xl mb-1 ${style.text}`}>{stat.value}</div>
+                          <div className="text-xs text-slate-500 font-bold uppercase leading-tight">{stat.label}</div>
                         </div>
                       );
                     })}
                   </div>
-
-                  <Link to={`/projects`} className={`font-bold text-lg inline-flex items-center group ${style.text}`}>
-                    Explore Projects <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                  </Link>
                 </motion.div>
               );
             })}

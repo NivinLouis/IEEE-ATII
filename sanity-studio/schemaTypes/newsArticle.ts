@@ -2,7 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const newsArticleType = defineType({
   name: "newsArticle",
-  title: "News Article",
+  title: "News and Events - News Articles",
   type: "document",
   groups: [
     { name: "content", title: "Content", default: true },
