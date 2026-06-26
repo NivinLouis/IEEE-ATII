@@ -33,20 +33,18 @@ import {
   Tooltip as RechartsTooltip, 
   ResponsiveContainer 
 } from "recharts";
-import { routeMeta } from "@/data/site";
-import { useEvents, useGlobalStats, useHomePage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useEvents, useHomePage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 
 export default function HomePage() {
   const homePageQuery = useHomePage();
-  const globalStatsQuery = useGlobalStats();
   const eventsQuery = useEvents();
   const storiesQuery = useProjectsStoriesSection();
-  const globalStats = globalStatsQuery.data;
   const statsBarData = [
-    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
-    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
-    { value: globalStats?.partners ?? "—", label: "Partners & Collaborators" },
-    { value: globalStats?.events ?? "—", label: "Events" },
+    { value: GLOBAL_STATS.volunteers, label: "Volunteers" },
+    { value: GLOBAL_STATS.livesImpacted, label: "Lives Impacted" },
+    { value: GLOBAL_STATS.partners, label: "Partners & Collaborators" },
+    { value: GLOBAL_STATS.events, label: "Events" },
   ];
   const impactDistributionData = (homePageQuery.data?.statistics?.impactDistribution ?? []).map((item) => ({
     ...item,
@@ -62,10 +60,10 @@ export default function HomePage() {
               : "#475569",
   }));
   const impactHighlightsData = [
-    { value: globalStats?.livesImpacted ?? "—", label: "Lives Impacted" },
-    { value: globalStats?.projects ?? "—", label: "Projects Delivered" },
-    { value: globalStats?.partners ?? "—", label: "Partners" },
-    { value: globalStats?.volunteers ?? "—", label: "Volunteers" },
+    { value: GLOBAL_STATS.livesImpacted, label: "Lives Impacted" },
+    { value: GLOBAL_STATS.projects, label: "Projects Delivered" },
+    { value: GLOBAL_STATS.partners, label: "Partners" },
+    { value: GLOBAL_STATS.volunteers, label: "Volunteers" },
   ];
   const impactTrendData = homePageQuery.data?.statistics?.impactTrend ?? [];
   const upcomingEvents = (eventsQuery.data ?? []).slice(0, 3);
@@ -298,102 +296,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Impact at a Glance */}
-      <section className="py-24 bg-slate-50" data-testid="home-impact">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-black text-navy mb-12 text-center">Impact at a Glance</h2>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[0]?.value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[0]?.label}</div>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[1]?.value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[1]?.label}</div>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[2]?.value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[2]?.label}</div>
-              </div>
-              <div className="bg-white p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
-                <div className="text-3xl font-black text-purple mb-2">{impactHighlightsData[3]?.value}</div>
-                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{impactHighlightsData[3]?.label}</div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-bold text-navy mb-6 text-center">Lives Impacted Over Time (in thousands)</h3>
-              {impactTrendData.length === 0 ? (
-                <NewsStateBlock
-                  eyebrow="No chart data"
-                  title="Impact trend data is unavailable."
-                  description="Publish `homePage.statistics.impactTrend` in Sanity to populate this chart."
-                />
-              ) : (
-                <div className="h-64">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={impactTrendData}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                      <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                      <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                      <RechartsTooltip 
-                        contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                      />
-                      <Line type="monotone" dataKey="impact" stroke="#FD7B09" strokeWidth={4} dot={{r: 6, fill: '#FD7B09', strokeWidth: 2, stroke: '#fff'}} activeDot={{r: 8}} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-              )}
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl shadow-sm">
-              <h3 className="text-lg font-bold text-navy mb-6 text-center">Impact by Focus Area</h3>
-              {impactDistributionData.length === 0 ? (
-                <NewsStateBlock
-                  eyebrow="No chart data"
-                  title="Impact distribution data is unavailable."
-                  description="Publish `homePage.statistics.impactDistribution` in Sanity to populate this chart."
-                />
-              ) : (
-                <>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={impactDistributionData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={80}
-                          paddingAngle={5}
-                          dataKey="value"
-                        >
-                          {impactDistributionData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <RechartsTooltip 
-                          contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-3 mt-2">
-                    {impactDistributionData.slice(0, 4).map((entry, index) => (
-                      <div key={index} className="flex items-center text-xs font-medium text-slate-600">
-                        <span className="w-3 h-3 rounded-full mr-1.5" style={{backgroundColor: entry.color}}></span>
-                        {entry.name}
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Impact at a Glance — hidden for now */}
 
       {/* Upcoming Events */}
       <section className="py-24 bg-white" data-testid="home-events">

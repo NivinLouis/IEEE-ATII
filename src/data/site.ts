@@ -12,6 +12,17 @@ export const SITE_DESCRIPTION =
 export const CONTACT_EMAIL = "atiig@ieeekerala.org";
 export const CONTACT_PHONE = "+91 79945 426 300";
 
+export const GLOBAL_STATS = {
+  volunteers: "40+",
+  livesImpacted: "750+",
+  partners: "7+",
+  events: "4+",
+  projects: "12+",
+  states: "5+",
+  beneficiaries: "750+",
+  devicesDistributed: "700+",
+};
+
 export const SOCIAL_LINKS = [
   "https://www.linkedin.com/company/ieee-kerala-section/",
   "https://www.facebook.com/IEEEKeralaSection/",

@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
-import { useGetInvolvedCards, useGlobalStats } from "@/lib/sanity/hooks";
+import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { useGetInvolvedCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,7 @@ import {
 
 export default function GetInvolvedPage() {
   const { toast } = useToast();
-  const globalStatsQuery = useGlobalStats();
   const getInvolvedCardsQuery = useGetInvolvedCards();
-  const globalStats = globalStatsQuery.data;
   const getInvolvedCards = getInvolvedCardsQuery.data ?? [];
 
   const handleVolunteerSubmit = (e: React.FormEvent) => {
@@ -264,11 +262,11 @@ export default function GetInvolvedPage() {
                 <h3 className="text-xl font-black text-navy mb-6">Our Impact at a Glance</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {[
-                    { val: globalStats?.livesImpacted ?? "—", label: "Lives" },
-                    { val: globalStats?.projects ?? "—", label: "Projects" },
-                    { val: globalStats?.volunteers ?? "—", label: "Volunteers" },
-                    { val: globalStats?.partners ?? "—", label: "Partners" },
-                    { val: globalStats?.states ?? "—", label: "States" }
+                    { val: GLOBAL_STATS.livesImpacted, label: "Lives" },
+                    { val: GLOBAL_STATS.projects, label: "Projects" },
+                    { val: GLOBAL_STATS.volunteers, label: "Volunteers" },
+                    { val: GLOBAL_STATS.partners, label: "Partners" },
+                    { val: GLOBAL_STATS.states, label: "States" }
                   ].map((stat, i) => (
                     <div key={i} className="text-center p-4 bg-white rounded-xl shadow-sm border border-slate-100">
                       <div className="text-2xl font-black text-navy mb-1">{stat.val}</div>
