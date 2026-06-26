@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
-import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Trophy } from "lucide-react";
 import { routeMeta, SITE_URL } from "@/data/site";
 import { useEvents, useNewsArticles, usePhotoGalleryItems } from "@/lib/sanity/hooks";
 import {
@@ -56,13 +56,13 @@ export default function NewsEventsPage() {
           };
         })
         .filter(Boolean) as {
-        id: string;
-        img: string;
-        alt: string;
-        caption: string;
-        tag: string;
-        tagClass: string;
-      }[],
+          id: string;
+          img: string;
+          alt: string;
+          caption: string;
+          tag: string;
+          tagClass: string;
+        }[],
     [galleryQuery.data],
   );
 
@@ -84,10 +84,10 @@ export default function NewsEventsPage() {
       activeCategory === "All Events"
         ? events
         : events.filter((e) =>
-            Array.isArray(e.categories)
-              ? e.categories.some((category) => category?.title === activeCategory)
-              : false,
-          ),
+          Array.isArray(e.categories)
+            ? e.categories.some((category) => category?.title === activeCategory)
+            : false,
+        ),
     [events, activeCategory],
   );
 
@@ -165,7 +165,7 @@ export default function NewsEventsPage() {
                 </Button>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <img src={newsHeroImg} alt="Hackathon Event" className="rounded-2xl shadow-md h-48 w-full object-cover" />
               <img src={newsVariantImg} alt="Workshop" className="rounded-2xl shadow-md h-48 w-full object-cover translate-y-8" />
@@ -178,13 +178,13 @@ export default function NewsEventsPage() {
       <section id="upcoming" className="py-24 bg-white" data-testid="events-section">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-12 gap-10">
-            
+
             {/* Upcoming Events List */}
             <div className="lg:col-span-4">
               <h2 className="text-2xl font-black text-navy mb-6 flex items-center gap-3">
                 <CalendarIcon className="w-6 h-6 text-orange" /> Upcoming Events
               </h2>
-              
+
               <div className="space-y-4" data-testid="events-list">
                 {eventsQuery.isLoading && (
                   <div className="text-center py-10 text-slate-400 font-medium">Loading events…</div>
@@ -222,7 +222,7 @@ export default function NewsEventsPage() {
                 })}
               </div>
             </div>
-            
+
             {/* Event Calendar */}
             <div id="calendar" className="lg:col-span-4 flex flex-col items-center scroll-mt-24">
               <h2 className="text-2xl font-black text-navy mb-6">Event Calendar</h2>
@@ -244,7 +244,7 @@ export default function NewsEventsPage() {
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-navy"></span> Workshop</div>
               </div>
             </div>
-            
+
             {/* Featured Event */}
             {featuredEvent && (
               <div className="lg:col-span-4">
@@ -284,36 +284,6 @@ export default function NewsEventsPage() {
                       </p>
                     )}
 
-                    {/* Agenda highlights */}
-                    <div className="mb-5">
-                      <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-teal mb-2">
-                        <Sparkles className="w-3.5 h-3.5" /> What to Expect
-                      </div>
-                      <ul className="space-y-1.5 text-sm text-slate-200">
-                        <li className="flex items-start gap-2"><span className="text-orange mt-1">•</span> 36-hour build sprint with hardware kits</li>
-                        <li className="flex items-start gap-2"><span className="text-orange mt-1">•</span> Mentorship from industry &amp; persons with disabilities</li>
-                        <li className="flex items-start gap-2"><span className="text-orange mt-1">•</span> Demo day with investor &amp; NGO panel</li>
-                      </ul>
-                    </div>
-
-                    {/* Speakers */}
-                    <div className="mb-6">
-                      <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-teal mb-3">
-                        <Mic2 className="w-3.5 h-3.5" /> Featured Mentors
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          { name: "Dr. Anitha R.", color: "bg-orange/20 text-orange border-orange/40" },
-                          { name: "Pranav K.", color: "bg-teal/20 text-teal border-teal/40" },
-                          { name: "Meera S.", color: "bg-purple/20 text-purple border-purple/40" },
-                          { name: "+ 8 more", color: "bg-white/10 text-white/70 border-white/20" },
-                        ].map((s) => (
-                          <span key={s.name} className={`text-xs font-bold px-3 py-1.5 rounded-full border ${s.color}`}>
-                            {s.name}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
 
                     <Button asChild className="w-full bg-orange hover:bg-orange/90 text-white font-bold h-12 text-base mt-auto">
                       <a href={featuredEvent.registrationUrl ?? "/get-involved#join"}>
@@ -324,7 +294,7 @@ export default function NewsEventsPage() {
                 </div>
               </div>
             )}
-            
+
           </div>
         </div>
       </section>
@@ -376,11 +346,10 @@ export default function NewsEventsPage() {
                 return (
                   <article
                     key={item._id}
-                    className={`rounded-2xl overflow-hidden border flex flex-col group transition-all ${
-                      item.featured
+                    className={`rounded-2xl overflow-hidden border flex flex-col group transition-all ${item.featured
                         ? "bg-orange/5 border-orange shadow-sm hover:shadow-md"
                         : "bg-slate-50 border-slate-100 hover:shadow-lg"
-                    }`}
+                      }`}
                   >
                     <div className="h-48 overflow-hidden relative bg-slate-200">
                       {image?.src ? (
@@ -425,7 +394,7 @@ export default function NewsEventsPage() {
           <h2 className="text-3xl md:text-4xl font-black mb-4">Event Photo Gallery</h2>
           <p className="text-slate-300 text-lg">Moments of inclusion and innovation from across our programs.</p>
         </div>
-        
+
         <div className="flex w-full overflow-x-auto pb-8 hide-scrollbar gap-4 px-4 snap-x">
           {galleryItems.length === 0 ? (
             <div className="w-full">
