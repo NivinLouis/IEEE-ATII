@@ -3,7 +3,6 @@ import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
 import { useResourceGuides, useResourcePublications, useResourceStandards, useResourceVideos } from "@/lib/sanity/hooks";
-import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -119,12 +118,8 @@ export default function ResourcesPage() {
                 
                 <div className="grid sm:grid-cols-2 gap-6">
                   {resourceGuides.length === 0 && (
-                    <div className="sm:col-span-2">
-                      <NewsStateBlock
-                        eyebrow="No guide content"
-                        title="No guides or toolkits matched this view."
-                        description="Publish `resourceGuide` documents in Sanity, or clear the search filter."
-                      />
+                    <div className="sm:col-span-2 py-12 text-center text-slate-400 text-base font-medium">
+                      No content available.
                     </div>
                   )}
                   {resourceGuides.map((guide, i) => {
@@ -169,11 +164,9 @@ export default function ResourcesPage() {
                 
                 <div className="space-y-4">
                   {resourcePublications.length === 0 && (
-                    <NewsStateBlock
-                      eyebrow="No publication content"
-                      title="No publications matched this view."
-                      description="Publish `resourcePublication` documents in Sanity, or clear the search filter."
-                    />
+                    <div className="py-12 text-center text-slate-400 text-base font-medium">
+                      No content available.
+                    </div>
                   )}
                   {resourcePublications.map((pub, i) => {
                     const publicationStyles = {
@@ -221,12 +214,8 @@ export default function ResourcesPage() {
                 
                 <div className="grid sm:grid-cols-2 gap-6">
                   {resourceVideos.length === 0 && (
-                    <div className="sm:col-span-2">
-                      <NewsStateBlock
-                        eyebrow="No video content"
-                        title="No videos or webinars matched this view."
-                        description="Publish `resourceVideo` documents in Sanity, or clear the search filter."
-                      />
+                    <div className="sm:col-span-2 py-12 text-center text-slate-400 text-base font-medium">
+                      No content available.
                     </div>
                   )}
                   {resourceVideos.map((vid, i) => {
@@ -265,12 +254,8 @@ export default function ResourcesPage() {
                 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {resourceStandards.length === 0 && (
-                    <div className="sm:col-span-2">
-                      <NewsStateBlock
-                        eyebrow="No standards content"
-                        title="No standards or guidelines matched this view."
-                        description="Publish `resourceStandard` documents in Sanity, or clear the search filter."
-                      />
+                    <div className="sm:col-span-2 py-12 text-center text-slate-400 text-base font-medium">
+                      No content available.
                     </div>
                   )}
                   {resourceStandards.map((std, i) => {
