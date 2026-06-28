@@ -16,19 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useToast } from "@/hooks/use-toast";
-// import { useSubmitContact } from "@workspace/api-client-react";
 import { useState } from "react";
-
-const useSubmitContact = (options: any) => {
-  return {
-    mutate: (data: any) => {
-      console.log("Mock submit contact:", data);
-      options?.mutation?.onSuccess?.();
-    },
-    isPending: false,
-  };
-};
-
 import { Link } from "react-router-dom";
 import { Mail, ArrowRight, Activity, Users, Calendar, Heart, Lightbulb, Globe, MessageCircle } from "lucide-react";
 import { FaLinkedin, FaInstagram, FaWhatsapp } from "react-icons/fa";
@@ -45,36 +33,9 @@ export default function ContactPage() {
   const [subject, setSubject] = useState<ContactSubject | "">("");
   const [message, setMessage] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
-  const submitContact = useSubmitContact({
-    mutation: {
-      onSuccess: () => {
-        toast({
-          title: "Message sent!",
-          description: "We'll get back to you within 24 hours.",
-          className: "bg-green-50 border-green-200 text-green-800",
-        });
-        setName("");
-        setEmail("");
-        setOrganization("");
-        setSubject("");
-        setMessage("");
-        setAgreed(false);
-      },
-      onError: (err: unknown) => {
-        toast({
-          title: "Could not send your message",
-          description:
-            err instanceof Error
-              ? err.message
-              : "Something went wrong. Please try again or email us directly.",
-          variant: "destructive",
-        });
-      },
-    },
-  });
-
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!subject) {
       toast({
@@ -90,15 +51,50 @@ export default function ContactPage() {
       });
       return;
     }
-    submitContact.mutate({
-      data: {
-        name: name.trim(),
-        email: email.trim(),
-        organization: organization.trim() || undefined,
-        subject,
-        message: message.trim(),
-      },
-    });
+    
+    setIsPending(true);
+    
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Contact Message: ${subject} - ${name.trim()}`,
+          name: name.trim(),
+          email: email.trim(),
+          organization: organization.trim() || "Not provided",
+          subject,
+          message: message.trim(),
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you within 24 hours.",
+          className: "bg-green-50 border-green-200 text-green-800",
+        });
+        setName("");
+        setEmail("");
+        setOrganization("");
+        setSubject("");
+        setMessage("");
+        setAgreed(false);
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (err: any) {
+      toast({
+        title: "Could not send your message",
+        description: err.message || "Something went wrong. Please try again or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -281,8 +277,8 @@ export default function ContactPage() {
                   </Label>
                 </div>
                 
-                <Button type="submit" disabled={submitContact.isPending} className="w-full bg-orange hover:bg-orange/90 text-white font-bold h-14 text-base mt-4 shadow-md" data-testid="button-submit-contact">
-                  {submitContact.isPending ? "Sending..." : (<>Send Message <ArrowRight className="ml-2 w-5 h-5" /></>)}
+                <Button type="submit" disabled={isPending} className="w-full bg-orange hover:bg-orange/90 text-white font-bold h-14 text-base mt-4 shadow-md" data-testid="button-submit-contact">
+                  {isPending ? "Sending..." : (<>Send Message <ArrowRight className="ml-2 w-5 h-5" /></>)}
                 </Button>
               </form>
             </div>

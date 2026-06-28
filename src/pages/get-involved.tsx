@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import { Users, Star, Handshake, Heart, ArrowRight, Mail } from "lucide-react";
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -26,14 +27,71 @@ export default function GetInvolvedPage() {
   const getInvolvedCardsQuery = useGetInvolvedCards();
   const getInvolvedCards = getInvolvedCardsQuery.data ?? [];
 
-  const handleVolunteerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Interest Submitted!",
-      description: "Thank you for reaching out. Our team will contact you shortly.",
-    });
-  };
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [interest, setInterest] = useState("");
+  const [skills, setSkills] = useState("");
+  const [availability, setAvailability] = useState("");
+  const [message, setMessage] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
+  const handleVolunteerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!interest) {
+      toast({ title: "Please select an interest", variant: "destructive" });
+      return;
+    }
+    if (!agreed) {
+      toast({ title: "Please agree to the privacy policy", variant: "destructive" });
+      return;
+    }
+
+    setIsPending(true);
+    
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Volunteer Interest: ${interest} - ${fullName.trim()}`,
+          fullName: fullName.trim(),
+          email: email.trim(),
+          interest,
+          skills: skills.trim() || "Not provided",
+          availability: availability.trim() || "Not provided",
+          message: message.trim() || "No message",
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Interest Submitted!",
+          description: "Thank you for reaching out. Our team will contact you shortly.",
+        });
+        setFullName("");
+        setEmail("");
+        setInterest("");
+        setSkills("");
+        setAvailability("");
+        setMessage("");
+        setAgreed(false);
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (err: any) {
+      toast({
+        title: "Could not submit your interest",
+        description: err.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  };
   return (
     <Layout>
       <SEO
@@ -196,18 +254,18 @@ export default function GetInvolvedPage() {
               <form onSubmit={handleVolunteerSubmit} className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input id="fullName" required placeholder="John Doe" className="bg-slate-50" />
+                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Input id="fullName" required placeholder="John Doe" className="bg-slate-50" value={fullName} onChange={(e) => setFullName(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" required placeholder="john@example.com" className="bg-slate-50" />
+                    <Label htmlFor="email">Email *</Label>
+                    <Input id="email" type="email" required placeholder="john@example.com" className="bg-slate-50" value={email} onChange={(e) => setEmail(e.target.value)} />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="interest">What would you like to do?</Label>
-                  <Select required>
+                  <Label htmlFor="interest">What would you like to do? *</Label>
+                  <Select required value={interest} onValueChange={setInterest}>
                     <SelectTrigger className="bg-slate-50">
                       <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
@@ -223,28 +281,28 @@ export default function GetInvolvedPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="skills">Skills/Expertise</Label>
-                    <Input id="skills" placeholder="e.g. React, Hardware, Design" className="bg-slate-50" />
+                    <Input id="skills" placeholder="e.g. React, Hardware, Design" className="bg-slate-50" value={skills} onChange={(e) => setSkills(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="availability">Availability</Label>
-                    <Input id="availability" placeholder="e.g. 5 hrs/week" className="bg-slate-50" />
+                    <Input id="availability" placeholder="e.g. 5 hrs/week" className="bg-slate-50" value={availability} onChange={(e) => setAvailability(e.target.value)} />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={4} placeholder="Tell us more about how you want to help..." className="bg-slate-50 resize-none" />
+                  <Textarea id="message" rows={4} placeholder="Tell us more about how you want to help..." className="bg-slate-50 resize-none" value={message} onChange={(e) => setMessage(e.target.value)} />
                 </div>
                 
                 <div className="flex items-center space-x-2 pt-2">
-                  <Checkbox id="terms" required />
+                  <Checkbox id="terms" required checked={agreed} onCheckedChange={(c) => setAgreed(c === true)} />
                   <Label htmlFor="terms" className="text-sm text-slate-600 font-normal">
                     I agree to Privacy Policy and Terms of Use
                   </Label>
                 </div>
                 
-                <Button type="submit" className="w-full bg-teal hover:bg-teal/90 text-white font-bold h-12 text-base shadow-md">
-                  Submit Interest
+                <Button type="submit" disabled={isPending} className="w-full bg-teal hover:bg-teal/90 text-white font-bold h-12 text-base shadow-md">
+                  {isPending ? "Submitting..." : "Submit Interest"}
                 </Button>
               </form>
             </div>

@@ -10,17 +10,48 @@ interface NewsletterStripProps {
 
 export function NewsletterStrip({ variant = "navy" }: NewsletterStripProps) {
   const [email, setEmail] = useState("");
+  const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     
-    toast({
-      title: "Subscribed successfully!",
-      description: "Thank you for joining our newsletter.",
-    });
-    setEmail("");
+    setIsPending(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Newsletter Subscriber`,
+          email: email.trim(),
+          message: "Please add this email to the newsletter subscribers list."
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Subscribed successfully!",
+          description: "Thank you for joining our newsletter.",
+          className: "bg-green-50 border-green-200 text-green-800",
+        });
+        setEmail("");
+      } else {
+        throw new Error("Failed to subscribe");
+      }
+    } catch (err: any) {
+      toast({
+        title: "Could not subscribe",
+        description: err.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const bgClass = variant === "navy" ? "bg-navy" : "bg-teal";
@@ -51,8 +82,8 @@ export function NewsletterStrip({ variant = "navy" }: NewsletterStripProps) {
                 className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus-visible:ring-white h-12 text-base"
                 data-testid="input-newsletter-email"
               />
-              <Button type="submit" className={`h-12 px-6 font-bold tracking-wide ${btnClass}`} data-testid="btn-newsletter-submit">
-                Subscribe
+              <Button type="submit" disabled={isPending} className={`h-12 px-6 font-bold tracking-wide ${btnClass}`} data-testid="btn-newsletter-submit">
+                {isPending ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
             <p className="text-white/60 text-xs mt-3 text-center md:text-left">
