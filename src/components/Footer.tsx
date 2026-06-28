@@ -58,7 +58,7 @@ export function Footer() {
               <li><Link to="/get-involved#volunteer" className="text-slate-300 hover:text-teal transition-colors">Volunteer</Link></li>
               <li><Link to="/get-involved#partner" className="text-slate-300 hover:text-teal transition-colors">Partner With Us</Link></li>
               <li><Link to="/get-involved" className="text-slate-300 hover:text-teal transition-colors font-semibold">Join Us</Link></li>
-              <li><Link to="/get-involved#sponsor" className="text-slate-300 hover:text-teal transition-colors">Sponsor</Link></li>
+              {/* <li><Link to="/get-involved#sponsor" className="text-slate-300 hover:text-teal transition-colors">Sponsor</Link></li> */}
               <li><Link to="/get-involved#member" className="text-slate-300 hover:text-teal transition-colors">IEEE Membership</Link></li>
             </ul>
           </div>

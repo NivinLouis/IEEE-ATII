@@ -1,27 +1,12 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star, ArrowRight } from "lucide-react";
-import { FaLinkedin } from "react-icons/fa";
-// import { useListTeamMembers } from "@workspace/api-client-react";
-
-interface TeamMember {
-  id: string;
-  initials: string;
-  name: string;
-  role: string;
-  linkedinUrl?: string;
-}
-
-const useListTeamMembers = (): { data: TeamMember[]; isLoading: boolean } => ({
-  data: [],
-  isLoading: false,
-});
+import { useState } from "react";
+import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star } from "lucide-react";
 
 import {
   routeMeta,
@@ -30,9 +15,121 @@ import {
 
 import HeroVisual from "@/components/HeroVisual";
 
+interface Leader {
+  name: string;
+  role: string;
+  image: string;
+}
+
+const professionalExecom: Leader[] = [
+  { name: "Robin Tommy", role: "Senior Advisor", image: "/leadership/robin_tommy.png" },
+  { name: "Robin Francis", role: "Chairperson", image: "/leadership/robin_francis.png" },
+  { name: "Vaishakh Suresh", role: "Vice Chairperson", image: "/leadership/vaishakh_suresh.png" },
+  { name: "Anna Ann Mathew", role: "Secretary", image: "/leadership/anna_ann_mathew.png" },
+  { name: "Lakshmy K J", role: "Treasurer", image: "/leadership/lakshmy_k_j.png" },
+  { name: "Reshmi Ravindranathan", role: "Assistive Tech Lead", image: "/leadership/reshmi_ravindranathan.png" },
+  { name: "Aswathy S Krishna", role: "Inclusion Lead", image: "/leadership/aswathy_s_krishna.png" },
+];
+
+const leadershipTeam: Leader[] = [
+  { name: "Vishnu Gopal", role: "Student Activity Chair", image: "/leadership/vishnu_gopal.png" },
+  { name: "Nivin P Louis", role: "Student Representative", image: "/leadership/nivin_p_louis.png" },
+  { name: "Shayen Thomas", role: "Technical Coordinator", image: "/leadership/shayen_thomas.png" },
+  { name: "Chinmayi B S", role: "Travancore Hub SR", image: "/leadership/chinmayi_b_s.png" },
+  { name: "Afreen M H", role: "Kochi Hub SR", image: "/leadership/afreen_m_h.png" },
+  { name: "Dyuthi Korambeth", role: "Malabar Hub SR", image: "/leadership/dyuthi_korambeth.png" },
+  { name: "Gourisankar OP", role: "Assistive Tech Coordinator", image: "/leadership/gourisankar_op.png" },
+  { name: "Roshni K", role: "Inclusive Innovation Coordinator", image: "/leadership/roshni_k.png" },
+  { name: "Alan T F", role: "Video Editor", image: "/leadership/alan_t_f.png" },
+  { name: "Anayya Binoy", role: "Design Head", image: "/leadership/anayya_binoy.png" },
+];
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function LeadershipCard({ leader, accent }: { leader: Leader; accent: "orange" | "teal" }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const nameClasses = accent === "orange" ? "text-orange" : "text-teal";
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      className="group relative mx-auto w-full max-w-[220px] overflow-hidden bg-navy shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      style={{
+        clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0 100%, 0 14%)",
+      }}
+    >
+      <div className="relative aspect-[4/4.9] overflow-hidden bg-navy">
+        {!imageFailed ? (
+          <img
+            src={leader.image}
+            alt={leader.name}
+            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy via-purple to-teal text-3xl font-black text-white">
+            {getInitials(leader.name)}
+          </div>
+        )}
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy via-navy/85 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-3">
+          <h3 className={`text-[0.96rem] font-black uppercase leading-[0.95] tracking-[0.02em] ${nameClasses}`}>
+            {leader.name}
+          </h3>
+          <p className="mt-1 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.08em] text-white/95">
+            {leader.role}
+          </p>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function LeadershipGroup({
+  title,
+  leaders,
+  accent,
+}: {
+  title: string;
+  leaders: Leader[];
+  accent: "orange" | "teal";
+}) {
+  const chipClasses =
+    accent === "orange"
+      ? "border-orange/20 bg-orange/10 text-orange"
+      : "border-teal/20 bg-teal/10 text-teal";
+
+  return (
+    <div className="rounded-[32px] border border-slate-200 bg-white/90 p-8 shadow-sm backdrop-blur-sm md:p-10">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-2xl">
+          <h3 className="text-2xl font-black text-navy md:text-3xl">{title}</h3>
+        </div>
+        <div className={`inline-flex h-fit rounded-full border px-4 py-2 text-sm font-bold ${chipClasses}`}>
+          {leaders.length} Members
+        </div>
+      </div>
+
+      <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-5 gap-y-12">
+        {leaders.map((leader) => (
+          <LeadershipCard key={leader.name} leader={leader} accent={accent} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function AboutPage() {
-  const teamQuery = useListTeamMembers();
-  const teamMembers = Array.isArray(teamQuery.data) ? teamQuery.data : [];
   return (
     <Layout>
       <SEO
@@ -249,42 +346,30 @@ export default function AboutPage() {
       </section>
 
       {/* Leadership */}
-      <section id="team" className="py-24 bg-slate-50" data-testid="about-leadership">
+      <section
+        id="team"
+        className="py-24 bg-[radial-gradient(circle_at_top,_rgba(1,160,160,0.08),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#eef5ff_100%)]"
+        data-testid="about-leadership"
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-navy mb-4">Our Leadership</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">The dedicated minds driving our mission forward.</p>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              The people shaping ATIIG&apos;s direction across strategy, programs, student engagement, and inclusive innovation across Kerala.
+            </p>
           </div>
 
-          {teamQuery.isLoading && teamMembers.length === 0 && (
-            <div className="text-center py-10 text-slate-400 font-medium" data-testid="team-loading">Loading team…</div>
-          )}
-          {!teamQuery.isLoading && teamMembers.length === 0 && (
-            <div className="mb-10">
-              <NewsStateBlock
-                eyebrow="No leadership data"
-                title="Leadership data is unavailable."
-                description="This section no longer uses hardcoded fallback records. Connect the team data source to populate it."
-              />
-            </div>
-          )}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="team-list">
-            {teamMembers.map((person) => (
-              <div key={person.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-6 group hover:shadow-md transition-shadow">
-                <div className="w-20 h-20 bg-navy text-white rounded-full flex items-center justify-center text-2xl font-bold shrink-0">
-                  {person.initials}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-navy group-hover:text-orange transition-colors">{person.name}</h3>
-                  <p className="text-sm text-slate-500 mb-3">{person.role}</p>
-                  {person.linkedinUrl && (
-                    <a href={person.linkedinUrl} target="_blank" rel="noopener noreferrer" className="inline-flex text-slate-400 hover:text-navy transition-colors" aria-label={`${person.name} on LinkedIn`}>
-                      <FaLinkedin className="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
+          <div className="space-y-10" data-testid="team-list">
+            <LeadershipGroup
+              title="Professional Execom"
+              leaders={professionalExecom}
+              accent="orange"
+            />
+            <LeadershipGroup
+              title="Leadership Team"
+              leaders={leadershipTeam}
+              accent="teal"
+            />
           </div>
         </div>
       </section>

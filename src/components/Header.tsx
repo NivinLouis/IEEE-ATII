@@ -71,7 +71,7 @@ const NAV_ITEMS = [
       { title: "Volunteer", href: "/get-involved#volunteer" },
       { title: "Become a Member", href: "/get-involved#member" },
       { title: "Partner With Us", href: "/get-involved#partner" },
-      { title: "Sponsor Us", href: "/get-involved#sponsor" },
+      // { title: "Sponsor Us", href: "/get-involved#sponsor" },
       { title: "Join Us", href: "/get-involved#join" },
     ],
   },

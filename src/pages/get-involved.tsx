@@ -127,7 +127,7 @@ export default function GetInvolvedPage() {
         </div>
       </section>
 
-      {/* Sponsorship & Open Calls */}
+      {/* Sponsorship & Open Calls
       <section id="sponsor" className="py-24 bg-slate-50 scroll-mt-32" data-testid="sponsorships">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -136,7 +136,6 @@ export default function GetInvolvedPage() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-10">
-            {/* Left: Sponsorship Tiers */}
             <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">
               {[
                 { title: "Champion", price: "₹5,00,000+/year", border: "border-navy", features: "Logo on all platforms + speaking opportunities + featured in annual report + CSR impact dashboard + premium logo in annual newsletter" },
@@ -153,13 +152,12 @@ export default function GetInvolvedPage() {
               ))}
             </div>
 
-            {/* Right: Open Calls */}
             <div className="bg-navy rounded-2xl p-8 text-white shadow-lg flex flex-col">
               <h3 className="text-2xl font-black mb-6 flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-orange animate-pulse"></span>
                 Open Calls
               </h3>
-              
+
               <div className="space-y-4 flex-1">
                 {[
                   { title: "AT Innovation Hackathon 2025", deadline: "Jun 21, 2025" },
@@ -175,7 +173,7 @@ export default function GetInvolvedPage() {
                   </div>
                 ))}
               </div>
-              
+
               <Button variant="link" className="text-orange font-bold text-sm mt-6 p-0 h-auto justify-start hover:text-white">
                 View All Open Calls <ArrowRight className="ml-1 w-4 h-4" />
               </Button>
@@ -183,6 +181,7 @@ export default function GetInvolvedPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Form & Impact */}
       <section className="py-24 bg-white" data-testid="volunteer-form">

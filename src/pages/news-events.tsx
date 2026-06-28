@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState, useEffect } from "react";
-import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, Trophy, X } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, X } from "lucide-react";
 import { routeMeta, SITE_URL } from "@/data/site";
 import { useEvents, useNewsArticles, usePhotoGalleryItems } from "@/lib/sanity/hooks";
 import {
@@ -260,10 +260,6 @@ export default function NewsEventsPage() {
                     <img src={newsHeroImg} alt={featuredEvent.title} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent" />
                     <span className="absolute top-4 left-4 bg-orange text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded">Featured</span>
-                    <div className="absolute bottom-3 left-4 right-4 flex items-center gap-2 text-xs font-bold text-white/90">
-                      <Trophy className="w-4 h-4 text-orange" />
-                      <span>Prizes worth ₹3,00,000</span>
-                    </div>
                   </div>
 
                   <div className="relative z-10 flex flex-col flex-1 p-7">
@@ -397,7 +393,7 @@ export default function NewsEventsPage() {
           <p className="text-slate-300 text-lg">Moments of inclusion and innovation from across our programs.</p>
         </div>
 
-        <div className="flex w-full overflow-x-auto pb-8 hide-scrollbar gap-4 px-4 snap-x">
+        <div className="container mx-auto px-4">
           {galleryItems.length === 0 ? (
             <div className="w-full">
               <NewsStateBlock
@@ -407,26 +403,32 @@ export default function NewsEventsPage() {
               />
             </div>
           ) : (
-            galleryItems.map((item) => (
-              <div
-                key={item.id}
-                className="relative shrink-0 w-[280px] md:w-[400px] aspect-video rounded-xl overflow-hidden snap-center group cursor-pointer"
-                onClick={() => setViewerImage({ src: item.img, alt: item.alt, caption: item.caption })}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setViewerImage({ src: item.img, alt: item.alt, caption: item.caption }); }}
-                role="button"
-                tabIndex={0}
-              >
-                <img src={item.img} alt={item.alt} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/30 to-transparent" />
-                <span className={`absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest text-white px-2.5 py-1 rounded ${item.tagClass}`}>{item.tag}</span>
-                <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <p className="font-bold text-sm leading-tight drop-shadow">{item.caption}</p>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {galleryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="relative aspect-[4/3] overflow-hidden rounded-[24px] border border-white/10 bg-slate-900 shadow-lg group cursor-pointer"
+                  onClick={() => setViewerImage({ src: item.img, alt: item.alt, caption: item.caption })}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setViewerImage({ src: item.img, alt: item.alt, caption: item.caption }); }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <img src={item.img} alt={item.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/35 to-transparent" />
+                  <span className={`absolute top-4 left-4 text-[10px] font-black uppercase tracking-widest text-white px-2.5 py-1 rounded ${item.tagClass}`}>
+                    {item.tag}
+                  </span>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 text-white">
+                    <p className="font-bold text-sm md:text-base leading-tight drop-shadow max-w-[28ch]">{item.caption}</p>
+                  </div>
+                  <div className="absolute inset-0 bg-navy/55 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span className="text-white font-bold bg-orange px-4 py-2 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                      View Image
+                    </span>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="text-white font-bold bg-orange px-4 py-2 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform">View Image</span>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
       </section>

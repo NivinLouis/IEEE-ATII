@@ -30,8 +30,8 @@ const useSubmitContact = (options: any) => {
 };
 
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, ArrowRight, Activity, Users, Calendar, Heart, Lightbulb, Globe } from "lucide-react";
-import { FaLinkedin, FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { Mail, ArrowRight, Activity, Users, Calendar, Heart, Lightbulb, Globe, MessageCircle } from "lucide-react";
+import { FaLinkedin, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 import contactHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(2)_1777748003995.png";
 
@@ -169,16 +169,6 @@ export default function ContactPage() {
               
               <div className="space-y-8 mb-12">
                 <div className="flex gap-4 items-start">
-                  <div className="w-12 h-12 rounded-full bg-teal/10 flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5 text-teal" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Phone</h3>
-                    <a href="tel:+9179945426300" className="text-slate-600 hover:text-teal font-medium text-lg">+91 79945 426 300</a>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 items-start">
                   <div className="w-12 h-12 rounded-full bg-navy/10 flex items-center justify-center shrink-0">
                     <Mail className="w-5 h-5 text-navy" />
                   </div>
@@ -189,36 +179,55 @@ export default function ContactPage() {
                 </div>
                 
                 <div className="flex gap-4 items-start">
-                  <div className="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-purple" />
+                  <div className="w-12 h-12 rounded-full bg-teal/10 flex items-center justify-center shrink-0">
+                    <FaLinkedin className="w-5 h-5 text-teal" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Address</h3>
-                    <p className="text-slate-600 leading-relaxed">
-                      IEEE Kerala Section Office,<br />
-                      Technopark Campus, Phase III,<br />
-                      Thiruvananthapuram, Kerala,<br />
-                      India — 695 581
-                    </p>
+                    <h3 className="font-bold text-slate-900 mb-1">LinkedIn</h3>
+                    <a
+                      href="https://www.linkedin.com/company/ieee-assistive-technology-inclusive-innovation-group"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-600 hover:text-teal font-medium text-lg break-words"
+                    >
+                      Visit our LinkedIn page
+                    </a>
                   </div>
                 </div>
                 
                 <div className="flex gap-4 items-start">
-                  <div className="w-12 h-12 rounded-full bg-orange/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5 text-orange" />
+                  <div className="w-12 h-12 rounded-full bg-purple/10 flex items-center justify-center shrink-0">
+                    <FaInstagram className="w-5 h-5 text-purple" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Office Hours</h3>
-                    <p className="text-slate-600 font-medium">Monday – Friday: 9:30 AM – 5:30 PM IST</p>
+                    <h3 className="font-bold text-slate-900 mb-1">Instagram</h3>
+                    <a
+                      href="https://www.instagram.com/ieeeatii/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-600 hover:text-purple font-medium text-lg break-words"
+                    >
+                      @ieeeatii
+                    </a>
                   </div>
                 </div>
-              </div>
-              
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 text-center">
-                <p className="text-slate-700 font-medium mb-4">Prefer a quick connect instead?</p>
-                <Button variant="outline" className="w-full bg-white font-bold text-navy border-slate-200">
-                  Schedule a Call <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-12 h-12 rounded-full bg-orange/10 flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-5 h-5 text-orange" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 mb-1">WhatsApp Channel</h3>
+                    <a
+                      href="https://whatsapp.com/channel/0029Vb7a6TNBKfhxgIH1Oi3P"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-slate-600 hover:text-orange font-medium text-lg break-words"
+                    >
+                      Follow our WhatsApp channel
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -282,13 +291,13 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Section */}
+      {/* Map Section
       <section className="py-20 bg-slate-50 border-y border-slate-100" data-testid="location-map">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-navy">Our Office Location</h2>
           </div>
-          
+
           <div className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-sm border border-slate-100 relative">
             <iframe
               title="IEEE Kerala ATIIG Office Location — Technopark, Thiruvananthapuram"
@@ -319,6 +328,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+      */}
 
       {/* Partnerships */}
       <section id="partnerships" className="py-24 bg-white" data-testid="partner-purpose">
@@ -379,17 +389,14 @@ export default function ContactPage() {
                 <p className="text-slate-300 mb-8 relative z-10">Follow our journey and join the conversation on social media.</p>
                 
                 <div className="flex gap-4 relative z-10">
-                  <a href="https://www.linkedin.com/company/ieee-kerala-section/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="LinkedIn">
+                  <a href="https://www.linkedin.com/company/ieee-assistive-technology-inclusive-innovation-group" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="LinkedIn">
                     <FaLinkedin className="w-6 h-6" />
                   </a>
-                  <a href="https://www.facebook.com/IEEEKeralaSection" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Facebook">
-                    <FaFacebook className="w-6 h-6" />
-                  </a>
-                  <a href="https://www.instagram.com/ieee_kerala_section/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Instagram">
+                  <a href="https://www.instagram.com/ieeeatii/" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="Instagram">
                     <FaInstagram className="w-6 h-6" />
                   </a>
-                  <a href="https://www.youtube.com/@IEEEKeralaSection" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="YouTube">
-                    <FaYoutube className="w-6 h-6" />
+                  <a href="https://whatsapp.com/channel/0029Vb7a6TNBKfhxgIH1Oi3P" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:-translate-y-1 p-4 rounded-xl transition-all" aria-label="WhatsApp Channel">
+                    <FaWhatsapp className="w-6 h-6" />
                   </a>
                 </div>
               </div>
