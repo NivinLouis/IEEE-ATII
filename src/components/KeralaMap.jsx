@@ -1,62 +1,319 @@
 import { useState } from "react";
 
 const DISTRICT_META = {
-  Kasaragod: { projects: 2, lives: "340", tier: "emerging", initiatives: ["Border Region Outreach", "Emerging Research Partner"] },
-  Kannur: { projects: 4, lives: "1.2K", tier: "active", initiatives: ["Livelihood Skills Training", "Disability Awareness Camps"] },
-  Wayanad: { projects: 2, lives: "380", tier: "emerging", initiatives: ["Tribal Assistive Tech Program", "Off-Grid Solutions"] },
-  Kozhikode: { projects: 8, lives: "3.2K", tier: "high", initiatives: ["Regional Innovation Center", "Accessibility Audit Drive", "Student Mentorship"] },
-  Malappuram: { projects: 5, lives: "1.7K", tier: "active", initiatives: ["Inclusive Education Drive", "Volunteer Network", "Communication Devices"] },
-  Palakkad: { projects: 4, lives: "1.3K", tier: "active", initiatives: ["Rural AT Distribution", "Disaster Response Kit Testing"] },
-  Thrissur: { projects: 7, lives: "2.4K", tier: "active", initiatives: ["Assistive Device R&D Lab", "Community Awareness Camps", "SHG Partnerships"] },
-  Ernakulam: { projects: 10, lives: "3.9K", tier: "high", initiatives: ["Smart Campus Initiative", "Industry Partnership Hub", "Hackathon Series"] },
-  Idukki: { projects: 2, lives: "450", tier: "emerging", initiatives: ["Off-Grid Energy Project", "Tribal Outreach"] },
-  Kottayam: { projects: 6, lives: "2.1K", tier: "active", initiatives: ["Inclusive Education Hub", "Teacher Training Program", "Adaptive Learning Kits"] },
-  Alappuzha: { projects: 4, lives: "1.1K", tier: "active", initiatives: ["Assistive Device Workshops", "Water-Quality Sensing"] },
-  Pathanamthitta: { projects: 3, lives: "820", tier: "active", initiatives: ["Inclusive Education Pilot", "Volunteer Training"] },
-  Kollam: { projects: 5, lives: "1.6K", tier: "active", initiatives: ["Community Outreach Program", "Mobility Device Distribution"] },
-  Thiruvananthapuram: { projects: 12, lives: "4.8K", tier: "high", initiatives: ["AT Innovation Lab (HQ)", "Sparsh Prosthetic Center", "Accessible Campus Audit"] },
+  Kasaragod: { schools: 0, students: 0, devices: 0 },
+  Kannur: { schools: 0, students: 0, devices: 0 },
+  Wayanad: { schools: 0, students: 0, devices: 0 },
+  Kozhikode: { schools: 0, students: 0, devices: 0 },
+  Malappuram: { schools: 0, students: 0, devices: 0 },
+  Palakkad: { schools: 3, students: 24, devices: 106 },
+  Thrissur: { schools: 0, students: 0, devices: 0 },
+  Ernakulam: { schools: 1, students: 8, devices: 21 },
+  Idukki: { schools: 0, students: 0, devices: 0 },
+  Kottayam: { schools: 1, students: 34, devices: 34 },
+  Alappuzha: { schools: 2, students: 29, devices: 86 },
+  Pathanamthitta: { schools: 2, students: 27, devices: 60 },
+  Kollam: { schools: 9, students: 106, devices: 275 },
+  Thiruvananthapuram: { schools: 7, students: 68, devices: 159 },
 };
 
-const DISTRICT_COLORS = {
-  high: "#0f4c81",
-  active: "#0ea5a4",
-  emerging: "#f97316",
+const DISTRICT_DATA = [
+  { district: "Thiruvananthapuram", schools: 7, students: 68, devices: 159, status: "High Impact" },
+  { district: "Kollam", schools: 9, students: 106, devices: 275, status: "High Impact" },
+  { district: "Pathanamthitta", schools: 2, students: 27, devices: 60, status: "Active" },
+  { district: "Alappuzha", schools: 2, students: 29, devices: 86, status: "Active" },
+  { district: "Kottayam", schools: 1, students: 34, devices: 34, status: "Emerging" },
+  { district: "Ernakulam", schools: 1, students: 8, devices: 21, status: "Emerging" },
+  { district: "Palakkad", schools: 3, students: 24, devices: 106, status: "Active" }
+];
+
+const COLORS = {
+  orange: "#f97316",
+  teal: "#14b8a6",
+  navy: "#0f4c81",
 };
 
-const DISTRICT_TITLES = {
-  high: "High Impact",
-  active: "Active",
-  emerging: "Emerging",
-};
+const TIERS = [
+  { key: "high", label: "High Impact", min: 5, color: "#0f4c81" },
+  { key: "active", label: "Active", min: 2, color: "#f97316" },
+  { key: "emerging", label: "Emerging", min: 1, color: "#14b8a6" },
+];
+
+function getTier(schools) {
+  if (schools >= 5) return "high";
+  if (schools >= 2) return "active";
+  if (schools >= 1) return "emerging";
+  return null;
+}
 
 function districtColor(name) {
-  const meta = DISTRICT_META[name];
-  return DISTRICT_COLORS[meta.tier];
+  const s = DISTRICT_META[name]?.schools ?? 0;
+  if (s >= 5) return "#0f4c81";
+  if (s >= 2) return "#f97316";
+  if (s >= 1) return "#642396";
+  return "#14b8a6";
 }
 
-function selectedSummary(name) {
-  return DISTRICT_META[name] || null;
+function StatCard({ value, label, color }) {
+  return (
+    <div style={{
+      flex: 1,
+      background: "#f8fafc",
+      border: "1px solid #e2e8f0",
+      borderRadius: "14px",
+      padding: "18px 12px",
+      textAlign: "center",
+      boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.02), 0 1px 2px 0 rgba(0, 0, 0, 0.01)",
+      boxSizing: "border-box"
+    }}>
+      <div style={{ fontSize: "24px", fontWeight: "900", color: color || "#0f4c81", lineHeight: 1.1 }}>{value}</div>
+      <div style={{ fontSize: "9px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "6px" }}>{label}</div>
+    </div>
+  );
 }
 
-function parseLivesValue(value) {
-  if (value.endsWith("K")) {
-    return Number.parseFloat(value) * 1000;
+function TotalCard({ label, value, color, bg, borderColor, icon }) {
+  return (
+    <div style={{
+      background: bg || "#f8fafc",
+      border: `1px solid ${borderColor || "#e2e8f0"}`,
+      borderRadius: "18px",
+      padding: "16px 20px 16px 22px",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 4px 10px 0 rgba(0, 0, 0, 0.02)",
+      height: "86px",
+      boxSizing: "border-box",
+      width: "100%",
+      position: "relative",
+      overflow: "hidden"
+    }}>
+      {/* Colored vertical accent bar on the left */}
+      <div style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: "5px",
+        background: color
+      }} />
+
+      {/* Left section: Icon and Label */}
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        {/* Soft icon circle */}
+        <div style={{
+          width: "42px",
+          height: "42px",
+          borderRadius: "12px",
+          background: "#ffffff",
+          border: `1px solid ${borderColor || "#e2e8f0"}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: color || "#0f4c81",
+          boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.02)",
+          flexShrink: 0
+        }}>
+          {icon}
+        </div>
+        
+        {/* Label */}
+        <span style={{ 
+          fontSize: "12px", 
+          fontWeight: "800", 
+          color: "#475569", 
+          textTransform: "uppercase", 
+          letterSpacing: "0.08em" 
+        }}>
+          {label}
+        </span>
+      </div>
+      
+      {/* Right section: Number */}
+      <span style={{ 
+        fontSize: "clamp(24px, 2vw, 28px)", 
+        fontWeight: "800", 
+        color: color || "#0f4c81", 
+        lineHeight: 1,
+        fontVariantNumeric: "tabular-nums",
+        minWidth: "60px",
+        textAlign: "right",
+        letterSpacing: "-0.01em"
+      }}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function LegendItem({ label, count, color }) {
+  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      flex: 1,
+      padding: "4px"
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
+        <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: color, display: "inline-block" }} />
+        <span style={{ fontSize: "12px", fontWeight: "700", color: "#0f4c81" }}>{label}</span>
+      </div>
+      <span style={{ fontSize: "11px", color: "#64748b" }}>{count} districts</span>
+    </div>
+  );
+}
+
+function EmptyDistrictState() {
+  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "32px 24px",
+      background: "#ffffff",
+      borderRadius: "22px",
+      border: "2px dashed #cbd5e1",
+      textAlign: "center",
+      minHeight: "180px",
+      boxShadow: "0 4px 20px -2px rgba(15, 76, 129, 0.04)"
+    }}>
+      <div style={{
+        width: "44px",
+        height: "44px",
+        borderRadius: "50%",
+        background: "#f0f4ff",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: "12px",
+        color: "#0f4c81"
+      }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+      </div>
+      <h3 style={{ margin: "0 0 4px 0", fontSize: "16px", fontWeight: "800", color: "#0f4c81" }}>Select a District</h3>
+      <p style={{ margin: 0, fontSize: "12px", color: "#64748b", lineHeight: "1.4", maxWidth: "240px" }}>
+        Hover or click a highlighted district to view schools, students, and devices.
+      </p>
+    </div>
+  );
+}
+
+function DistrictDetailPanel({ selected }) {
+  if (!selected) {
+    return <EmptyDistrictState />;
   }
 
-  return Number.parseFloat(value);
+  const data = DISTRICT_DATA.find(d => d.district.toLowerCase() === selected.toLowerCase());
+
+  if (!data) {
+    return (
+      <div style={{
+        padding: "24px",
+        background: "#ffffff",
+        borderRadius: "22px",
+        border: "2px solid #94a3b8",
+        boxShadow: "0 10px 25px -5px rgba(148, 163, 184, 0.05), 0 8px 16px -6px rgba(148, 163, 184, 0.04)",
+        minHeight: "160px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        position: "relative",
+        overflow: "hidden"
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "12px", marginBottom: "12px" }}>
+          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "900", color: "#0f4c81" }}>{selected}</h3>
+          <span style={{
+            background: "#f1f5f9",
+            color: "#64748b",
+            border: "1px solid #e2e8f0",
+            fontSize: "10px",
+            fontWeight: "800",
+            padding: "3px 10px",
+            borderRadius: "999px",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em"
+          }}>No Data</span>
+        </div>
+        <p style={{ margin: 0, fontSize: "13px", color: "#64748b", lineHeight: "1.5" }}>
+          No program data available for this district yet.
+        </p>
+      </div>
+    );
+  }
+
+  const statusColors = {
+    "High Impact": { text: "#0f4c81", bg: "#eff6ff", border: "#bfdbfe" },
+    "Active": { text: "#f97316", bg: "#fff7ed", border: "#ffedd5" },
+    "Emerging": { text: "#642396", bg: "#faf5ff", border: "#f3e8ff" }
+  };
+  const sColors = statusColors[data.status] || { text: "#64748b", bg: "#f1f5f9", border: "#e2e8f0" };
+
+  return (
+    <div style={{
+      padding: "24px",
+      background: "#ffffff",
+      borderRadius: "22px",
+      border: "2px solid #0f4c81",
+      boxShadow: "0 10px 25px -5px rgba(15, 76, 129, 0.06), 0 8px 16px -6px rgba(15, 76, 129, 0.04)",
+      display: "flex",
+      flexDirection: "column",
+      gap: "16px",
+      position: "relative",
+      overflow: "hidden"
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%", gap: "12px" }}>
+        <h3 style={{ margin: 0, fontSize: "19px", fontWeight: "900", color: "#0f4c81", lineHeight: 1.2 }}>{data.district}</h3>
+        <span style={{
+          background: sColors.bg,
+          color: sColors.text,
+          border: `1px solid ${sColors.border}`,
+          fontSize: "10px",
+          fontWeight: "800",
+          padding: "3px 10px",
+          borderRadius: "999px",
+          textTransform: "uppercase",
+          letterSpacing: "0.05em",
+          whiteSpace: "nowrap",
+          flexShrink: 0
+        }}>{data.status}</span>
+      </div>
+
+      <div style={{ display: "flex", gap: "10px", width: "100%" }}>
+        <StatCard value={data.schools} label="Schools" color="#f97316" />
+        <StatCard value={data.students} label="Students" color="#14b8a6" />
+        <StatCard value={data.devices} label="Devices" color="#0f4c81" />
+      </div>
+    </div>
+  );
 }
 
 export default function KeralaMap() {
   const [selected, setSelected] = useState(null);
-  const selectedDistrict = selected ? selectedSummary(selected) : null;
+  const selectedDistrict = selected ? DISTRICT_META[selected] : null;
+
+  const byTier = {};
+  for (const t of TIERS) byTier[t.key] = 0;
+  for (const name of Object.keys(DISTRICT_META)) {
+    const t = getTier(DISTRICT_META[name].schools);
+    if (t) byTier[t]++;
+  }
+
   const totals = Object.values(DISTRICT_META).reduce(
-    (accumulator, district) => {
-      accumulator.projects += district.projects;
-      accumulator.lives += parseLivesValue(district.lives);
-      accumulator.byTier[district.tier] += 1;
-      return accumulator;
+    (acc, d) => {
+      acc.schools += d.schools;
+      acc.students += d.students;
+      acc.devices += d.devices;
+      return acc;
     },
-    { projects: 0, lives: 0, byTier: { high: 0, active: 0, emerging: 0 } }
+    { schools: 0, students: 0, devices: 0 }
   );
 
   const handleClick = (name) => {
@@ -78,29 +335,36 @@ export default function KeralaMap() {
         border: "1px solid rgba(148, 163, 184, 0.22)",
         padding: "28px",
       }}>
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "end", justifyContent: "space-between", gap: "16px", marginBottom: "24px" }}>
-          <div>
-            <div style={{ color: "#0f4c81", fontSize: "30px", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 1.05 }}>
-              Impact Across Kerala
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "end", justifyContent: "space-between", gap: "16px", marginBottom: "24px" }}>
+            <div>
+              <div style={{ color: "#0f4c81", fontSize: "30px", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 1.05 }}>
+                Impact Across Kerala
+              </div>
+              <div style={{ color: "#64748b", fontSize: "15px", marginTop: "6px" }}>
+                Hover or click a district to explore programs and impact data.
+              </div>
             </div>
-            <div style={{ color: "#64748b", fontSize: "15px", marginTop: "6px" }}>
-              Hover or click a district to explore programs and impact data.
+            <div style={{ textAlign: "right" }}>
+              <div style={{ color: "#0f4c81", fontSize: "28px", fontWeight: 900, lineHeight: 1 }}>
+                700+
+              </div>
+              <div style={{ color: "#64748b", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: "4px" }}>
+                Devices across Kerala
+              </div>
             </div>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ color: "#0f4c81", fontSize: "28px", fontWeight: 900, lineHeight: 1 }}>
-              {totals.projects}+
-            </div>
-            <div style={{ color: "#64748b", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.14em", marginTop: "4px" }}>
-              Projects in 14 districts
-            </div>
-          </div>
-        </div>
 
         <div className="kerala-map-shell" style={{ display: "flex", gap: "20px", alignItems: "stretch" }}>
           <style>{`
             .kerala-map-shell {
               flex-direction: column;
+            }
+            .fade-in-panel {
+              animation: fadeIn 0.3s ease-out;
+            }
+            @keyframes fadeIn {
+              from { opacity: 0.6; transform: translateY(4px); }
+              to { opacity: 1; transform: translateY(0); }
             }
             @media (min-width: 1024px) {
               .kerala-map-shell {
@@ -191,13 +455,13 @@ export default function KeralaMap() {
             <path d="m 562.83355,914.74525 c 0,0 -2.15096,8.60383 0.71698,10.0378 2.86795,1.43397 10.0378,7.88684 10.0378,7.88684 l 5.73588,5.73588 -1.43397,4.30191 -6.45287,-5.01889 -5.73588,0 -7.88684,6.45287 5.73588,16.49066 10.75479,32.26434 2.86794,13.62274 5.73588,26.5284 7.16985,22.2266 -0.71698,13.6227 5.73588,18.6416 0.71699,8.6039 -1.43397,10.0378 1.43397,12.9057 c 0,0 7.16985,6.4529 8.60382,3.5849 1.43397,-2.8679 -1.43397,-10.0378 -1.43397,-12.9057 0,-2.868 5.0189,13.6227 5.0189,13.6227 l 7.16985,3.5849 9.32081,-12.1887 0.71699,7.1698 -8.60383,8.6039 -9.32081,0 -0.71698,5.7358 3.58493,16.4907 4.30191,3.5849 3.68201,-3.8359 c 0,0 0.12853,2.0827 -0.74227,8.1783 -0.8708,6.0956 9.57878,34.8319 9.57878,34.8319 l 0,-10.4496 13.93278,6.9664 6.09559,-5.2248 6.36677,2.4221 2.6124,-9.6309 11.72967,9.7639 3.70216,-1.7129 1.71296,-11.4534 10.83025,-5.9053 10.06892,-12.2198 2.3648,-4.8206 -15.42678,-12.5954 -5.22479,-6.9664 -0.8708,-11.3204 c 0,0 1.7416,-4.3539 1.7416,-7.8371 0,-3.4832 -0.8708,-9.5788 -0.8708,-9.5788 l -0.8708,-7.8372 11.32038,-2.6124 15.18424,0.5996 9.79774,-13.633 c 0,0 2.88358,-6.995 7.23757,-7.8658 4.35399,-0.8708 17.3065,-14.0659 17.3065,-14.0659 l 3.51182,-2.2317 13.03335,6.5571 8.81746,-5.0631 12.19119,9.5788 12.19118,0.8708 c 0,0 4.35399,-2.6124 7.83718,-5.2248 3.4832,-2.6124 10.80161,-10.6921 10.80161,-10.6921 l 18.69101,7.7799 8.82252,-3.1834 1.08977,-9.3597 c 0,0 9.87354,1.7129 14.22754,1.7129 6.82827,0 1.55631,-4.354 1.55631,-6.9664 0,-2.6124 0.54236,-10.6399 0.54236,-10.6399 l 2.17447,-3.2693 -8.18921,-5.8766 c 0,0 -5.63409,-6.1478 1.3323,-8.7602 6.96639,-2.6124 9.90723,-6.4763 9.90723,-6.4763 0,0 3.3215,-8.35594 -0.16169,-11.83913 -3.4832,-3.4832 -9.13263,-9.19515 -14.37071,-8.40818 -5.60545,0.84217 -11.37259,-2.72188 -11.37259,-2.72188 l 12.35287,-11.26311 12.05307,-5.82441 8.35596,-12.54321 c 0,0 3.67857,-3.13117 8.03257,-3.13117 4.35399,0 30.19667,0.59962 30.19667,0.59962 7.55762,-4.65084 10.08634,-12.26177 12.84807,-20.43766 1.39949,-4.1431 -5.60461,-16.60025 -8.46039,-22.2601 -2.88358,-5.71493 -5.0631,-13.25231 -5.0631,-13.25231 l -3.48319,-7.34705 c 0,0 0.4712,-8.17631 3.48319,-11.32038 11.17722,-11.66736 5.94399,-14.43337 13.06198,-15.67438 12.04871,-2.10067 30.47795,-20.02837 32.21955,-24.38236 1.7416,-4.354 1.7416,-11.32038 -0.8708,-16.54518 -2.61239,-5.22479 -7.83719,-13.06198 -15.67437,-21.76996 -7.83719,-8.70799 -13.06198,-6.09559 -18.28678,-8.70799 -5.22479,-2.61239 -13.93277,-2.61239 -21.76996,-9.57878 -7.83719,-6.96639 -5.22479,-13.06198 -17.41598,-14.80358 -12.19118,-1.7416 -15.67437,0.8708 -20.02836,-2.6124 -4.354,-3.48319 -8.70799,-5.22479 -8.70799,-5.22479 0,0 -6.09559,6.96639 -9.57879,3.4832 -3.48319,-3.4832 -0.54235,-6.69521 -9.25033,-7.56601 -8.70799,-0.8708 -7.29484,0.59962 -9.03644,-3.75438 -1.74159,-4.35399 -3.37371,-4.49211 -6.85691,-3.62131 -3.48319,0.8708 -5.33427,-0.73268 -8.81746,-0.73268 -3.4832,0 -11.34902,3.21201 -9.60742,-2.01278 1.74159,-5.22479 2.3648,-16.54517 0.57099,-19.26705 -1.97572,-2.9979 0.32844,-10.06892 -4.02555,-11.81052 -4.354,-1.7416 -53.98952,-0.8708 -58.34351,10.44959 -4.35399,11.32038 -80.11348,82.72587 -94.04625,91.43385 -13.93278,8.70799 -70.53469,94.04626 -70.53469,94.04626 z" />
           </g>
 
-          {/* Palakkad */}
-          <g className={`district${selected === 'Palakkad' ? ' selected' : ''}`} style={{ color: districtColor('Palakkad') }} onClick={() => handleClick('Palakkad')}>
+           {/* Thrissur */} 
+          <g className={`district${selected === 'Thrissur' ? ' selected' : ''}`} style={{ color: districtColor('Thrissur') }} onClick={() => handleClick('Thrissur')}>
             <path d="m 624.09402,1184.4513 17.84771,6.9087 3.45439,-4.6058 6.90879,3.4544 2.87867,-5.1816 1.72719,-5.7573 6.90879,6.333 5.75733,4.0301 2.87866,-6.333 0,-6.9088 10.36319,-5.1816 9.21172,-9.7874 4.60586,-8.0603 12.09038,-1.7272 13.24184,4.6059 c 0,0 9.78746,1.7272 13.24185,1.7272 3.4544,0 9.21172,1.7272 9.21172,1.7272 l 5.75733,2.3029 4.03012,-2.8787 -3.45439,-6.333 2.30293,-5.1816 6.90879,-5.1816 0,-12.6661 c 0,0 4.03013,-4.0302 7.48452,-4.0302 3.4544,0 8.06026,3.4544 8.06026,3.4544 l 6.33305,9.2118 1.15147,4.6058 5.75732,-1.7272 c 0,0 5.75733,0 8.63599,1.1515 2.87866,1.1514 13.81758,5.1816 13.81758,5.1816 0,0 7.48452,1.1514 10.36319,0.5757 2.87866,-0.5757 8.63598,-0.5757 11.51465,-0.5757 2.87866,0 13.81758,-2.8787 13.81758,-2.8787 l 4.60586,-5.1816 c 0,0 9.78745,2.8787 12.09038,3.4544 2.30293,0.5757 12.66611,2.3029 12.66611,2.3029 l 11.51465,-2.8786 8.06026,-2.8787 6.33305,0.5758 4.03013,5.7573 -1.15146,9.7874 -2.30293,6.9088 -1.15147,5.1816 1.7272,6.3331 -4.60586,5.1816 c 0,0 -3.4544,4.0301 -6.33306,7.4845 -2.87866,3.4544 -6.90879,8.636 -6.90879,8.636 0,0 -1.72719,6.9088 -1.15146,11.5146 0.57573,4.6059 2.87866,8.636 -0.57573,11.5147 -3.4544,2.8786 -9.78746,9.7874 -6.33306,13.2418 3.45439,3.4544 8.06025,8.0603 10.93891,12.0904 2.87867,4.0301 8.06026,17.8477 10.36319,18.9992 2.30293,1.1514 4.60586,6.333 7.48452,10.3632 2.87866,4.0301 9.21172,10.9389 9.21172,10.9389 0,0 17.27198,9.2117 20.72637,11.5146 3.4544,2.303 35.11968,22.4536 39.14981,25.3323 4.03013,2.8786 9.21172,7.4845 9.21172,7.4845 0,0 5.18159,4.0301 1.15147,5.7573 -4.03013,1.7272 -5.75733,4.6059 -3.4544,6.9088 2.30293,2.3029 10.36319,5.7573 13.81758,5.7573 3.4544,0 7.48449,4.6059 9.78749,2.8787 2.3029,-1.7272 4.0301,-4.6059 6.333,-4.0301 2.303,0.5757 5.7573,1.7272 8.0603,2.8786 2.3029,1.1515 20.7263,2.8787 20.7263,2.8787 0,0 4.6059,-2.8787 8.0603,-3.4544 3.4544,-0.5757 6.9088,1.1514 14.3933,4.6058 7.4845,3.4544 13.8176,5.1816 9.7875,6.9088 -4.0302,1.7272 -9.2118,0 -10.3632,3.4544 -1.1515,3.4544 -1.1515,6.9088 2.3029,8.0603 3.4544,1.1514 7.4845,1.1514 8.636,-2.3029 1.1515,-3.4544 4.0301,-5.7574 6.9088,-4.0302 2.8786,1.7272 4.6058,2.303 8.636,2.303 4.0301,0 10.9389,-3.4544 14.969,-3.4544 4.0301,0 3.4544,4.0301 3.4544,4.0301 l -2.3029,12.0904 -1.1515,8.636 2.8787,5.1816 12.0904,3.4543 2.3029,3.4544 -6.9088,1.7272 -14.969,-2.8786 -10.939,0 -8.6359,1.7272 -10.939,5.7573 -10.9389,-2.3029 -11.5146,1.7272 -11.5147,1.1514 -12.0904,-1.1514 -14.3933,-7.4846 -10.36316,-0.5757 -10.36318,0.5757 -9.78746,-2.3029 -10.36318,-1.1515 -4.60586,4.0302 -9.78745,2.8786 -8.63599,-1.1514 c 0,0 -9.78745,0 -12.09038,0 -2.30293,0 -12.09039,-2.303 -12.09039,-2.303 l -7.48452,-5.1815 -6.90879,-1.1515 -4.60586,0.5757 -5.18159,4.6059 -4.03013,5.1816 -12.09038,6.333 -8.63599,0.5758 -6.90879,4.0301 -2.87866,7.4845 -5.18159,4.6059 -9.21172,1.1514 -7.48452,4.0302 -4.60586,6.333 -6.90879,3.4544 -3.4544,7.4845 1.7272,5.1816 -5.75733,3.4544 -6.90879,-1.1514 -4.03012,2.3029 -6.33306,-2.3029 -8.06026,-4.6059 -4.60586,-3.4544 -6.90879,-4.6059 -2.87866,-2.3029 5.18159,-5.7573 -2.30293,-2.8787 -6.90879,1.7272 -9.21172,-8.636 -1.72719,-5.7573 6.90879,-2.3029 -8.63599,-2.8787 -10.36319,-4.6058 -5.75732,-2.8787 8.63599,12.6661 10.93891,13.8176 c 0,0 3.4544,4.6059 2.87867,9.2117 -0.57574,4.6059 -4.60586,6.9088 -4.60586,6.9088 0,0 -8.06026,0.5757 -12.66612,2.3029 -4.60586,1.7272 -14.96904,4.0302 -14.96904,4.0302 l -5.75733,-4.0302 4.60586,-7.4845 -7.48452,-18.4234 -5.75733,-35.6954 -10.93891,-29.3624 -4.60586,-18.4234 -16.69624,-33.3925 -9.78746,-17.8477 -5.18159,-10.3632 2.87866,-1.1515 10.93892,12.6661 4.03013,4.0302 0.57573,-4.6059 -5.18159,-8.636 -3.4544,-9.7874 11.51465,6.333 4.03013,6.9088 1.15147,9.2117 4.60585,0 -2.30292,-9.2117 8.63598,-5.7573 0.57573,-3.4544 -8.63598,-1.7272 -6.90879,-2.3029 -1.7272,-8.636 -3.45439,-1.7272 -6.33306,-5.1816 -3.4544,-0.5757 -1.72719,6.333 -5.75733,0 2.30293,7.4845 -4.60586,0.5758 -3.45439,-10.3632 6.33305,-4.0301 -8.06025,-3.4544 -16.69624,-25.3323 -15.54478,-16.6962 -6.90879,-14.3933 z" />
           </g>
 
-          {/* Thrissur */}
-          <g className={`district${selected === 'Thrissur' ? ' selected' : ''}`} style={{ color: districtColor('Thrissur') }} onClick={() => handleClick('Thrissur')}>
+         {/* Palakkad */}
+          <g className={`district${selected === 'Palakkad' ? ' selected' : ''}`} style={{ color: districtColor('Palakkad') }} onClick={() => handleClick('Palakkad')}>
             <path d="m 890.08243,900.61514 9.78745,-5.18159 8.63599,1.15146 4.03013,0 4.03013,-6.33306 6.90879,-5.18159 6.33305,1.15147 9.21172,6.33305 12.09039,2.30293 14.39331,0.57574 12.09038,-4.03013 15.54478,-0.57573 9.78745,0 8.0603,-4.60586 5.1815,-3.4544 9.2118,-7.48452 8.636,-4.03013 6.9087,1.15147 0.5758,15.54477 -2.8787,7.48453 -5.1816,7.48452 -8.0602,6.90879 -5.1816,7.48452 -1.1515,8.06025 3.4544,0.57574 6.3331,-5.75733 8.636,0.57573 8.6359,4.60586 5.7574,6.33306 -1.1515,6.90879 2.3029,16.12051 -2.8786,7.48452 0,6.33306 4.6058,5.18159 8.636,2.87867 2.8787,2.87866 9.2117,-4.03013 3.4544,2.30293 -4.6059,8.63599 -10.9389,2.87866 -20.7264,-5.18159 -8.0602,0 -4.6059,4.60586 -5.1816,1.7272 -4.6058,17.27199 -4.0302,9.7874 -11.5146,12.0904 -1.7272,4.6059 8.0603,8.636 23.605,9.7874 25.3322,9.2117 39.7256,16.6963 8.0602,7.4845 c 0,0 0,12.0904 1.7272,14.969 1.7272,2.8787 9.7875,7.4846 9.7875,7.4846 0,0 12.0903,5.7573 14.3933,6.9088 2.3029,1.1514 6.9088,12.0903 6.9088,12.0903 l -3.4544,16.1205 -7.4846,27.6352 -1.1514,24.1808 -4.6059,7.4845 -14.969,-3.4544 -10.3632,-2.3029 -6.3331,10.3632 6.3331,9.7874 10.3632,6.3331 3.4544,12.6661 -8.636,14.3933 -1.1515,11.5146 -1.1514,14.3934 c 0,0 -2.8787,20.7263 -2.8787,23.0293 0,2.3029 -2.3029,17.2719 -2.3029,17.2719 0,0 7.4845,12.6661 8.636,14.9691 1.1514,2.3029 4.6058,13.8176 4.6058,13.8176 l 0,17.8477 -16.1205,12.0903 c 0,0 -55.846,9.2118 -61.0276,-8.0602 -5.1816,-17.272 -4.6059,-2.3029 -42.02851,-9.7875 -37.42262,-7.4845 -48.36153,-13.2418 -69.66364,-40.3012 -21.3021,-27.0595 -103.05611,-14.9691 -80.02681,-68.5122 23.0293,-53.5431 47.78579,-77.1482 22.45357,-80.0268 -25.33223,-2.8787 -104.78332,21.8778 -135.87287,8.0602 -31.08956,-13.8175 -65.05777,-31.6653 -62.75484,-49.513 2.30293,-17.8477 -16.69625,-60.4519 1.15146,-59.8761 17.84771,0.5757 58.14898,-10.3632 72.54229,-18.9992 14.39332,-8.636 97.87453,-4.0301 94.42013,-26.4837 -3.45439,-22.45357 -22.45356,-56.99752 -14.39331,-63.33058 8.06026,-6.33306 36.27115,-11.51465 54.11886,-25.33223 17.8477,-13.81758 17.8477,-32.81675 17.8477,-32.81675 z" />
           </g>
 
@@ -247,61 +511,75 @@ export default function KeralaMap() {
             </svg>
           </div>
 
-          <div className="kerala-map-details" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div style={{ background: selectedDistrict ? `${DISTRICT_COLORS[selectedDistrict.tier]}14` : "#f8fafc", borderRadius: "26px", border: selectedDistrict ? `1px solid ${DISTRICT_COLORS[selectedDistrict.tier]}` : "1px dashed #cbd5e1", minHeight: "300px", padding: "28px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
-              {selectedDistrict ? (
-                <>
-                  <div style={{ width: "52px", height: "52px", borderRadius: "999px", background: `${DISTRICT_COLORS[selectedDistrict.tier]}20`, color: DISTRICT_COLORS[selectedDistrict.tier], display: "grid", placeItems: "center", fontSize: "26px", fontWeight: 900, marginBottom: "16px" }}>
-                    •
-                  </div>
-                  <div style={{ color: "#0f4c81", fontSize: "24px", fontWeight: 900, marginBottom: "6px" }}>{selected}</div>
-                  <div style={{ color: "#475569", fontSize: "14px", lineHeight: 1.6, maxWidth: "280px", marginBottom: "18px" }}>
-                    {selectedDistrict.projects} active projects across the district with {selectedDistrict.lives} lives impacted.
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px" }}>
-                    {selectedDistrict.initiatives.map((initiative) => (
-                      <span key={initiative} style={{ background: DISTRICT_COLORS[selectedDistrict.tier], color: "#fff", padding: "7px 12px", borderRadius: "999px", fontSize: "12px", fontWeight: 700 }}>
-                        {initiative}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ width: "52px", height: "52px", borderRadius: "999px", background: "#e2e8f0", color: "#0f4c81", display: "grid", placeItems: "center", fontSize: "26px", fontWeight: 900, marginBottom: "16px" }}>
-                    ⌖
-                  </div>
-                  <div style={{ color: "#0f4c81", fontSize: "24px", fontWeight: 900, marginBottom: "6px" }}>Select a District</div>
-                  <div style={{ color: "#64748b", fontSize: "14px", lineHeight: 1.6, maxWidth: "280px" }}>
-                    Hover over the map to explore projects and impact data across Kerala’s 14 districts.
-                  </div>
-                </>
-              )}
+          <div className="kerala-map-details" style={{ display: "flex", flexDirection: "column", gap: "20px", justifyContent: "flex-start", alignItems: "stretch" }}>
+
+            {/* District Detail Card with Animation */}
+            <div key={selected || "empty"} className="fade-in-panel">
+              <DistrictDetailPanel selected={selected} />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "10px", paddingTop: "2px" }}>
-              {Object.entries(DISTRICT_TITLES).map(([tier, title]) => (
-                <div key={tier} style={{ textAlign: "center", padding: "10px 6px" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: DISTRICT_COLORS[tier], fontSize: "13px", fontWeight: 900 }}>
-                    <span style={{ width: "12px", height: "12px", borderRadius: "999px", background: DISTRICT_COLORS[tier] }} />
-                    {title}
-                  </div>
-                  <div style={{ color: "#64748b", fontSize: "12px", marginTop: "4px" }}>
-                    {totals.byTier[tier]} districts
-                  </div>
-                </div>
-              ))}
+            {/* Legend Row */}
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              background: "#ffffff", 
+              border: "1px solid #e2e8f0", 
+              borderRadius: "16px", 
+              padding: "12px 8px",
+              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.04)"
+            }}>
+              <LegendItem label="High Impact" count={2} color="#0f4c81" />
+              <div style={{ width: "1px", height: "24px", background: "#e2e8f0" }} />
+              <LegendItem label="Active" count={3} color="#f97316" />
+              <div style={{ width: "1px", height: "24px", background: "#e2e8f0" }} />
+              <LegendItem label="Emerging" count={2} color="#642396" />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "10px" }}>
-              <div style={{ background: "#f8fafc", borderRadius: "20px", padding: "16px", border: "1px solid rgba(148, 163, 184, 0.18)" }}>
-                <div style={{ color: "#64748b", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: "6px" }}>Total projects</div>
-                <div style={{ color: "#0f4c81", fontSize: "28px", fontWeight: 900 }}>{totals.projects}</div>
-              </div>
-              <div style={{ background: "#f8fafc", borderRadius: "20px", padding: "16px", border: "1px solid rgba(148, 163, 184, 0.18)" }}>
-                <div style={{ color: "#64748b", fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: "6px" }}>Estimated lives</div>
-                <div style={{ color: "#0f4c81", fontSize: "28px", fontWeight: 900 }}>{Math.round(totals.lives / 1000)}K+</div>
-              </div>
+            {/* Total Summary Cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
+              <TotalCard 
+                label="Total Schools" 
+                value="25+" 
+                color="#f97316" 
+                bg="#fff7ed" 
+                borderColor="#ffedd5"
+                icon={
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                }
+              />
+              <TotalCard 
+                label="Total Students" 
+                value="300+" 
+                color="#14b8a6" 
+                bg="#f0fdfa" 
+                borderColor="#ccfbf1"
+                icon={
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                }
+              />
+              <TotalCard 
+                label="Total Devices" 
+                value="700+" 
+                color="#0f4c81" 
+                bg="#eff6ff" 
+                borderColor="#bfdbfe"
+                icon={
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                    <line x1="2" y1="20" x2="22" y2="20" />
+                    <line x1="12" y1="17" x2="12" y2="20" />
+                  </svg>
+                }
+              />
             </div>
           </div>
         </div>
