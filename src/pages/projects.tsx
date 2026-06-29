@@ -157,7 +157,6 @@ export default function ProjectsPage() {
                     {categoryIcons[cat.kind as keyof typeof categoryIcons] ?? categoryIcons.assistiveDevices}
                   </div>
                   <h3 className="font-bold text-navy text-lg mb-1">{cat.title}</h3>
-                  <div className="text-slate-500 font-medium text-sm">{cat.count} Projects</div>
                 </motion.div>
               )})}
             </div>
