@@ -2,15 +2,13 @@ import React from "react";
 import { LogoSlider } from "./ui/logo-slider";
 
 const PARTNERS = [
-  { name: "IEEE", logo: "/logos/ieee.png" },
-  { name: "IEEE Region 10", logo: "/logos/R10-Logo.png" },
-  { name: "IEEE SA", logo: "/logos/ieee-sa.webp" },
-  { name: "IEEE SIGHT", logo: "/logos/IEEE-SIGHT-logo.webp" },
-  { name: "Sustainable Development Goals", logo: "/logos/sdg.png" },
-  { name: "Kerala Startup Mission", logo: "/logos/ksum.png" },
-  { name: "NASSCOM Foundation", logo: "/logos/nasscom-logo.svg" },
-  { name: "Sightsavers", logo: "/logos/sightsavers-logo.png" },
-  { name: "CBM", logo: "/logos/cbm.jpeg" },
+  { name: "IEEE", logo: "/logos/ieee.webp" },
+  { name: "IEEE Kerala Section", logo: "/logos/ieee-kerala-section.webp" },
+  { name: "IEEE IES", logo: "/logos/ieee-ies.webp" },
+  { name: "IEEE EdSoc Kerala Section", logo: "/logos/EdSoc-KS.webp" },
+  { name: "FOSS United", logo: "/logos/foss_united.webp" },
+  { name: "CodeX", logo: "/logos/codex.webp" },
+  { name: "STRIDE", logo: "/logos/stride-logo.webp" },
 ];
 
 export function PartnerCarousel() {
