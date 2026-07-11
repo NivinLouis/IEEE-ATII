@@ -362,8 +362,8 @@ export default function HomePage() {
             ) : (
               <TestimonialsCard 
                 items={storiesOfChangeItems} 
-                width={800} 
-                className="w-full max-w-4xl"
+                width={960} 
+                className="w-full max-w-5xl"
                 autoPlay={true}
                 showCounter={false}
               />

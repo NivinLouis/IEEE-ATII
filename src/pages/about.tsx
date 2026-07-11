@@ -185,7 +185,7 @@ export default function AboutPage() {
                 The IEEE Kerala Assistive Technology & Inclusive Innovation Group (ATIIG) is dedicated to harnessing the power of technology to create a more equitable world. We bring together researchers, engineers, volunteers, and communities to design solutions that break down barriers for people with disabilities.
               </p>
             </div>
-            
+
             <div className="flex-1 relative w-full pb-12">
               <HeroVisual
                 variant="about"
@@ -212,7 +212,7 @@ export default function AboutPage() {
       <section className="py-24 bg-white" data-testid="about-mission">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -227,7 +227,7 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -243,7 +243,7 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

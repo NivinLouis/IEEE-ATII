@@ -81,7 +81,7 @@ export function TestimonialsCard({
     return (
         <div className={cn("flex items-center justify-center p-8", className)}>
             <div
-                className="relative grid  grid-cols-[1fr]  md:grid-cols-[1fr_1fr] md:grid-rows-[auto_auto_auto] gap-x-8 gap-y-2 w-full "
+                className="relative grid grid-cols-[1fr] md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.15fr)] md:grid-rows-[auto_auto_auto] gap-x-10 gap-y-4 w-full"
                 style={{ perspective: "1400px", maxWidth: `${width}px` }}
             >
                 {/* Counter */}
@@ -92,7 +92,7 @@ export function TestimonialsCard({
                 )}
 
                 {/* Image Card Stack */}
-                <div className="row-start-2  col-start-1 md:row-start-1 row-span-3 relative w-full aspect-square">
+                <div className="row-start-2 col-start-1 md:row-start-1 row-span-3 relative w-full aspect-square md:aspect-[5/4]">
                     <AnimatePresence custom={direction}>
                         {items.map((item, index) => {
                             const isActive = index === activeIndex;
@@ -165,7 +165,7 @@ export function TestimonialsCard({
                 </div>
 
                 {/* Text Area */}
-                <div className="col-start-1 md:col-start-2 md:row-span-2 flex flex-col justify-center min-h-[120px]">
+                <div className="col-start-1 md:col-start-2 md:row-span-2 flex flex-col justify-center min-h-[120px] md:min-h-0">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeItem.id}
@@ -174,7 +174,7 @@ export function TestimonialsCard({
                             exit={{ opacity: 0, y: -25 }}
                             transition={{ duration: 0.35 }}
                         >
-                            <p className="text-base md:text-xl font-medium text-navy/80 mb-4 italic leading-relaxed">
+                            <p className="text-[0.95rem] md:text-[1.4rem] font-medium text-navy/80 mb-5 italic leading-[1.45]">
                                 "{activeItem.description}"
                             </p>
                             <div className="flex flex-col">
