@@ -22,27 +22,28 @@ interface Leader {
 }
 
 const professionalExecom: Leader[] = [
-  { name: "Robin Tommy", role: "Senior Advisor", image: "/leadership/robin_tommy.png" },
-  { name: "Robin Francis", role: "Chairperson", image: "/leadership/robin_francis.png" },
-  { name: "Vaishakh Suresh", role: "Vice Chairperson", image: "/leadership/vaishakh_suresh.png" },
-  { name: "Anna Ann Mathew", role: "Secretary", image: "/leadership/anna_ann_mathew.png" },
-  { name: "Lakshmy K J", role: "Treasurer", image: "/leadership/lakshmy_k_j.png" },
-  { name: "Reshmi Ravindranathan", role: "Assistive Tech Lead", image: "/leadership/reshmi_ravindranathan.png" },
-  { name: "Aswathy S Krishna", role: "Inclusion Lead", image: "/leadership/aswathy_s_krishna.png" },
+  { name: "Robin Tommy", role: "Senior Advisor", image: "/leadership/robin_tommy.webp" },
+  { name: "Robin Francis", role: "Chairperson", image: "/leadership/robin_francis.webp" },
+  { name: "Vaishakh Suresh", role: "Vice Chairperson", image: "/leadership/vaishakh_suresh.webp" },
+  { name: "Anna Ann Mathew", role: "Secretary", image: "/leadership/anna_ann_mathew.webp" },
+  { name: "Lakshmy K J", role: "Treasurer", image: "/leadership/lakshmy_k_j.webp" },
+  { name: "Reshmi Ravindranathan", role: "Assistive Tech Lead", image: "/leadership/reshmi_ravindranathan.webp" },
+  { name: "Aswathy S Krishna", role: "Inclusion Lead", image: "/leadership/aswathy_s_krishna.webp" },
 ];
 
 const leadershipTeam: Leader[] = [
-  { name: "Vishnu Gopal", role: "Student Activity Chair", image: "/leadership/vishnu_gopal.png" },
-  { name: "Nivin P Louis", role: "Student Representative", image: "/leadership/nivin_p_louis.png" },
-  { name: "Shayen Thomas", role: "Technical Coordinator", image: "/leadership/shayen_thomas.png" },
-  { name: "Chinmayi B S", role: "Travancore Hub SR", image: "/leadership/chinmayi_b_s.png" },
-  { name: "Afreen M H", role: "Kochi Hub SR", image: "/leadership/afreen_m_h.png" },
-  { name: "Dyuthi Korambeth", role: "Malabar Hub SR", image: "/leadership/dyuthi_korambeth.png" },
-  { name: "Gourisankar OP", role: "Assistive Tech Coordinator", image: "/leadership/gourisankar_op.png" },
-  { name: "Roshni K", role: "Inclusive Innovation Coordinator", image: "/leadership/roshni_k.png" },
-  { name: "Alan T F", role: "Video Editor", image: "/leadership/alan_t_f.png" },
-  { name: "Anayya Binoy", role: "Design Head", image: "/leadership/anayya_binoy.png" },
+  { name: "Vishnu Gopal", role: "Student Activity Chair", image: "/leadership/vishnu_gopal.webp" },
+  { name: "Nivin P Louis", role: "Student Representative", image: "/leadership/nivin_p_louis.webp" },
+  { name: "Shayen Thomas", role: "Technical Coordinator", image: "/leadership/shayen_thomas.webp" },
+  { name: "Chinmayi B S", role: "Travancore Hub SR", image: "/leadership/chinmayi_b_s.webp" },
+  { name: "Afreen M H", role: "Kochi Hub SR", image: "/leadership/afreen_m_h.webp" },
+  { name: "Dyuthi Korambeth", role: "Malabar Hub SR", image: "/leadership/dyuthi_korambeth.webp" },
+  { name: "Gourisankar OP", role: "Assistive Tech Coordinator", image: "/leadership/gourisankar_op.webp" },
+  { name: "Roshni K", role: "Inclusive Innovation Coordinator", image: "/leadership/roshni_k.webp" },
+  { name: "Alan T F", role: "Video Editor", image: "/leadership/alan_t_f.webp" },
+  { name: "Anayya Binoy", role: "Design Head", image: "/leadership/anayya_binoy.webp" },
 ];
+
 
 function getInitials(name: string) {
   return name
