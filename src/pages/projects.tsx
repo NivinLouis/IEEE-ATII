@@ -15,6 +15,7 @@ import {
 } from "recharts";
 
 import KeralaMap from "@/components/KeralaMap.jsx";
+import { SDGGrid } from "@/components/SDGGrid";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
 
 export default function ProjectsPage() {
@@ -208,27 +209,9 @@ export default function ProjectsPage() {
               Our projects directly support global goals for health, education, inclusion, innovation, and partnerships.
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4 md:gap-6 max-w-6xl mx-auto">
-            {[
-              { num: "3", title: "Good Health" },
-              { num: "4", title: "Quality Education" },
-              { num: "8", title: "Economic Growth" },
-              { num: "9", title: "Innovation" },
-              { num: "10", title: "Reduced Inequalities" },
-              { num: "11", title: "Sustainable Cities" },
-              { num: "17", title: "Partnerships" }
-            ].map((sdg, i) => (
-              <div key={i} className="bg-slate-50 border border-slate-100 rounded-2xl px-6 py-8 text-navy font-bold flex flex-col items-center gap-4 hover:border-orange/20 hover:bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                <div className="p-4 bg-white rounded-xl shadow-sm group-hover:bg-slate-50 transition-colors border border-slate-100">
-                  <span className="block text-xs font-black tracking-[0.25em] text-slate-500 text-center leading-none">SDG</span>
-                  <span className="block text-4xl font-black leading-none mt-1 text-navy text-center">{sdg.num}</span>
-                </div>
-                <div className="text-xs sm:text-sm uppercase tracking-wider text-slate-600 group-hover:text-navy text-center min-h-[2.5rem] flex items-center justify-center">
-                  {sdg.title}
-                </div>
-              </div>
-            ))}
-          </div>
+          <div className="max-w-6xl mx-auto">
+              <SDGGrid />
+            </div>
         </div>
       </section>
 
