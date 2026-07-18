@@ -254,6 +254,68 @@
   }
 }
 
+@keyframes volunteer-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes volunteer-marquee-reverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.volunteer-marquee:hover .volunteer-marquee__track,
+.volunteer-marquee:focus-within .volunteer-marquee__track {
+  animation-play-state: paused;
+}
+
+.volunteer-marquee__track {
+  animation: volunteer-marquee var(--volunteer-marquee-duration, 30s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-mobile-forward,
+.marquee-mobile-reverse {
+  animation-duration: var(--volunteer-marquee-duration, 30s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.marquee-mobile-forward {
+  animation-name: volunteer-marquee;
+}
+
+.marquee-mobile-reverse {
+  animation-name: volunteer-marquee-reverse;
+}
+
+@media (min-width: 768px) {
+  .marquee-mobile-forward,
+  .marquee-mobile-reverse {
+    animation-name: volunteer-marquee;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volunteer-marquee__track,
+  .marquee-mobile-forward,
+  .marquee-mobile-reverse {
+    animation: none;
+    transform: none;
+  }
+}
+
 /* Brand color utilities are now generated automatically by Tailwind v4 from
    the --color-navy / --color-purple / --color-orange / --color-teal tokens
    declared in @theme above. This enables bg-, text-, border-, ring-, from-,

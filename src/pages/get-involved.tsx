@@ -3,6 +3,7 @@ import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
 import { routeMeta, GLOBAL_STATS } from "@/data/site";
 import { useGetInvolvedCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
+import { VolunteerMarquee } from "@/components/VolunteerMarquee";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
 import volunteerImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png";
@@ -184,6 +185,8 @@ export default function GetInvolvedPage() {
           </div>
         </div>
       </section>
+
+      <VolunteerMarquee />
 
       {/* Sponsorship & Open Calls
       <section id="sponsor" className="py-24 bg-slate-50 scroll-mt-32" data-testid="sponsorships">
