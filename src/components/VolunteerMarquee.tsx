@@ -4,67 +4,32 @@ import { VolunteerCard } from "./VolunteerCard";
 export interface Volunteer {
   id: string;
   name: string;
-  designation: string;
   imageUrl: string;
   imageAlt?: string;
+  realImageUrl?: string;
 }
 
 const VOLUNTEERS: Volunteer[] = [
   {
     id: "volunteer-1",
-    name: "Ananya Nair",
-    designation: "Community Outreach Lead",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(5)_1777748003996.png",
-    imageAlt: "Ananya Nair, Community Outreach Lead for IEEE Kerala",
+    name: "Brigit Thomas",
+    imageUrl: "/volunteer_wall_trial/brigit/illustartion.png",
+    realImageUrl: "/volunteer_wall_trial/brigit/normal.jpeg",
+    imageAlt: "Brigit Thomas, IEEE Kerala volunteer",
   },
   {
     id: "volunteer-2",
-    name: "Rahul Menon",
-    designation: "Technical Programs Coordinator",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(3)_1777748003997.png",
-    imageAlt: "Rahul Menon, Technical Programs Coordinator for IEEE Kerala",
+    name: "Shayen Thomas",
+    imageUrl: "/volunteer_wall_trial/shayen/illustration.jpeg",
+    realImageUrl: "/volunteer_wall_trial/shayen/normal.jpeg",
+    imageAlt: "Shayen Thomas, IEEE Kerala volunteer",
   },
   {
     id: "volunteer-3",
-    name: "Meera Suresh",
-    designation: "Inclusive Education Volunteer",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(1)_1777748003994.png",
-    imageAlt: "Meera Suresh, Inclusive Education Volunteer for IEEE Kerala",
-  },
-  {
-    id: "volunteer-4",
-    name: "Arjun Varma",
-    designation: "Event Experience Designer",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(6)_1777748003996.png",
-    imageAlt: "Arjun Varma, Event Experience Designer for IEEE Kerala",
-  },
-  {
-    id: "volunteer-5",
-    name: "Nandana Prakash",
-    designation: "Research & Innovation Support",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(5)_1777748003997.png",
-    imageAlt: "Nandana Prakash, Research and Innovation Support volunteer for IEEE Kerala",
-  },
-  {
-    id: "volunteer-6",
-    name: "Vivek Thomas",
-    designation: "Mentorship Circle Facilitator",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(7)_1777748003996.png",
-    imageAlt: "Vivek Thomas, Mentorship Circle Facilitator for IEEE Kerala",
-  },
-  {
-    id: "volunteer-7",
-    name: "Asha K. George",
-    designation: "Accessibility Advocate",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(2)_1777748003996.png",
-    imageAlt: "Asha K. George, Accessibility Advocate for IEEE Kerala",
-  },
-  {
-    id: "volunteer-8",
-    name: "Fahad Rahman",
-    designation: "Community Tech Volunteer",
-    imageUrl: "/assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(8)_1777748003996.png",
-    imageAlt: "Fahad Rahman, Community Tech Volunteer for IEEE Kerala",
+    name: "Robin Francis",
+    imageUrl: "/volunteer_wall_trial/robin/illustartion.png",
+    realImageUrl: "/volunteer_wall_trial/robin/normal.webp",
+    imageAlt: "Robin Francis, IEEE Kerala volunteer",
   },
 ];
 
@@ -76,30 +41,33 @@ type VolunteerMarqueeProps = {
 
 const VOLUNTEER_LANES = [
   VOLUNTEERS,
-  [...VOLUNTEERS.slice(3), ...VOLUNTEERS.slice(0, 3)],
-  [...VOLUNTEERS.slice(5), ...VOLUNTEERS.slice(0, 5)],
+  [...VOLUNTEERS.slice(1), ...VOLUNTEERS.slice(0, 1)],
+  [...VOLUNTEERS.slice(2), ...VOLUNTEERS.slice(0, 2)],
 ] as const;
 
-const MOBILE_ROW_DIRECTIONS = ["marquee-mobile-forward", "marquee-mobile-reverse"] as const;
+const LANE_PHASE_OFFSETS = [0, -0.08, -0.21] as const;
 
 export function VolunteerMarquee({
   title = "Meet the Volunteers",
   description = "These volunteers help power the organisation’s events, community programs, and technical activities.",
   durationSeconds = 30,
 }: VolunteerMarqueeProps) {
-  const [activeVolunteerId, setActiveVolunteerId] = useState<string | null>(null);
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
 
   useEffect(() => {
-    const clearActiveVolunteer = () => setActiveVolunteerId(null);
+    const clearActiveCard = () => setActiveCardId(null);
+    const clearActiveCardFromOutside = (event: PointerEvent) => {
+      if (!(event.target instanceof Element) || !event.target.closest("[data-volunteer-card]")) {
+        clearActiveCard();
+      }
+    };
 
-    window.addEventListener("scroll", clearActiveVolunteer, { passive: true });
-    window.addEventListener("touchstart", clearActiveVolunteer, { passive: true });
-    window.addEventListener("mousedown", clearActiveVolunteer);
+    window.addEventListener("scroll", clearActiveCard, { passive: true });
+    window.addEventListener("pointerdown", clearActiveCardFromOutside);
 
     return () => {
-      window.removeEventListener("scroll", clearActiveVolunteer);
-      window.removeEventListener("touchstart", clearActiveVolunteer);
-      window.removeEventListener("mousedown", clearActiveVolunteer);
+      window.removeEventListener("scroll", clearActiveCard);
+      window.removeEventListener("pointerdown", clearActiveCardFromOutside);
     };
   }, []);
 
@@ -123,34 +91,58 @@ export function VolunteerMarquee({
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-slate-50 to-transparent sm:w-24" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-slate-50 to-transparent sm:w-24" aria-hidden="true" />
 
-          <div className="space-y-4 px-4 sm:space-y-5 sm:px-6 lg:px-8" aria-label="IEEE volunteers showcase">
-            {VOLUNTEER_LANES.map((lane, laneIndex) => (
-              <div
-                key={`volunteer-lane-${laneIndex}`}
-                className={`${laneIndex === 2 ? "hidden md:flex" : "flex"} overflow-hidden`}
-                aria-hidden={laneIndex >= 2 ? true : undefined}
-              >
+          <div className="space-y-4 sm:space-y-5" aria-label="IEEE volunteers showcase">
+            {VOLUNTEER_LANES.map((lane, laneIndex) => {
+              const laneSequence = [...lane, ...lane, ...lane, ...lane];
+
+              return (
                 <div
-                  className={`volunteer-marquee__track flex w-max items-stretch gap-4 motion-reduce:animate-none sm:gap-5 ${laneIndex === 0 ? "marquee-mobile-forward" : laneIndex === 1 ? "marquee-mobile-reverse" : "md:translate-x-12"}`}
+                  key={`volunteer-lane-${laneIndex}`}
+                  className={`${laneIndex === 2 ? "hidden md:flex" : "flex"} overflow-hidden`}
+                  aria-hidden={laneIndex >= 2 ? true : undefined}
                 >
-                  {[...lane, ...lane].map((volunteer, index) => (
-                    <div
-                      key={`${laneIndex}-${volunteer.id}-${index}`}
-                      role="listitem"
-                      aria-hidden={index >= lane.length ? true : undefined}
-                      className="shrink-0"
-                    >
-                      <VolunteerCard
-                        volunteer={volunteer}
-                        isActive={activeVolunteerId === volunteer.id}
-                        onActivate={setActiveVolunteerId}
-                        onDeactivate={() => setActiveVolunteerId((current) => (current === volunteer.id ? null : current))}
-                      />
-                    </div>
-                  ))}
+                  <div
+                    className="volunteer-marquee__track flex w-max items-stretch motion-reduce:animate-none"
+                    style={{ animationDelay: `${durationSeconds * LANE_PHASE_OFFSETS[laneIndex]}s` }}
+                  >
+                    {[0, 1].map((groupIndex) => (
+                      <div
+                        key={`${laneIndex}-group-${groupIndex}`}
+                        className="flex min-w-[100vw] w-max shrink-0 items-stretch gap-4 px-4 sm:gap-5 sm:px-6 lg:px-8"
+                        aria-hidden={groupIndex === 1 ? true : undefined}
+                      >
+                        {laneSequence.map((volunteer, index) => {
+                          const isDuplicate = groupIndex === 1 || index >= lane.length;
+                          const cardId = `${laneIndex}-${groupIndex}-${volunteer.id}-${index}`;
+
+                          return (
+                            <div
+                              key={cardId}
+                              role="listitem"
+                              aria-hidden={isDuplicate ? true : undefined}
+                              className="shrink-0"
+                            >
+                              <VolunteerCard
+                                volunteer={volunteer}
+                                cardId={cardId}
+                                tabIndex={isDuplicate ? -1 : undefined}
+                                isActive={activeCardId === cardId}
+                                onToggle={(selectedCardId) =>
+                                  setActiveCardId((current) => (current === selectedCardId ? null : selectedCardId))
+                                }
+                                onDeactivate={(blurredCardId) =>
+                                  setActiveCardId((current) => (current === blurredCardId ? null : current))
+                                }
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
