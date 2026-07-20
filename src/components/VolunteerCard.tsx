@@ -4,6 +4,7 @@ type VolunteerCardProps = {
   volunteer: Volunteer;
   cardId: string;
   tabIndex?: number;
+  isPriority?: boolean;
   isActive?: boolean;
   onToggle?: (cardId: string) => void;
   onDeactivate?: (cardId: string) => void;
@@ -13,6 +14,7 @@ export function VolunteerCard({
   volunteer,
   cardId,
   tabIndex,
+  isPriority = false,
   isActive = false,
   onToggle,
   onDeactivate,
@@ -37,22 +39,28 @@ export function VolunteerCard({
       onBlur={() => onDeactivate?.(cardId)}
       className="group relative w-32 shrink-0 overflow-hidden rounded-2xl text-left outline-none transition duration-300 focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-36 md:w-48 lg:w-52"
     >
-      <div className="relative aspect-square overflow-hidden">
+      <div className="relative aspect-square overflow-hidden bg-slate-200">
         <img
           src={volunteer.imageUrl}
-          alt={volunteer.imageAlt ?? volunteer.name}
+          alt={volunteer.imageAlt}
           draggable={false}
+          loading={isPriority || isActive ? "eager" : "lazy"}
+          decoding="async"
+          width={800}
+          height={800}
           className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform md:group-hover:scale-[1.04] md:group-hover:opacity-0 md:group-focus-visible:scale-[1.04] md:group-focus-visible:opacity-0 ${isActive ? "scale-[1.04] opacity-0" : "opacity-100"}`}
         />
-        {volunteer.realImageUrl && (
-          <img
-            src={volunteer.realImageUrl}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform md:group-hover:scale-[1.04] md:group-hover:opacity-100 md:group-focus-visible:scale-[1.04] md:group-focus-visible:opacity-100 ${isActive ? "scale-[1.04] opacity-100" : "opacity-0"}`}
-          />
-        )}
+        <img
+          src={volunteer.realImageUrl}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          loading={isPriority || isActive ? "eager" : "lazy"}
+          decoding="async"
+          width={800}
+          height={800}
+          className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform md:group-hover:scale-[1.04] md:group-hover:opacity-100 md:group-focus-visible:scale-[1.04] md:group-focus-visible:opacity-100 ${isActive ? "scale-[1.04] opacity-100" : "opacity-0"}`}
+        />
       </div>
 
       <div

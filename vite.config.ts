@@ -76,6 +76,18 @@ export default defineConfig({
     strictPort: true,
     host: "0.0.0.0",
     allowedHosts: true,
+    proxy: {
+      "/api": {
+        target: "https://atii.ieeekerala.org",
+        changeOrigin: true,
+        secure: true,
+      },
+      "/uploads": {
+        target: "https://atii.ieeekerala.org",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
     fs: {
       strict: true,
     },

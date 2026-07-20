@@ -23,7 +23,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const SHOW_VOLUNTEER_WALL = false;
+const SHOW_VOLUNTEER_WALL = true;
 
 export default function GetInvolvedPage() {
   const { toast } = useToast();
