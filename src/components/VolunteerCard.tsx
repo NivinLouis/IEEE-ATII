@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { Volunteer } from "./VolunteerMarquee";
 
 type VolunteerCardProps = {
@@ -19,11 +20,47 @@ export function VolunteerCard({
   onToggle,
   onDeactivate,
 }: VolunteerCardProps) {
+  const [shouldLoadRealImage, setShouldLoadRealImage] = useState(false);
+  const [isRealImageLoaded, setIsRealImageLoaded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (isActive) {
+      setShouldLoadRealImage(true);
+    }
+  }, [isActive]);
+
+  const isInteracting = isActive || isHovered || isFocused;
+  const isRealImageVisible = isInteracting && isRealImageLoaded;
+
+  const handlePointerEnter = () => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    setIsHovered(true);
+    setShouldLoadRealImage(true);
+  };
+
+  const handlePointerLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setShouldLoadRealImage(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    onDeactivate?.(cardId);
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const isKeyboardClick = event.detail === 0;
     const isTouchDevice = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     if (isKeyboardClick || isTouchDevice) {
+      setShouldLoadRealImage(true);
       onToggle?.(cardId);
     }
   };
@@ -36,7 +73,10 @@ export function VolunteerCard({
       aria-label={volunteer.name}
       aria-pressed={isActive}
       onClick={handleClick}
-      onBlur={() => onDeactivate?.(cardId)}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       className="group relative w-32 shrink-0 overflow-hidden rounded-2xl text-left outline-none transition duration-300 focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:w-36 md:w-48 lg:w-52"
     >
       <div className="relative aspect-square overflow-hidden bg-slate-200">
@@ -44,23 +84,28 @@ export function VolunteerCard({
           src={volunteer.imageUrl}
           alt={volunteer.imageAlt}
           draggable={false}
-          loading={isPriority || isActive ? "eager" : "lazy"}
+          loading={isPriority ? "eager" : "lazy"}
+          fetchPriority={isPriority ? "high" : "auto"}
           decoding="async"
           width={800}
           height={800}
-          className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform md:group-hover:scale-[1.04] md:group-hover:opacity-0 md:group-focus-visible:scale-[1.04] md:group-focus-visible:opacity-0 ${isActive ? "scale-[1.04] opacity-0" : "opacity-100"}`}
+          className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform ${isInteracting ? "scale-[1.04]" : ""} ${isRealImageVisible ? "opacity-0" : "opacity-100"}`}
         />
-        <img
-          src={volunteer.realImageUrl}
-          alt=""
-          aria-hidden="true"
-          draggable={false}
-          loading={isPriority || isActive ? "eager" : "lazy"}
-          decoding="async"
-          width={800}
-          height={800}
-          className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform md:group-hover:scale-[1.04] md:group-hover:opacity-100 md:group-focus-visible:scale-[1.04] md:group-focus-visible:opacity-100 ${isActive ? "scale-[1.04] opacity-100" : "opacity-0"}`}
-        />
+        {shouldLoadRealImage && (
+          <img
+            src={volunteer.realImageUrl}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            loading="lazy"
+            fetchPriority="low"
+            decoding="async"
+            width={800}
+            height={800}
+            onLoad={() => setIsRealImageLoaded(true)}
+            className={`absolute inset-0 h-full w-full object-cover object-center transition duration-500 ease-out will-change-transform ${isInteracting ? "scale-[1.04]" : ""} ${isRealImageVisible ? "opacity-100" : "opacity-0"}`}
+          />
+        )}
       </div>
 
       <div
