@@ -1,12 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import {
-  CONTACT_EMAIL,
-  SITE_CANONICAL_NAME,
   SITE_DESCRIPTION,
   SITE_NAME,
-  SITE_TAGLINE,
   SITE_URL,
-  SOCIAL_LINKS,
 } from "@/data/site";
 
 const DEFAULT_OG = `${SITE_URL}/opengraph.jpg`;
@@ -156,63 +152,6 @@ export const faqSchema = (
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },
   })),
-});
-
-export const organizationSchema = (): Record<string, unknown> => ({
-  "@context": "https://schema.org",
-  "@type": ["NGO", "EducationalOrganization", "Organization"],
-  "@id": `${SITE_URL}/#organization`,
-  name: SITE_NAME,
-  legalName: SITE_CANONICAL_NAME,
-  alternateName: [
-    SITE_CANONICAL_NAME,
-    "IEEE Kerala Assistive Technology and Inclusive Innovation Group",
-  ],
-  url: `${SITE_URL}/`,
-  logo: {
-    "@type": "ImageObject",
-    url: `${SITE_URL}/assets/ATII_CLR_1777748066607.png`,
-    width: 2221,
-    height: 625,
-  },
-  image: `${SITE_URL}/opengraph.jpg`,
-  description: SITE_DESCRIPTION,
-  slogan: SITE_TAGLINE,
-  foundingDate: "2018",
-  email: CONTACT_EMAIL,
-  areaServed: {
-    "@type": "AdministrativeArea",
-    name: "Kerala, India",
-  },
-  contactPoint: [
-    {
-      "@type": "ContactPoint",
-      contactType: "general inquiries",
-      email: CONTACT_EMAIL,
-      areaServed: "IN-KL",
-      availableLanguage: ["English", "Malayalam"],
-    },
-  ],
-  knowsAbout: [
-    "Assistive Technology",
-    "Inclusive Innovation",
-    "Accessible Education",
-    "Humanitarian Engineering",
-    "Disability Inclusion",
-    "Universal Design",
-    "IEEE Kerala Section programs",
-  ],
-  sameAs: SOCIAL_LINKS,
-  parentOrganization: {
-    "@type": "Organization",
-    name: "IEEE Kerala Section",
-    url: "https://ieeekerala.org/",
-  },
-  memberOf: {
-    "@type": "Organization",
-    name: "IEEE",
-    url: "https://www.ieee.org/",
-  },
 });
 
 export const websiteSchema = (): Record<string, unknown> => ({

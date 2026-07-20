@@ -1,7 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, {
   breadcrumbSchema,
-  organizationSchema,
   websiteSchema,
 } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
@@ -80,7 +79,6 @@ export default function HomePage() {
         description={routeMeta["/"].description}
         path="/"
         schemas={[
-          organizationSchema(),
           websiteSchema(),
           breadcrumbSchema([{ name: "Home", path: "/" }]),
         ]}

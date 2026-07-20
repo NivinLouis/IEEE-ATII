@@ -245,11 +245,7 @@ function routeSchema(routePath, meta) {
       dateModified: meta.modifiedTime || meta.publishedTime,
       articleSection: meta.section,
       inLanguage: "en-IN",
-      author: {
-        "@type": "Organization",
-        name: "IEEE Kerala ATIIG",
-        url: `${siteUrl}/`,
-      },
+      author: { "@id": `${siteUrl}/#organization` },
       publisher: { "@id": `${siteUrl}/#organization` },
     });
   }

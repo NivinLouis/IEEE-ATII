@@ -123,11 +123,7 @@ export default function NewsArticlePage() {
                   url: `${SITE_URL}/news/${article.slug}`,
                   image: image?.src ? [image.src] : undefined,
                   mainEntityOfPage: { "@id": `${SITE_URL}/news/${article.slug}#webpage` },
-                  author: {
-                    "@type": "Organization",
-                    name: "IEEE Kerala ATIIG",
-                    url: `${SITE_URL}/`,
-                  },
+                  author: { "@id": `${SITE_URL}/#organization` },
                   publisher: { "@id": `${SITE_URL}/#organization` },
                   articleSection: getPrimaryCategoryLabel(article.categories),
                   keywords: article.categories.map((category) => category.title),
