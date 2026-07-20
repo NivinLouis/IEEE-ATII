@@ -274,14 +274,36 @@
   }
 }
 
-.volunteer-marquee:hover .volunteer-marquee__track,
-.volunteer-marquee:focus-within .volunteer-marquee__track {
+.volunteer-marquee__track:has([data-volunteer-card]:hover),
+.volunteer-marquee__track:focus-within {
   animation-play-state: paused;
 }
 
 .volunteer-marquee__track {
   animation: volunteer-marquee var(--volunteer-marquee-duration, 30s) linear infinite;
   will-change: transform;
+}
+
+.volunteer-marquee {
+  --volunteer-card-step: 144px;
+}
+
+@media (min-width: 640px) {
+  .volunteer-marquee {
+    --volunteer-card-step: 164px;
+  }
+}
+
+@media (min-width: 768px) {
+  .volunteer-marquee {
+    --volunteer-card-step: 212px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .volunteer-marquee {
+    --volunteer-card-step: 228px;
+  }
 }
 
 .marquee-mobile-forward,
