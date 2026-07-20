@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
+import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import { routeMeta, SITE_URL } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,13 @@ import { FaLinkedin, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import contactHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_09_PM_(2)_1777748003995.png";
 
 type ContactSubject = "general" | "partner" | "volunteer" | "sponsor" | "media" | "other";
+
+const CONTACT_FAQS = [
+  { q: "How quickly do you respond to inquiries?", a: "We aim to respond to all general inquiries within 24-48 business hours." },
+  { q: "Can I visit the Innovation Lab?", a: "Yes, visits to the AT Innovation Lab can be arranged by appointment. Please use the contact form to schedule." },
+  { q: "How do CSR partnerships work?", a: "We offer structured CSR engagement models with detailed impact reporting. Select 'Sponsorship' in the contact form for a brochure." },
+  { q: "Who should I contact for media inquiries?", a: "Please select 'Media / Press' in the contact form subject line, and our communications team will prioritize your request." },
+];
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -103,7 +110,6 @@ export default function ContactPage() {
         title={routeMeta["/contact"].title}
         description={routeMeta["/contact"].description}
         path="/contact"
-        keywords="contact IEEE Kerala, IEEE Kerala address, IEEE Kerala email, IEEE Thiruvananthapuram"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -112,10 +118,12 @@ export default function ContactPage() {
           {
             "@context": "https://schema.org",
             "@type": "ContactPage",
+            "@id": `${SITE_URL}/contact#webpage`,
             name: "Contact IEEE Kerala ATIIG",
-            url: "https://atiig.ieeekerala.org/contact",
-            mainEntity: { "@id": "https://atiig.ieeekerala.org/#organization" },
+            url: `${SITE_URL}/contact`,
+            mainEntity: { "@id": `${SITE_URL}/#organization` },
           },
+          faqSchema(CONTACT_FAQS),
         ]}
       />
       {/* Hero */}
@@ -143,7 +151,7 @@ export default function ContactPage() {
             </div>
             
             <div className="relative">
-              <img src={contactHeroImg} alt="Our Team" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" />
+              <img src={contactHeroImg} alt="Illustration of a team collaborating on inclusive technology" className="rounded-2xl shadow-xl w-full h-[400px] object-cover" />
               <div className="absolute -bottom-6 -left-6 md:-left-10 bg-white p-6 rounded-2xl shadow-xl max-w-[280px] border-l-4 border-teal">
                 <p className="italic text-navy font-bold leading-snug">
                   "Stronger together for an inclusive, innovative future."
@@ -287,45 +295,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Section
-      <section className="py-20 bg-slate-50 border-y border-slate-100" data-testid="location-map">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-black text-navy">Our Office Location</h2>
-          </div>
-
-          <div className="max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-sm border border-slate-100 relative">
-            <iframe
-              title="IEEE Kerala ATIIG Office Location — Technopark, Thiruvananthapuram"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=76.8900%2C8.5050%2C76.9800%2C8.5600&amp;layer=mapnik&amp;marker=8.5241%2C76.9366"
-              width="100%"
-              height="400"
-              className="block w-full"
-              loading="lazy"
-              allowFullScreen
-              aria-label="Map showing IEEE Kerala ATIIG office at Technopark, Thiruvananthapuram"
-            />
-            <div className="absolute bottom-6 left-6 right-6 md:right-auto md:w-80 bg-white p-6 rounded-2xl shadow-xl z-10">
-              <h3 className="font-bold text-navy text-lg mb-2">Visit Us</h3>
-              <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-                IEEE Kerala Section Office, Technopark Campus, Thiruvananthapuram, Kerala
-              </p>
-              <Button className="w-full bg-navy hover:bg-navy/90 text-white font-bold" asChild>
-                <a
-                  href="https://www.openstreetmap.org/?mlat=8.5241&mlon=76.9366#map=15/8.5241/76.9366"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Open directions to IEEE Kerala ATIIG office in OpenStreetMap"
-                >
-                  Get Directions <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-      */}
-
       {/* Partnerships */}
       <section id="partnerships" className="py-24 bg-white" data-testid="partner-purpose">
         <div className="container mx-auto px-4">
@@ -362,12 +331,7 @@ export default function ContactPage() {
             <div>
               <h2 className="text-3xl font-black text-navy mb-8">Need Help? FAQ</h2>
               <Accordion type="single" collapsible className="w-full bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                {[
-                  { q: "How quickly do you respond to inquiries?", a: "We aim to respond to all general inquiries within 24-48 business hours." },
-                  { q: "Can I visit the Innovation Lab?", a: "Yes, visits to the AT Innovation Lab can be arranged by appointment. Please use the contact form to schedule." },
-                  { q: "How do CSR partnerships work?", a: "We offer structured CSR engagement models with detailed impact reporting. Select 'Sponsorship' in the contact form for a brochure." },
-                  { q: "Who should I contact for media inquiries?", a: "Please select 'Media / Press' in the contact form subject line, and our communications team will prioritize your request." }
-                ].map((item, i) => (
+                {CONTACT_FAQS.map((item, i) => (
                   <AccordionItem key={i} value={`item-${i}`}>
                     <AccordionTrigger className="text-left font-bold text-slate-700 hover:text-orange">{item.q}</AccordionTrigger>
                     <AccordionContent className="text-slate-600 leading-relaxed">

@@ -35,6 +35,7 @@ export interface SanityNewsArticleSummary {
 }
 
 export interface SanityNewsArticle extends SanityNewsArticleSummary {
+  _updatedAt: string;
   body: unknown[];
 }
 

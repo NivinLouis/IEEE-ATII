@@ -2,13 +2,12 @@
 
   Organization: IEEE Kerala ATIIG (Assistive Technology & Inclusive Innovation Group)
   Parent: IEEE Kerala Section
-  Location: Thiruvananthapuram, Kerala, India
-  Contact: atiig [at] ieeekerala [dot] org
-  Site: https://atiig.ieeekerala.org/
+  Contact: ieeeatii [at] gmail [dot] com
+  Site: https://atii.ieeekerala.org/
 
 /* COMMUNITY */
 
-  Members: 25,000+ engineers, students, and partners across Kerala
+  Community: 40+ volunteers and 7+ partners and collaborators
   Programs: 6 (AT Innovation Lab, Community Outreach, Inclusive Education,
             Accessible Campus, Capacity Building, Humanitarian Technology)
   Languages: English, Malayalam

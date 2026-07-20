@@ -95,8 +95,15 @@ export default function NewsArticlePage() {
         description={pageDescription}
         path={`/news/${slug}`}
         image={image?.src}
+        imageAlt={image?.alt || article?.title}
+        imageWidth={image?.width}
+        imageHeight={image?.height}
         type="article"
-        noindex={!article}
+        publishedTime={article?.publishedAt}
+        modifiedTime={article?._updatedAt}
+        section={article ? getPrimaryCategoryLabel(article.categories) : undefined}
+        tags={article?.categories.map((category) => category.title)}
+        noindex={!articleQuery.isLoading && !article}
         schemas={
           article
             ? [
@@ -108,11 +115,23 @@ export default function NewsArticlePage() {
                 {
                   "@context": "https://schema.org",
                   "@type": "NewsArticle",
+                  "@id": `${SITE_URL}/news/${article.slug}#article`,
                   headline: article.title,
                   datePublished: article.publishedAt,
+                  dateModified: article._updatedAt,
                   description: article.excerpt,
                   url: `${SITE_URL}/news/${article.slug}`,
                   image: image?.src ? [image.src] : undefined,
+                  mainEntityOfPage: { "@id": `${SITE_URL}/news/${article.slug}#webpage` },
+                  author: {
+                    "@type": "Organization",
+                    name: "IEEE Kerala ATIIG",
+                    url: `${SITE_URL}/`,
+                  },
+                  publisher: { "@id": `${SITE_URL}/#organization` },
+                  articleSection: getPrimaryCategoryLabel(article.categories),
+                  keywords: article.categories.map((category) => category.title),
+                  inLanguage: "en-IN",
                 },
               ]
             : undefined
@@ -162,6 +181,9 @@ export default function NewsArticlePage() {
                     </span>
                     <span className="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">
                       {formatNewsDate(article.publishedAt)}
+                    </span>
+                    <span className="text-sm font-semibold text-slate-500">
+                      By IEEE Kerala ATIIG
                     </span>
                   </div>
 

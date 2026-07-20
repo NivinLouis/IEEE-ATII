@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star } fr
 import {
   routeMeta,
   GLOBAL_STATS,
+  SITE_URL,
 } from "@/data/site";
 
 import HeroVisual from "@/components/HeroVisual";
@@ -137,7 +138,6 @@ export default function AboutPage() {
         title={routeMeta["/about"].title}
         description={routeMeta["/about"].description}
         path="/about"
-        keywords="IEEE Kerala ATIIG about, IEEE Kerala mission, IEEE Kerala leadership, IEEE Kerala Section history"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -146,28 +146,11 @@ export default function AboutPage() {
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
+            "@id": `${SITE_URL}/about#webpage`,
             name: "About IEEE Kerala ATIIG",
-            url: "https://atiig.ieeekerala.org/about",
-            mainEntity: { "@id": "https://atiig.ieeekerala.org/#organization" },
+            url: `${SITE_URL}/about`,
+            mainEntity: { "@id": `${SITE_URL}/#organization` },
           },
-          faqSchema([
-            {
-              q: "When was IEEE Kerala ATIIG founded?",
-              a: "ATIIG was founded in 2018 as the assistive-technology and inclusive-innovation affinity group of the IEEE Kerala Section, headquartered in Thiruvananthapuram.",
-            },
-            {
-              q: "What is the mission of IEEE Kerala ATIIG?",
-              a: "To design and deploy affordable, accessible, and impactful assistive technologies that empower every individual in Kerala to thrive without barriers — combining empathy-led research, inclusive design, and humanitarian engineering.",
-            },
-            {
-              q: "Who leads IEEE Kerala ATIIG?",
-              a: "ATIIG is led by an elected committee of IEEE Kerala Section volunteers including a Chair, Vice-Chair, Secretary, and program leads for each of the six core initiatives.",
-            },
-            {
-              q: "How is ATIIG funded?",
-              a: "Funding comes from IEEE Kerala Section grants, IEEE humanitarian-technology fellowships, corporate and CSR partnerships, and individual contributions from members and supporters.",
-            },
-          ]),
         ]}
       />
       {/* Page Hero */}

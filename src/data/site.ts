@@ -1,6 +1,6 @@
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL?.replace(/\/+$/, "") ??
-  "https://atiig.ieeekerala.org";
+  "https://atii.ieeekerala.org";
 
 export const SITE_NAME = "IEEE Kerala ATIIG";
 export const SITE_CANONICAL_NAME =
@@ -24,32 +24,30 @@ export const GLOBAL_STATS = {
 };
 
 export const SOCIAL_LINKS = [
-  "https://www.linkedin.com/company/ieee-kerala-section/",
-  "https://www.facebook.com/IEEEKeralaSection/",
-  "https://x.com/IEEEKerala",
-  "https://www.instagram.com/ieeekerala/",
-  "https://www.youtube.com/@IEEEKeralaSection",
+  "https://www.linkedin.com/company/ieee-assistive-technology-inclusive-innovation-group/",
+  "https://www.instagram.com/ieeeatii/",
+  "https://www.youtube.com/@ieeeatii",
 ];
 
 export const routeMeta = {
   "/": {
-    title: "IEEE Kerala ATIIG | Assistive Technology & Inclusive Innovation",
+    title: "IEEE Kerala ATIIG | Assistive Technology & Inclusion",
     description:
-      "IEEE Kerala ATIIG designs, prototypes, and deploys affordable assistive technologies and inclusive-innovation programs across Kerala. Explore projects, events, resources, and ways to join.",
+      "Explore IEEE Kerala ATIIG's assistive technology projects, inclusive innovation programs, events, resources, and volunteer opportunities across Kerala.",
     priority: "1.0",
     changefreq: "weekly",
   },
   "/about": {
     title: "About IEEE Kerala ATIIG | Mission, Vision & Leadership",
     description:
-      "Learn about IEEE Kerala ATIIG, the assistive-technology and inclusive-innovation affinity group of IEEE Kerala Section, its mission, journey, leadership, and partners.",
+      "Learn about IEEE Kerala ATIIG's mission, journey, leadership, partners, and work advancing assistive technology and inclusive innovation across Kerala.",
     priority: "0.9",
     changefreq: "monthly",
   },
   "/initiatives": {
     title: "Initiatives | IEEE Kerala ATIIG Programs & Projects",
     description:
-      "Explore IEEE Kerala ATIIG initiatives including AT Innovation Lab, Community Outreach, Inclusive Education, Accessible Campus, Capacity Building, and Humanitarian Technology.",
+      "Explore IEEE Kerala ATIIG programs in assistive technology, community outreach, inclusive education, accessible campuses, skills, and humanitarian innovation.",
     priority: "0.9",
     changefreq: "monthly",
   },
@@ -61,9 +59,9 @@ export const routeMeta = {
     changefreq: "monthly",
   },
   "/resources": {
-    title: "Resources | Guides, Toolkits & Learning Materials | IEEE Kerala ATIIG",
+    title: "Assistive Technology Resources | IEEE Kerala ATIIG",
     description:
-      "Access IEEE Kerala ATIIG resources, inclusive design guides, assistive technology toolkits, research materials, accessibility standards, and workshop content.",
+      "Explore inclusive design guides, assistive technology toolkits, research publications, accessibility standards, videos, and learning materials from IEEE Kerala ATIIG.",
     priority: "0.8",
     changefreq: "monthly",
   },

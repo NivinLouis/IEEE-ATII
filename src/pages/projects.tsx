@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import { routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
 import { useHomePage, useProjectsPage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
@@ -51,7 +51,6 @@ export default function ProjectsPage() {
         title={routeMeta["/projects"].title}
         description={routeMeta["/projects"].description}
         path="/projects"
-        keywords="IEEE Kerala projects, IEEE Kerala impact, engineering projects Kerala, IEEE humanitarian technology"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -60,21 +59,11 @@ export default function ProjectsPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
+            "@id": `${SITE_URL}/projects#webpage`,
             name: "IEEE Kerala ATIIG Projects & Impact",
-            url: "https://atiig.ieeekerala.org/projects",
-            isPartOf: { "@id": "https://atiig.ieeekerala.org/#website" },
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "Dataset",
-            name: "IEEE Kerala ATIIG Impact Metrics",
-            description: "Aggregate impact figures for IEEE Kerala ATIIG programs: 100+ projects delivered, 25,000+ lives impacted, 50+ partners, 65+ events conducted, 18+ active assistive-technology prototypes.",
-            url: "https://atiig.ieeekerala.org/projects",
-            creator: { "@id": "https://atiig.ieeekerala.org/#organization" },
-            spatialCoverage: { "@type": "AdministrativeArea", name: "Kerala, India" },
-            temporalCoverage: "2018/..",
-            keywords: ["assistive technology", "inclusive innovation", "Kerala", "IEEE", "humanitarian engineering", "SDG"],
-            license: "https://creativecommons.org/licenses/by/4.0/",
+            url: `${SITE_URL}/projects`,
+            isPartOf: { "@id": `${SITE_URL}/#website` },
+            about: { "@id": `${SITE_URL}/#organization` },
           },
         ]}
       />

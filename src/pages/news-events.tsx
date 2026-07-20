@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema, eventSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
@@ -118,7 +118,6 @@ export default function NewsEventsPage() {
         title={routeMeta["/news-events"].title}
         description={routeMeta["/news-events"].description}
         path="/news-events"
-        keywords="IEEE Kerala events, IEEE Kerala news, engineering events Kerala, IEEE workshops Kerala 2026"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -131,17 +130,6 @@ export default function NewsEventsPage() {
             url: `${SITE_URL}/news-events`,
             isPartOf: { "@id": `${SITE_URL}/#website` },
           },
-          eventSchema(
-            events.slice(0, 6).map((event) => ({
-              name: event.title,
-              startDate: event.startsAt,
-              locationName: event.location,
-              description: event.description ?? event.title,
-              url: event.registrationUrl?.startsWith("http")
-                ? event.registrationUrl
-                : `${SITE_URL}${event.registrationUrl ?? "/news-events"}`,
-            })),
-          ),
         ]}
       />
       {/* Hero */}
@@ -169,8 +157,8 @@ export default function NewsEventsPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <img src={newsHeroImg} alt="Hackathon Event" className="rounded-2xl shadow-md h-48 w-full object-cover" />
-              <img src={newsVariantImg} alt="Workshop" className="rounded-2xl shadow-md h-48 w-full object-cover translate-y-8" />
+              <img src={newsHeroImg} alt="Illustration of an inclusive technology event" className="rounded-2xl shadow-md h-48 w-full object-cover" />
+              <img src={newsVariantImg} alt="Illustration of a collaborative technology workshop" className="rounded-2xl shadow-md h-48 w-full object-cover translate-y-8" />
             </div>
           </div>
         </div>

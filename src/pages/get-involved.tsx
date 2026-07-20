@@ -24,6 +24,16 @@ import {
 } from "@/components/ui/accordion";
 
 const SHOW_VOLUNTEER_WALL = true;
+const GET_INVOLVED_FAQS = [
+  "How can I volunteer with IEEE AT & IIG?",
+  "Do I need to be an IEEE member to participate?",
+  "What kind of projects can I work on?",
+  "How do I become a partner or sponsor?",
+  "Can students get involved? Is remote volunteering available?",
+].map((q) => ({
+  q,
+  a: "We welcome individuals from all backgrounds. You can contribute your technical skills, help with community outreach, or support our operations. Fill out the form on this page to get started.",
+}));
 
 export default function GetInvolvedPage() {
   const { toast } = useToast();
@@ -101,26 +111,12 @@ export default function GetInvolvedPage() {
         title={routeMeta["/get-involved"].title}
         description={routeMeta["/get-involved"].description}
         path="/get-involved"
-        keywords="join IEEE Kerala, IEEE volunteer Kerala, IEEE membership Kerala, IEEE partnership Kerala"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: "Get Involved", path: "/get-involved" },
           ]),
-          faqSchema([
-            {
-              q: "How do I become an IEEE Kerala ATIIG volunteer?",
-              a: "Visit our Get Involved page and submit the volunteer interest form. Volunteers help organize workshops, mentor students, lead research initiatives, or support humanitarian technology projects. No prior IEEE membership is required to volunteer.",
-            },
-            {
-              q: "How much does IEEE membership cost in India?",
-              a: "IEEE student membership in India costs approximately INR 2,000 per year (USD 27). Professional membership is approximately INR 11,000 per year (USD 142). Discounted rates are available for graduate students and recent graduates. Joining ATIIG itself has no additional fee for IEEE Kerala Section members.",
-            },
-            {
-              q: "Can companies partner with IEEE Kerala ATIIG?",
-              a: "Yes. Companies can sponsor workshops, host industry-academia events, mentor research projects, or fund humanitarian initiatives. Partnership inquiries are handled through the contact form on our Get Involved and Contact pages.",
-            },
-          ]),
+          faqSchema(GET_INVOLVED_FAQS),
         ]}
       />
       {/* Hero */}
@@ -351,17 +347,11 @@ export default function GetInvolvedPage() {
               
               <h3 className="text-2xl font-black text-navy mb-6">Frequently Asked Questions</h3>
               <Accordion type="single" collapsible className="w-full">
-                {[
-                  "How can I volunteer with IEEE AT & IIG?",
-                  "Do I need to be an IEEE member to participate?",
-                  "What kind of projects can I work on?",
-                  "How do I become a partner or sponsor?",
-                  "Can students get involved? Is remote volunteering available?"
-                ].map((q, i) => (
+                {GET_INVOLVED_FAQS.map((item, i) => (
                   <AccordionItem key={i} value={`item-${i}`}>
-                    <AccordionTrigger className="text-left font-bold text-slate-700 hover:text-navy">{q}</AccordionTrigger>
+                    <AccordionTrigger className="text-left font-bold text-slate-700 hover:text-navy">{item.q}</AccordionTrigger>
                     <AccordionContent className="text-slate-600">
-                      We welcome individuals from all backgrounds. You can contribute your technical skills, help with community outreach, or support our operations. Fill out the form on this page to get started.
+                      {item.a}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
