@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { routeMeta, GLOBAL_STATS } from "@/data/site";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
+import { routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
 import { useInitiativeCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
@@ -66,7 +66,6 @@ export default function InitiativesPage() {
         title={routeMeta["/initiatives"].title}
         description={routeMeta["/initiatives"].description}
         path="/initiatives"
-        keywords="IEEE Kerala initiatives, IEEE Kerala workshops, IEEE Kerala research, IEEE Kerala humanitarian projects"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -75,10 +74,11 @@ export default function InitiativesPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
+            "@id": `${SITE_URL}/initiatives#webpage`,
             name: "IEEE Kerala ATIIG Initiatives",
-            url: "https://atiig.ieeekerala.org/initiatives",
-            isPartOf: { "@id": "https://atiig.ieeekerala.org/#website" },
-            about: { "@id": "https://atiig.ieeekerala.org/#organization" },
+            url: `${SITE_URL}/initiatives`,
+            isPartOf: { "@id": `${SITE_URL}/#website` },
+            about: { "@id": `${SITE_URL}/#organization` },
           },
           {
             "@context": "https://schema.org",
@@ -90,36 +90,18 @@ export default function InitiativesPage() {
               "@type": "ListItem",
               position: i + 1,
               name: init.title,
-              url: `https://atiig.ieeekerala.org/initiatives#${init.id}`,
+              url: `${SITE_URL}/initiatives#${init.id}`,
               item: {
                 "@type": "Service",
                 name: init.title,
                 serviceType: init.title,
                 description: init.description,
-                provider: { "@id": "https://atiig.ieeekerala.org/#organization" },
+                provider: { "@id": `${SITE_URL}/#organization` },
                 areaServed: { "@type": "AdministrativeArea", name: "Kerala, India" },
-                url: `https://atiig.ieeekerala.org/initiatives#${init.id}`,
+                url: `${SITE_URL}/initiatives#${init.id}`,
               },
             })),
           },
-          faqSchema([
-            {
-              q: "What programs does IEEE Kerala ATIIG run?",
-              a: "ATIIG runs six programs: AT Innovation Lab (assistive-device prototyping), Community Outreach, Inclusive Education, Accessible Campus Program (audits + retrofits), Capacity Building (workshops + mentoring), and Humanitarian Technology (disaster + underserved-community deployments).",
-            },
-            {
-              q: "How can I propose a new initiative or partner on an existing one?",
-              a: "Visit the Get Involved page (/get-involved) and choose Partner With Us or Volunteer. Each program lead reviews proposals and replies within two weeks.",
-            },
-            {
-              q: "Are the prototypes from the AT Innovation Lab open source?",
-              a: "Most reference designs and learning resources are released under permissive licenses on the Resources page. Some partner-funded prototypes are restricted by partnership agreements.",
-            },
-            {
-              q: "Which districts of Kerala does ATIIG serve?",
-              a: "Programs run across all 14 districts of Kerala with anchor sites in Thiruvananthapuram, Ernakulam, Kozhikode, and Kollam.",
-            },
-          ]),
         ]}
       />
       {/* Hero */}

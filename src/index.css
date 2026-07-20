@@ -275,7 +275,8 @@
 }
 
 .volunteer-marquee__track:has([data-volunteer-card]:hover),
-.volunteer-marquee__track:focus-within {
+.volunteer-marquee__track:has([data-volunteer-card][aria-pressed="true"]),
+.volunteer-marquee__track:has([data-volunteer-card]:focus-visible) {
   animation-play-state: paused;
 }
 

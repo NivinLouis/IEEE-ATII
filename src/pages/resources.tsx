@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta } from "@/data/site";
+import { routeMeta, SITE_URL } from "@/data/site";
 import { useResourceGuides, useResourcePublications, useResourceStandards, useResourceVideos } from "@/lib/sanity/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -67,7 +67,6 @@ export default function ResourcesPage() {
         title={routeMeta["/resources"].title}
         description={routeMeta["/resources"].description}
         path="/resources"
-        keywords="IEEE Kerala resources, engineering guides Kerala, IEEE toolkits, engineering learning materials"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -76,9 +75,11 @@ export default function ResourcesPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
+            "@id": `${SITE_URL}/resources#webpage`,
             name: "IEEE Kerala ATIIG Resources",
-            url: "https://atiig.ieeekerala.org/resources",
-            isPartOf: { "@id": "https://atiig.ieeekerala.org/#website" },
+            url: `${SITE_URL}/resources`,
+            isPartOf: { "@id": `${SITE_URL}/#website` },
+            about: { "@id": `${SITE_URL}/#organization` },
           },
         ]}
       />
@@ -96,7 +97,7 @@ export default function ResourcesPage() {
             </div>
             <div className="hidden lg:block relative">
               <div className="absolute -inset-4 border-2 border-teal/30 rounded-3xl rotate-3"></div>
-              <img src={resourcesHeroImg} alt="Resources Library" className="rounded-3xl shadow-2xl relative z-10 w-full h-[350px] object-cover" />
+              <img src={resourcesHeroImg} alt="Illustration representing assistive technology resources and publications" className="rounded-3xl shadow-2xl relative z-10 w-full h-[350px] object-cover" />
             </div>
           </div>
         </div>

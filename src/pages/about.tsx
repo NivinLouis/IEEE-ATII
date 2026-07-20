@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { StatCounter } from "@/components/StatCounter";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star } fr
 import {
   routeMeta,
   GLOBAL_STATS,
+  SITE_URL,
 } from "@/data/site";
 
 import HeroVisual from "@/components/HeroVisual";
@@ -19,11 +20,17 @@ interface Leader {
   name: string;
   role: string;
   image: string;
+  website?: string;
 }
 
 const professionalExecom: Leader[] = [
   { name: "Robin Tommy", role: "Senior Advisor", image: "/leadership/robin_tommy.webp" },
-  { name: "Robin Francis", role: "Chairperson", image: "/leadership/robin_francis.webp" },
+  {
+    name: "Robin Francis",
+    role: "Chairperson",
+    image: "/leadership/robin_francis.webp",
+    website: "https://robinfrancis.in/",
+  },
   { name: "Vaishakh Suresh", role: "Vice Chairperson", image: "/leadership/vaishakh_suresh.webp" },
   { name: "Anna Ann Mathew", role: "Secretary", image: "/leadership/anna_ann_mathew.webp" },
   { name: "Lakshmy K J", role: "Treasurer", image: "/leadership/lakshmy_k_j.webp" },
@@ -34,7 +41,12 @@ const professionalExecom: Leader[] = [
 const leadershipTeam: Leader[] = [
   { name: "Vishnu Gopal", role: "Student Activity Chair", image: "/leadership/vishnu_gopal.webp" },
   { name: "Nivin P Louis", role: "Student Representative", image: "/leadership/nivin_p_louis.webp" },
-  { name: "Shayen Thomas", role: "Technical Coordinator", image: "/leadership/shayen_thomas.webp" },
+  {
+    name: "Shayen Thomas",
+    role: "Technical Coordinator",
+    image: "/leadership/shayen_thomas.webp",
+    website: "https://www.shayenthomas.in/",
+  },
   { name: "Chinmayi B S", role: "Travancore Hub SR", image: "/leadership/chinmayi_b_s.webp" },
   { name: "Afreen M H", role: "Kochi Hub SR", image: "/leadership/afreen_m_h.webp" },
   { name: "Dyuthi Korambeth", role: "Malabar Hub SR", image: "/leadership/dyuthi_korambeth.webp" },
@@ -57,6 +69,32 @@ function getInitials(name: string) {
 function LeadershipCard({ leader, accent }: { leader: Leader; accent: "orange" | "teal" }) {
   const [imageFailed, setImageFailed] = useState(false);
   const nameClasses = accent === "orange" ? "text-orange" : "text-teal";
+  const cardContent = (
+    <div className="relative aspect-[4/4.9] overflow-hidden bg-navy">
+      {!imageFailed ? (
+        <img
+          src={leader.image}
+          alt={leader.name}
+          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          loading="lazy"
+          onError={() => setImageFailed(true)}
+        />
+      ) : (
+        <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy via-purple to-teal text-3xl font-black text-white">
+          {getInitials(leader.name)}
+        </div>
+      )}
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy via-navy/85 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 p-3">
+        <h3 className={`text-[0.96rem] font-black uppercase leading-[0.95] tracking-[0.02em] ${nameClasses}`}>
+          {leader.name}
+        </h3>
+        <p className="mt-1 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.08em] text-white/95">
+          {leader.role}
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <motion.article
@@ -68,30 +106,17 @@ function LeadershipCard({ leader, accent }: { leader: Leader; accent: "orange" |
         clipPath: "polygon(18% 0, 100% 0, 100% 100%, 0 100%, 0 14%)",
       }}
     >
-      <div className="relative aspect-[4/4.9] overflow-hidden bg-navy">
-        {!imageFailed ? (
-          <img
-            src={leader.image}
-            alt={leader.name}
-            className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-            loading="lazy"
-            onError={() => setImageFailed(true)}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-navy via-purple to-teal text-3xl font-black text-white">
-            {getInitials(leader.name)}
-          </div>
-        )}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy via-navy/85 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-3">
-          <h3 className={`text-[0.96rem] font-black uppercase leading-[0.95] tracking-[0.02em] ${nameClasses}`}>
-            {leader.name}
-          </h3>
-          <p className="mt-1 text-[0.72rem] font-semibold uppercase leading-tight tracking-[0.08em] text-white/95">
-            {leader.role}
-          </p>
-        </div>
-      </div>
+      {leader.website ? (
+        <a
+          href={leader.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${leader.name} — personal website`}
+          className="block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+        >
+          {cardContent}
+        </a>
+      ) : cardContent}
     </motion.article>
   );
 }
@@ -137,7 +162,6 @@ export default function AboutPage() {
         title={routeMeta["/about"].title}
         description={routeMeta["/about"].description}
         path="/about"
-        keywords="IEEE Kerala ATIIG about, IEEE Kerala mission, IEEE Kerala leadership, IEEE Kerala Section history"
         schemas={[
           breadcrumbSchema([
             { name: "Home", path: "/" },
@@ -146,28 +170,11 @@ export default function AboutPage() {
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
+            "@id": `${SITE_URL}/about#webpage`,
             name: "About IEEE Kerala ATIIG",
-            url: "https://atiig.ieeekerala.org/about",
-            mainEntity: { "@id": "https://atiig.ieeekerala.org/#organization" },
+            url: `${SITE_URL}/about`,
+            mainEntity: { "@id": `${SITE_URL}/#organization` },
           },
-          faqSchema([
-            {
-              q: "When was IEEE Kerala ATIIG founded?",
-              a: "ATIIG was founded in 2018 as the assistive-technology and inclusive-innovation affinity group of the IEEE Kerala Section, headquartered in Thiruvananthapuram.",
-            },
-            {
-              q: "What is the mission of IEEE Kerala ATIIG?",
-              a: "To design and deploy affordable, accessible, and impactful assistive technologies that empower every individual in Kerala to thrive without barriers — combining empathy-led research, inclusive design, and humanitarian engineering.",
-            },
-            {
-              q: "Who leads IEEE Kerala ATIIG?",
-              a: "ATIIG is led by an elected committee of IEEE Kerala Section volunteers including a Chair, Vice-Chair, Secretary, and program leads for each of the six core initiatives.",
-            },
-            {
-              q: "How is ATIIG funded?",
-              a: "Funding comes from IEEE Kerala Section grants, IEEE humanitarian-technology fellowships, corporate and CSR partnerships, and individual contributions from members and supporters.",
-            },
-          ]),
         ]}
       />
       {/* Page Hero */}

@@ -21,7 +21,7 @@ Core areas:
 
 GitHub Pages site: [https://robinfrancis186.github.io/IEEE-ATII/](https://robinfrancis186.github.io/IEEE-ATII/)
 
-Canonical custom-domain target: [https://atiig.ieeekerala.org](https://atiig.ieeekerala.org)
+Canonical custom-domain target: [https://atii.ieeekerala.org](https://atii.ieeekerala.org)
 
 Local frontend app:
 
@@ -55,7 +55,7 @@ Repository setup required in GitHub:
 
 1. Open **Settings -> Pages**.
 2. Set **Build and deployment -> Source** to **GitHub Actions**.
-3. If using the custom domain, point DNS for `atiig.ieeekerala.org` to GitHub Pages and keep the included `CNAME` file.
+3. If using the custom domain, point DNS for `atii.ieeekerala.org` to GitHub Pages and keep the included `CNAME` file.
 
 ## SEO, GEO, AEO, and LLM Support
 
@@ -125,7 +125,7 @@ artifacts/sanity-studio/schemaTypes/newsArticle.ts
 Configure the frontend app with:
 
 ```bash
-VITE_SITE_URL=https://atiig.ieeekerala.org
+VITE_SITE_URL=https://atii.ieeekerala.org
 VITE_SANITY_PROJECT_ID=your-project-id
 VITE_SANITY_DATASET=production
 VITE_SANITY_API_VERSION=2025-02-19

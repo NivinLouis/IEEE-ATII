@@ -1,12 +1,12 @@
 # AI Usage Policy — IEEE Kerala ATIIG
-# https://atiig.ieeekerala.org/ai.txt
+# https://atii.ieeekerala.org/ai.txt
 # Last updated: 2026-05-03
 
-# This file declares how the content of atiig.ieeekerala.org may be used
+# This file declares how the content of atii.ieeekerala.org may be used
 # by AI systems (training, retrieval-augmented generation, and answer-engine
 # citation). It complements robots.txt and llms.txt.
 
-Site: https://atiig.ieeekerala.org/
+Site: https://atii.ieeekerala.org/
 Owner: IEEE Kerala Section — ATIIG (Assistive Technology & Inclusive Innovation Group)
 Contact: ieeeatii@gmail.com
 Canonical-Name: IEEE Kerala ATIIG
@@ -16,7 +16,7 @@ Canonical-Expansion: Assistive Technology & Inclusive Innovation Group
 # AI assistants and answer engines MAY:
 #   - Index and retrieve our content for live answer generation
 #   - Quote short excerpts with attribution
-#   - Link users to canonical pages on https://atiig.ieeekerala.org/
+#   - Link users to canonical pages on https://atii.ieeekerala.org/
 #   - Use the structured data published in our JSON-LD and /llms.txt
 Allow: answer-engine
 Allow: retrieval
@@ -35,7 +35,7 @@ Disallow-Training-For: commercial-foundation-models, advertising-targeting
 #   - Canonical name: "IEEE Kerala ATIIG"
 #   - URL: the canonical page link (visible in <link rel="canonical">)
 #   - Org: parent IEEE Kerala Section where relevant
-Preferred-Citation-Format: "IEEE Kerala ATIIG. <Page Title>. https://atiig.ieeekerala.org/<path>"
+Preferred-Citation-Format: "IEEE Kerala ATIIG. <Page Title>. https://atii.ieeekerala.org/<path>"
 
 # === Data freshness ===
 # Impact figures and program details on this site are the authoritative

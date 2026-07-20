@@ -1,8 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, {
   breadcrumbSchema,
-  faqSchema,
-  organizationSchema,
   websiteSchema,
 } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
@@ -80,33 +78,9 @@ export default function HomePage() {
         title={routeMeta["/"].title}
         description={routeMeta["/"].description}
         path="/"
-        keywords="IEEE Kerala, ATIIG, IEEE Kerala Section, engineering Kerala, technical workshops, IEEE membership Kerala, humanitarian technology Kerala"
         schemas={[
-          organizationSchema(),
           websiteSchema(),
           breadcrumbSchema([{ name: "Home", path: "/" }]),
-          faqSchema([
-            {
-              q: "What is IEEE Kerala ATIIG?",
-              a: "IEEE Kerala ATIIG (Assistive Technology & Inclusive Innovation Group) is the official affinity group of the IEEE Kerala Section. It connects engineers, students, researchers, volunteers, and community partners through assistive technology, inclusive education, accessibility programs, and humanitarian engineering projects across Kerala, India.",
-            },
-            {
-              q: "Who can join IEEE Kerala ATIIG?",
-              a: "Any IEEE member based in Kerala can join ATIIG, including students, young professionals, academic researchers, and senior industry engineers. Non-members interested in technology and humanitarian impact can attend public events and apply for IEEE membership through our Get Involved page.",
-            },
-            {
-              q: "What initiatives does IEEE Kerala ATIIG run?",
-              a: "ATIIG runs initiatives across four focus areas: industry-academia partnerships, applied research projects, technical skill-building workshops, and humanitarian technology projects (energy access, water quality, disaster response, and inclusive education).",
-            },
-            {
-              q: "How is ATIIG different from other IEEE student branches?",
-              a: "ATIIG is a section-level affinity group, not a campus chapter — it spans all IEEE student branches and professional members in Kerala. It focuses on real-world industry impact and humanitarian technology rather than purely academic activities.",
-            },
-            {
-              q: "Where is IEEE Kerala ATIIG based?",
-              a: "IEEE Kerala ATIIG operates throughout the state of Kerala, India, with the IEEE Kerala Section headquarters in Thiruvananthapuram. Workshops and events are held at partner colleges and venues across Kerala.",
-            },
-          ]),
         ]}
       />
       {/* Hero Section */}

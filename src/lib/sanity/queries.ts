@@ -33,6 +33,7 @@ export const newsListQuery = `
 export const newsArticleQuery = `
   *[_type == "newsArticle" && slug.current == $slug][0]{
     _id,
+    _updatedAt,
     title,
     "slug": slug.current,
     excerpt,
