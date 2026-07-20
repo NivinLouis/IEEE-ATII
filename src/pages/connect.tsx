@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta, SITE_URL } from "@/data/site";
+import { routeMeta } from "@/data/site";
 import { FaInstagram, FaWhatsapp, FaYoutube, FaLinkedin } from "react-icons/fa";
-import { ArrowUpRight, Share2, QrCode, Download } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Share2, QrCode, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -89,7 +90,7 @@ export default function ConnectPage() {
   }, []);
 
   const currentLogo = textOnly ? blackLogo : colorLogo;
-  const shareUrl = typeof window !== "undefined" ? window.location.href : `${SITE_URL}/connect`;
+  const shareUrl = "https://atiig.ieeekerala.org/connect";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl)
@@ -156,7 +157,7 @@ export default function ConnectPage() {
   };
 
   return (
-    <Layout>
+    <Layout hideHeader hideFooter>
       <SEO
         title={routeMeta["/connect"].title}
         description={routeMeta["/connect"].description}
@@ -169,21 +170,31 @@ export default function ConnectPage() {
         ]}
       />
 
-      <section className="py-12 sm:py-16 bg-slate-50/50 dark:bg-slate-950/20 min-h-[calc(100vh-5rem)] flex flex-col justify-center animate-in fade-in duration-500">
+      <section className="py-8 sm:py-12 bg-slate-50/50 dark:bg-slate-950/20 min-h-screen flex flex-col justify-center animate-in fade-in duration-500">
         <div className="container mx-auto px-4 max-w-xl">
+          <div className="mb-6">
+            <Button
+              asChild
+              variant="ghost"
+              className="-ml-3 rounded-full text-navy dark:text-white font-bold hover:bg-navy/5 dark:hover:bg-white/10"
+            >
+              <Link to="/">
+                <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
+                Return Home
+              </Link>
+            </Button>
+          </div>
+
           {/* Header Card */}
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4 select-none">
               <img
                 src={currentLogo}
                 alt="IEEE Kerala ATIIG Logo"
-                className="h-14 sm:h-16 w-auto object-contain logo-img"
+                className="h-20 sm:h-24 w-auto max-w-full object-contain logo-img"
               />
             </div>
-            
-
-
-            <h1 className="text-xl sm:text-2xl font-black text-navy dark:text-white leading-tight tracking-tight mb-3">
+            <h1 className="sr-only">
               IEEE Assistive Technology and Inclusive Innovation Group
             </h1>
 
