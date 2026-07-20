@@ -88,6 +88,13 @@ export const routeMeta = {
     priority: "0.7",
     changefreq: "yearly",
   },
+  "/connect": {
+    title: "Connect with IEEE ATII | Official Links",
+    description:
+      "Access the official social media, WhatsApp community, announcements and professional channels of IEEE ATII.",
+    priority: "0.5",
+    changefreq: "monthly",
+  },
   "/privacy": {
     title: "Privacy Policy | IEEE Kerala ATIIG",
     description:

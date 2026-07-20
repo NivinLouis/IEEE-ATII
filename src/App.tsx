@@ -15,6 +15,7 @@ const GetInvolvedPage = lazy(() => import("@/pages/get-involved"));
 const NewsEventsPage = lazy(() => import("@/pages/news-events"));
 const NewsArticlePage = lazy(() => import("@/pages/news-article"));
 const ContactPage = lazy(() => import("@/pages/contact"));
+const ConnectPage = lazy(() => import("@/pages/connect"));
 const PrivacyPage = lazy(() => import("@/pages/privacy"));
 const TermsPage = lazy(() => import("@/pages/terms"));
 const AccessibilityStatementPage = lazy(() => import("@/pages/accessibility-statement"));
@@ -39,6 +40,8 @@ function Router() {
         <Route path="/news-events" element={<NewsEventsPage />} />
         <Route path="/news/:slug" element={<NewsArticlePage />} />
         <Route path="/contact" element={<ContactPage />} />
+        {/* Connect page - can be renamed to /links if needed */}
+        <Route path="/connect" element={<ConnectPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/accessibility" element={<AccessibilityStatementPage />} />
