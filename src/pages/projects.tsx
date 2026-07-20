@@ -14,7 +14,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer 
 } from "recharts";
 
-import KeralaMap from "@/components/KeralaMap.jsx";
+import KeralaMap from "@/components/KeralaMap";
 import { SDGGrid } from "@/components/SDGGrid";
 import sparshImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_21_PM_(4)_1777748003997.png";
 

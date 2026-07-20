@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { routeMeta } from "@/data/site";
@@ -9,6 +9,28 @@ import { Link } from "react-router-dom";
 import { Search, FileText, Download, PlayCircle, BookOpen, ExternalLink, FileDown, ArrowRight } from "lucide-react";
 
 import resourcesHeroImg from "@assets/ChatGPT_Image_May_2,_2026,_09_48_10_PM_(7)_1777748003996.png";
+
+type ResourceCardLinkProps = {
+  href: string;
+  className: string;
+  children: ReactNode;
+};
+
+function ResourceCardLink({ href, className, children }: ResourceCardLinkProps) {
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={href} className={className}>
+      {children}
+    </Link>
+  );
+}
 
 export default function ResourcesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -219,14 +241,8 @@ export default function ResourcesPage() {
                     </div>
                   )}
                   {resourceVideos.map((vid, i) => {
-                    const isExternal = /^https?:\/\//.test(vid.href);
-                    const CardTag = isExternal ? "a" : Link;
-                    const cardProps = isExternal
-                      ? { href: vid.href, target: "_blank", rel: "noreferrer" }
-                      : { to: vid.href };
-
                     return (
-                    <CardTag key={i} {...cardProps} className="group cursor-pointer block">
+                    <ResourceCardLink key={i} href={vid.href} className="group cursor-pointer block">
                       <div className="relative aspect-video bg-slate-800 rounded-xl overflow-hidden mb-3">
                         {vid.thumbnail?.asset?.url ? (
                           <img
@@ -241,7 +257,7 @@ export default function ResourcesPage() {
                         <div className="absolute top-3 left-3 bg-purple text-white text-xs font-bold px-2 py-1 rounded z-20">{vid.type}</div>
                       </div>
                       <h3 className="font-bold text-navy text-lg leading-snug group-hover:text-orange transition-colors">{vid.title}</h3>
-                    </CardTag>
+                    </ResourceCardLink>
                   )})}
                 </div>
               </div>
@@ -259,17 +275,11 @@ export default function ResourcesPage() {
                     </div>
                   )}
                   {resourceStandards.map((std, i) => {
-                    const isExternal = /^https?:\/\//.test(std.href);
-                    const CardTag = isExternal ? "a" : Link;
-                    const cardProps = isExternal
-                      ? { href: std.href, target: "_blank", rel: "noreferrer" }
-                      : { to: std.href };
-
                     return (
-                    <CardTag key={i} {...cardProps} className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100 hover:border-navy transition-colors cursor-pointer group">
+                    <ResourceCardLink key={i} href={std.href} className="flex items-start gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100 hover:border-navy transition-colors cursor-pointer group">
                       <ExternalLink className="w-5 h-5 text-slate-400 group-hover:text-navy shrink-0 mt-0.5" />
                       <span className="font-bold text-slate-700 text-sm leading-snug group-hover:text-navy">{std.title}</span>
-                    </CardTag>
+                    </ResourceCardLink>
                   )})}
                 </div>
               </div>
