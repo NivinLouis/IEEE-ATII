@@ -23,6 +23,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const SHOW_VOLUNTEER_WALL = false;
+
 export default function GetInvolvedPage() {
   const { toast } = useToast();
   const getInvolvedCardsQuery = useGetInvolvedCards();
@@ -186,7 +188,7 @@ export default function GetInvolvedPage() {
         </div>
       </section>
 
-      <VolunteerMarquee />
+      {SHOW_VOLUNTEER_WALL && <VolunteerMarquee />}
 
       {/* Sponsorship & Open Calls
       <section id="sponsor" className="py-24 bg-slate-50 scroll-mt-32" data-testid="sponsorships">

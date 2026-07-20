@@ -90,7 +90,7 @@ export default function ConnectPage() {
   }, []);
 
   const currentLogo = textOnly ? blackLogo : colorLogo;
-  const shareUrl = "https://atiig.ieeekerala.org/connect";
+  const shareUrl = "https://atii.ieeekerala.org/connect";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shareUrl)
