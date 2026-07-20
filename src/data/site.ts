@@ -9,7 +9,7 @@ export const SITE_TAGLINE = "Innovation with Empathy. Technology with Purpose.";
 export const SITE_DESCRIPTION =
   "IEEE Kerala ATIIG is the official IEEE Kerala Section affinity group designing affordable assistive technology and inclusive-innovation programs across Kerala, India.";
 
-export const CONTACT_EMAIL = "atiig@ieeekerala.org";
+export const CONTACT_EMAIL = "ieeeatii@gmail.com";
 export const CONTACT_PHONE = "+91 79945 426 300";
 
 export const GLOBAL_STATS = {

@@ -28,7 +28,7 @@ export function Footer() {
               <a href="https://www.youtube.com/@ieeeatii" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="YouTube" data-testid="social-youtube">
                 <FaYoutube className="w-5 h-5" />
               </a>
-              <a href="mailto:atiig@ieeekerala.org" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Email" data-testid="social-email">
+              <a href="mailto:ieeeatii@gmail.com" className="bg-white/10 hover:bg-orange hover:text-white text-white p-2.5 rounded-full transition-colors" aria-label="Email" data-testid="social-email">
                 <FaEnvelope className="w-5 h-5" />
               </a>
             </div>

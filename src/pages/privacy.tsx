@@ -61,8 +61,8 @@ export default function PrivacyPage() {
               <h2 className="text-xl font-bold text-navy mb-3">Contact</h2>
               <p>
                 For any privacy-related queries, please contact us at{" "}
-                <a href="mailto:atiig@ieeekerala.org" className="text-teal hover:underline font-medium">
-                  atiig@ieeekerala.org
+                <a href="mailto:ieeeatii@gmail.com" className="text-teal hover:underline font-medium">
+                  ieeeatii@gmail.com
                 </a>.
               </p>
             </section>

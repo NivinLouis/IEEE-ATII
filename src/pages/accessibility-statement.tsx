@@ -70,8 +70,8 @@ export default function AccessibilityStatementPage() {
               <h2 className="text-xl font-bold text-navy mb-3">Feedback</h2>
               <p>
                 If you run into a barrier or have a suggestion, please contact us at{" "}
-                <a href="mailto:atiig@ieeekerala.org" className="text-teal hover:underline font-medium">
-                  atiig@ieeekerala.org
+                <a href="mailto:ieeeatii@gmail.com" className="text-teal hover:underline font-medium">
+                  ieeeatii@gmail.com
                 </a>{" "}
                 or call{" "}
                 <a href="tel:+9179945426300" className="text-teal hover:underline font-medium">

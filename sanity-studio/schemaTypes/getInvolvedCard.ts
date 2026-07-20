@@ -27,7 +27,7 @@ export const getInvolvedCardType = defineType({
           { title: "Volunteer Opportunities - Teal", value: "volunteer" },
           { title: "Become a Member - Purple", value: "member" },
           { title: "Partner With Us - Orange", value: "partner" },
-          { title: "Join Us - Navy", value: "join" },
+          { title: "Sponsor Us - Navy", value: "sponsor" },
         ],
         layout: "dropdown",
       },

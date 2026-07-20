@@ -53,7 +53,7 @@ export default function GetInvolvedPage() {
     setIsPending(true);
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+      const response = await fetch("https://formsubmit.co/ajax/ieeeatii@gmail.com", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -155,29 +155,40 @@ export default function GetInvolvedPage() {
           )}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {getInvolvedCards.map((way, i) => {
+              const cardKind = way.kind === "join" ? "sponsor" : way.kind;
+              const cardTitle = way.title === "Join Us" ? "Sponsor Us" : way.title;
+              
               const cardStyles = {
                 volunteer: { icon: <Users className="w-8 h-8" />, color: "text-teal", bg: "bg-teal/10" },
                 member: { icon: <Star className="w-8 h-8" />, color: "text-purple", bg: "bg-purple/10" },
                 partner: { icon: <Handshake className="w-8 h-8" />, color: "text-orange", bg: "bg-orange/10" },
-                join: { icon: <Heart className="w-8 h-8" />, color: "text-navy", bg: "bg-navy/10" },
+                sponsor: { icon: <Heart className="w-8 h-8" />, color: "text-navy", bg: "bg-navy/10" },
               } as const;
-              const style = cardStyles[way.kind as keyof typeof cardStyles] ?? cardStyles.join;
-              const isExternal = /^https?:\/\//.test(way.buttonHref);
+              const style = cardStyles[cardKind as keyof typeof cardStyles] ?? cardStyles.sponsor;
+
+              const formLinks: Record<string, string> = {
+                volunteer: "https://forms.gle/4VLgWi8kVqn6Pfxi9",
+                member: "https://forms.gle/UMRCPUDyoMzXUtYF7",
+                partner: "https://forms.gle/Y7jQiJ7Gw8zFwNj66",
+                sponsor: "https://forms.gle/u4aotW1YDEuKZzqx7",
+              };
+              const href = formLinks[cardKind] || way.buttonHref;
+              const isExternal = /^https?:\/\//.test(href);
 
               return (
               <div key={i} id={way.id} className="bg-slate-50 rounded-2xl p-8 border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition-shadow scroll-mt-32">
                 <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${style.bg} ${style.color}`}>
                   {style.icon}
                 </div>
-                <h3 className="text-xl font-bold text-navy mb-3">{way.title}</h3>
+                <h3 className="text-xl font-bold text-navy mb-3">{cardTitle}</h3>
                 <p className="text-slate-600 text-sm mb-8 flex-1">{way.description}</p>
                 <Button asChild variant="outline" className={`w-full font-bold ${style.color.replace('text', 'border')} ${style.color} hover:bg-slate-100`}>
                   {isExternal ? (
-                    <a href={way.buttonHref} target="_blank" rel="noreferrer">
+                    <a href={href} target="_blank" rel="noreferrer">
                       {way.buttonLabel} →
                     </a>
                   ) : (
-                    <Link to={way.buttonHref}>
+                    <Link to={href}>
                       {way.buttonLabel} →
                     </Link>
                   )}
