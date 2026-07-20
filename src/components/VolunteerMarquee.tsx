@@ -17,6 +17,9 @@ type VolunteersApiResponse = {
 
 const VOLUNTEERS_API_URL = "/api/volunteers.php";
 
+let cachedVolunteers: Volunteer[] | null = null;
+let cachedFirstIllustrationUrl: string | null = null;
+
 type VolunteerMarqueeProps = {
   title?: string;
   description?: string;
@@ -30,13 +33,56 @@ function rotateVolunteers(volunteers: Volunteer[], offset: number) {
   return [...volunteers.slice(normalizedOffset), ...volunteers.slice(0, normalizedOffset)];
 }
 
+function preloadFirstIllustration(imageUrl: string, signal: AbortSignal) {
+  return new Promise<boolean>((resolve) => {
+    if (signal.aborted) {
+      resolve(false);
+      return;
+    }
+
+    const image = new Image();
+    let isSettled = false;
+
+    const finish = (didLoad: boolean) => {
+      if (isSettled) return;
+
+      isSettled = true;
+      image.onload = null;
+      image.onerror = null;
+      signal.removeEventListener("abort", handleAbort);
+      resolve(didLoad);
+    };
+
+    const handleAbort = () => {
+      image.src = "";
+      finish(false);
+    };
+
+    image.decoding = "async";
+    image.fetchPriority = "high";
+    image.onload = () => {
+      void image.decode()
+        .catch(() => undefined)
+        .finally(() => finish(true));
+    };
+    image.onerror = () => finish(false);
+    signal.addEventListener("abort", handleAbort, { once: true });
+    image.src = imageUrl;
+  });
+}
+
 export function VolunteerMarquee({
   title = "Meet the Volunteers",
   description = "These volunteers help power the organisation’s events, community programs, and technical activities.",
   durationSeconds = 30,
 }: VolunteerMarqueeProps) {
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [volunteers, setVolunteers] = useState<Volunteer[]>(() => cachedVolunteers ?? []);
+  const [isLoading, setIsLoading] = useState(
+    () =>
+      cachedVolunteers === null ||
+      (cachedVolunteers.length > 0 &&
+        cachedFirstIllustrationUrl !== cachedVolunteers[0].imageUrl),
+  );
   const [error, setError] = useState<string | null>(null);
   const [retryKey, setRetryKey] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -50,27 +96,52 @@ export function VolunteerMarquee({
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch(VOLUNTEERS_API_URL, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-          signal: controller.signal,
-        });
+        let loadedVolunteers: Volunteer[];
 
-        if (!response.ok) {
-          throw new Error(`Volunteer API returned ${response.status}`);
+        if (retryKey === 0 && cachedVolunteers !== null) {
+          loadedVolunteers = cachedVolunteers;
+        } else {
+          const response = await fetch(VOLUNTEERS_API_URL, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+            signal: controller.signal,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Volunteer API returned ${response.status}`);
+          }
+
+          const data: VolunteersApiResponse = await response.json();
+
+          if (!data.success || !Array.isArray(data.volunteers)) {
+            throw new Error(data.message || "Invalid volunteer API response");
+          }
+
+          loadedVolunteers = data.volunteers;
+          cachedVolunteers = loadedVolunteers;
         }
 
-        const data: VolunteersApiResponse = await response.json();
-
-        if (!data.success || !Array.isArray(data.volunteers)) {
-          throw new Error(data.message || "Invalid volunteer API response");
-        }
-
-        setVolunteers(data.volunteers);
+        setVolunteers(loadedVolunteers);
         setActiveIndex(0);
         setActiveCardId(null);
+
+        const firstIllustrationUrl = loadedVolunteers[0]?.imageUrl;
+
+        if (
+          firstIllustrationUrl &&
+          cachedFirstIllustrationUrl !== firstIllustrationUrl
+        ) {
+          const didLoad = await preloadFirstIllustration(
+            firstIllustrationUrl,
+            controller.signal,
+          );
+
+          if (didLoad) {
+            cachedFirstIllustrationUrl = firstIllustrationUrl;
+          }
+        }
       } catch (loadError) {
         if (loadError instanceof DOMException && loadError.name === "AbortError") {
           return;
