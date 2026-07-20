@@ -8,7 +8,7 @@
 
 Site: https://atiig.ieeekerala.org/
 Owner: IEEE Kerala Section — ATIIG (Assistive Technology & Inclusive Innovation Group)
-Contact: atiig@ieeekerala.org
+Contact: ieeeatii@gmail.com
 Canonical-Name: IEEE Kerala ATIIG
 Canonical-Expansion: Assistive Technology & Inclusive Innovation Group
 

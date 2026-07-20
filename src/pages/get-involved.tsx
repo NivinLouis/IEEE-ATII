@@ -53,7 +53,7 @@ export default function GetInvolvedPage() {
     setIsPending(true);
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+      const response = await fetch("https://formsubmit.co/ajax/ieeeatii@gmail.com", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

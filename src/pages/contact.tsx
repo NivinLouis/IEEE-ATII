@@ -55,7 +55,7 @@ export default function ContactPage() {
     setIsPending(true);
     
     try {
-      const response = await fetch("https://formsubmit.co/ajax/atiig@ieeekerala.org", {
+      const response = await fetch("https://formsubmit.co/ajax/ieeeatii@gmail.com", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">Email</h3>
-                    <a href="mailto:atiig@ieeekerala.org" className="text-slate-600 hover:text-navy font-medium text-lg">atiig@ieeekerala.org</a>
+                    <a href="mailto:ieeeatii@gmail.com" className="text-slate-600 hover:text-navy font-medium text-lg">ieeeatii@gmail.com</a>
                   </div>
                 </div>
                 
