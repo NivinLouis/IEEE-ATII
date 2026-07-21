@@ -7,8 +7,12 @@ type VolunteerCardProps = {
   tabIndex?: number;
   isPriority?: boolean;
   isActive?: boolean;
+  areInteractionsSuppressed?: boolean;
   onToggle?: (cardId: string) => void;
   onDeactivate?: (cardId: string) => void;
+  onInteractionResume?: () => void;
+  onHoverChange?: (cardId: string, isHovered: boolean) => void;
+  onFocusChange?: (cardId: string, isFocused: boolean) => void;
 };
 
 export function VolunteerCard({
@@ -17,8 +21,12 @@ export function VolunteerCard({
   tabIndex,
   isPriority = false,
   isActive = false,
+  areInteractionsSuppressed = false,
   onToggle,
   onDeactivate,
+  onInteractionResume,
+  onHoverChange,
+  onFocusChange,
 }: VolunteerCardProps) {
   const [shouldLoadRealImage, setShouldLoadRealImage] = useState(false);
   const [isRealImageLoaded, setIsRealImageLoaded] = useState(false);
@@ -31,38 +39,47 @@ export function VolunteerCard({
     }
   }, [isActive]);
 
-  const isInteracting = isActive || isHovered || isFocused;
+  useEffect(() => {
+    if (areInteractionsSuppressed) {
+      setIsHovered(false);
+      setIsFocused(false);
+    }
+  }, [areInteractionsSuppressed]);
+
+  const isInteracting = !areInteractionsSuppressed && (isActive || isHovered || isFocused);
   const isRealImageVisible = isInteracting && isRealImageLoaded;
 
   const handlePointerEnter = () => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (areInteractionsSuppressed) return;
 
     setIsHovered(true);
     setShouldLoadRealImage(true);
+    onHoverChange?.(cardId, true);
   };
 
   const handlePointerLeave = () => {
     setIsHovered(false);
+    onHoverChange?.(cardId, false);
   };
 
   const handleFocus = () => {
+    onInteractionResume?.();
     setIsFocused(true);
     setShouldLoadRealImage(true);
+    onFocusChange?.(cardId, true);
   };
 
   const handleBlur = () => {
     setIsFocused(false);
+    onFocusChange?.(cardId, false);
     onDeactivate?.(cardId);
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const isKeyboardClick = event.detail === 0;
-    const isTouchDevice = !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-    if (isKeyboardClick || isTouchDevice) {
-      setShouldLoadRealImage(true);
-      onToggle?.(cardId);
-    }
+  const handleClick = () => {
+    onInteractionResume?.();
+    setShouldLoadRealImage(true);
+    onToggle?.(cardId);
   };
 
   return (
@@ -109,7 +126,7 @@ export function VolunteerCard({
       </div>
 
       <div
-        className={`absolute inset-x-0 bottom-0 translate-y-3 bg-gradient-to-t from-black/95 via-black/75 to-transparent px-3 pb-3 pt-10 text-white opacity-0 transition duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100 ${isActive ? "translate-y-0 opacity-100" : ""}`}
+        className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/95 via-black/75 to-transparent px-3 pb-3 pt-10 text-white transition duration-300 ${isInteracting ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"}`}
       >
         <h3 className="truncate text-sm font-bold leading-tight sm:text-base">{volunteer.name}</h3>
       </div>

@@ -274,12 +274,6 @@
   }
 }
 
-.volunteer-marquee__track:has([data-volunteer-card]:hover),
-.volunteer-marquee__track:has([data-volunteer-card][aria-pressed="true"]),
-.volunteer-marquee__track:has([data-volunteer-card]:focus-visible) {
-  animation-play-state: paused;
-}
-
 .volunteer-marquee__track {
   animation: volunteer-marquee var(--volunteer-marquee-duration, 30s) linear infinite;
   will-change: transform;
