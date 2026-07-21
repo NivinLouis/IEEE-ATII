@@ -3,4 +3,4 @@ Contact: mailto:ieeeatii@gmail.com
 Expires: 2027-05-03T00:00:00.000Z
 Preferred-Languages: en, ml
 Canonical: https://atii.ieeekerala.org/.well-known/security.txt
-Policy: https://atii.ieeekerala.org/privacy
+Policy: https://atii.ieeekerala.org/privacy/

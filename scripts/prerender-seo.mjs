@@ -13,18 +13,18 @@ const indexPath = path.join(outDir, "index.html");
 
 const routes = {
   "/": {
-    title: "IEEE Kerala ATIIG | Assistive Technology & Inclusion",
+    title: "IEEE ATII / ATIIG Kerala | Assistive Technology",
     heading: "Building an Inclusive Tomorrow for All",
     description:
-      "Explore IEEE Kerala ATIIG's assistive technology projects, inclusive innovation programs, events, resources, and volunteer opportunities across Kerala.",
+      "IEEE ATII, also known as IEEE Kerala ATIIG, advances assistive technology and inclusive innovation through projects, programs, events, resources, and volunteering.",
     priority: "1.0",
     changefreq: "weekly",
   },
   "/about": {
-    title: "About IEEE Kerala ATIIG | Mission, Vision & Leadership",
-    heading: "About IEEE Kerala ATIIG",
+    title: "About IEEE ATII / ATIIG Kerala | Mission & Leadership",
+    heading: "About IEEE ATII / ATIIG Kerala",
     description:
-      "Learn about IEEE Kerala ATIIG's mission, journey, leadership, partners, and work advancing assistive technology and inclusive innovation across Kerala.",
+      "Learn about the IEEE Assistive Technology & Inclusive Innovation Group (IEEE ATII / ATIIG), including its mission, leadership, journey, and work across Kerala.",
     priority: "0.9",
     changefreq: "monthly",
   },
@@ -183,8 +183,13 @@ function replaceOrInsert(html, pattern, replacement, before = "</head>") {
   return html.replace(before, `    ${replacement}\n  ${before}`);
 }
 
+function canonicalRoutePath(routePath) {
+  const normalizedPath = `/${routePath.replace(/^\/+|\/+$/g, "")}`;
+  return normalizedPath === "/" ? "/" : `${normalizedPath}/`;
+}
+
 function routeSchema(routePath, meta) {
-  const url = `${siteUrl}${routePath}`;
+  const url = `${siteUrl}${canonicalRoutePath(routePath)}`;
   const image = meta.image || `${siteUrl}/opengraph.jpg`;
   const graph = [
     {
@@ -260,13 +265,13 @@ function staticRouteShell(meta) {
   const navigation = Object.entries(routes)
     .filter(([routePath]) => !["/privacy", "/terms", "/accessibility", "/connect"].includes(routePath))
     .map(([routePath, routeMeta]) => (
-      `<a href="${routePath}" style="color:#023a74;font-weight:600">${escapeHtml(routeMeta.heading)}</a>`
+      `<a href="${canonicalRoutePath(routePath)}" style="color:#023a74;font-weight:600">${escapeHtml(routeMeta.heading)}</a>`
     ))
     .join("");
 
   return `<div data-seo-static-shell style="font-family:Arial,sans-serif;max-width:960px;margin:0 auto;padding:48px 24px;color:#0f172a">
       <header style="margin-bottom:48px">
-        <a href="/" style="color:#023a74;font-size:20px;font-weight:800;text-decoration:none">IEEE Kerala ATIIG</a>
+        <a href="/" style="color:#023a74;font-size:20px;font-weight:800;text-decoration:none">IEEE Assistive Technology &amp; Inclusive Innovation Group</a>
       </header>
       <main>
         <h1 style="color:#023a74;font-size:40px;line-height:1.15">${escapeHtml(meta.heading)}</h1>
@@ -277,7 +282,7 @@ function staticRouteShell(meta) {
 }
 
 function withRouteMeta(baseHtml, routePath, meta) {
-  const url = `${siteUrl}${routePath}`;
+  const url = `${siteUrl}${canonicalRoutePath(routePath)}`;
   const image = meta.image || `${siteUrl}/opengraph.jpg`;
   const imageAlt = meta.imageAlt || "IEEE Kerala ATIIG — Assistive Technology and Inclusive Innovation in Kerala";
   const imageType = /\.png(?:$|\?)/i.test(image) ? "image/png" : "image/jpeg";
@@ -427,7 +432,7 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 ${Object.entries(allRoutes)
   .map(
     ([routePath, meta]) => `  <url>
-    <loc>${siteUrl}${routePath}</loc>
+    <loc>${siteUrl}${canonicalRoutePath(routePath)}</loc>
 ${meta.lastmod ? `    <lastmod>${meta.lastmod}</lastmod>\n` : ""}  </url>`,
   )
   .join("\n")}

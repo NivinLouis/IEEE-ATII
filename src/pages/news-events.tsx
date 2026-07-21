@@ -7,7 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useMemo, useState, useEffect } from "react";
 import { Calendar as CalendarIcon, MapPin, Clock, ArrowRight, Mic2, Sparkles, X } from "lucide-react";
-import { routeMeta, SITE_URL } from "@/data/site";
+import { getCanonicalUrl, routeMeta, SITE_URL } from "@/data/site";
 import { useEvents, useNewsArticles, usePhotoGalleryItems } from "@/lib/sanity/hooks";
 import {
   formatNewsDate,
@@ -127,7 +127,7 @@ export default function NewsEventsPage() {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             name: "IEEE Kerala ATIIG News & Events",
-            url: `${SITE_URL}/news-events`,
+            url: getCanonicalUrl("/news-events"),
             isPartOf: { "@id": `${SITE_URL}/#website` },
           },
         ]}

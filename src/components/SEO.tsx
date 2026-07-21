@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import {
-  SITE_DESCRIPTION,
+  getCanonicalUrl,
   SITE_NAME,
   SITE_URL,
 } from "@/data/site";
@@ -44,8 +44,7 @@ export default function SEO({
   schemas,
   noindex,
 }: SEOProps) {
-  const normalizedPath = path === "/" ? "/" : `/${path.replace(/^\/+|\/+$/g, "")}`;
-  const url = `${SITE_URL}${normalizedPath}`;
+  const url = getCanonicalUrl(path);
   const fullImage = image.startsWith("http") ? image : `${SITE_URL}${image}`;
   const imageType = fullImage.toLowerCase().endsWith(".png") ? "image/png" : "image/jpeg";
   const pageSchema = {
@@ -138,7 +137,7 @@ export const breadcrumbSchema = (
     "@type": "ListItem",
     position: i + 1,
     name: it.name,
-    item: `${SITE_URL}${it.path}`,
+    item: getCanonicalUrl(it.path),
   })),
 });
 
@@ -152,15 +151,4 @@ export const faqSchema = (
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },
   })),
-});
-
-export const websiteSchema = (): Record<string, unknown> => ({
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${SITE_URL}/#website`,
-  url: `${SITE_URL}/`,
-  name: SITE_NAME,
-  description: SITE_DESCRIPTION,
-  inLanguage: "en-IN",
-  publisher: { "@id": `${SITE_URL}/#organization` },
 });

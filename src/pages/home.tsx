@@ -1,8 +1,5 @@
 import { Layout } from "@/components/Layout";
-import SEO, {
-  breadcrumbSchema,
-  websiteSchema,
-} from "@/components/SEO";
+import SEO, { breadcrumbSchema } from "@/components/SEO";
 import CardFlip from "@/components/CardFlip";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { StatCounter } from "@/components/StatCounter";
@@ -78,10 +75,7 @@ export default function HomePage() {
         title={routeMeta["/"].title}
         description={routeMeta["/"].description}
         path="/"
-        schemas={[
-          websiteSchema(),
-          breadcrumbSchema([{ name: "Home", path: "/" }]),
-        ]}
+        schemas={[breadcrumbSchema([{ name: "Home", path: "/" }])]}
       />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-slate-50 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-28 lg:pb-32" data-testid="home-hero">
@@ -97,6 +91,10 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="flex flex-col items-center"
             >
+              <p className="mb-5 px-4 text-sm font-black uppercase tracking-[0.12em] text-teal sm:text-base">
+                IEEE Assistive Technology &amp; Inclusive Innovation Group
+                <span className="ml-1 whitespace-nowrap text-navy">(IEEE ATII / ATIIG)</span>
+              </p>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5.5rem] font-black text-navy leading-[1.05] mb-6 max-w-5xl px-2">
                 Building an Inclusive Tomorrow for All
               </h1>

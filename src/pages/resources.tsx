@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta, SITE_URL } from "@/data/site";
+import { getCanonicalUrl, routeMeta, SITE_URL } from "@/data/site";
 import { useResourceGuides, useResourcePublications, useResourceStandards, useResourceVideos } from "@/lib/sanity/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,9 +75,9 @@ export default function ResourcesPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "@id": `${SITE_URL}/resources#webpage`,
+            "@id": `${getCanonicalUrl("/resources")}#webpage`,
             name: "IEEE Kerala ATIIG Resources",
-            url: `${SITE_URL}/resources`,
+            url: getCanonicalUrl("/resources"),
             isPartOf: { "@id": `${SITE_URL}/#website` },
             about: { "@id": `${SITE_URL}/#organization` },
           },

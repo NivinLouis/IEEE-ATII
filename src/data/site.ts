@@ -2,12 +2,21 @@ export const SITE_URL =
   import.meta.env.VITE_SITE_URL?.replace(/\/+$/, "") ??
   "https://atii.ieeekerala.org";
 
+export function getCanonicalPath(path: string): string {
+  const normalizedPath = `/${path.replace(/^\/+|\/+$/g, "")}`;
+  return normalizedPath === "/" ? "/" : `${normalizedPath}/`;
+}
+
+export function getCanonicalUrl(path: string): string {
+  return `${SITE_URL}${getCanonicalPath(path)}`;
+}
+
 export const SITE_NAME = "IEEE Kerala ATIIG";
 export const SITE_CANONICAL_NAME =
   "IEEE Kerala Assistive Technology & Inclusive Innovation Group";
 export const SITE_TAGLINE = "Innovation with Empathy. Technology with Purpose.";
 export const SITE_DESCRIPTION =
-  "IEEE Kerala ATIIG is the official IEEE Kerala Section affinity group designing affordable assistive technology and inclusive-innovation programs across Kerala, India.";
+  "IEEE ATII, also known as IEEE Kerala ATIIG, is the IEEE Assistive Technology & Inclusive Innovation Group advancing accessible technology and inclusive innovation across Kerala.";
 
 export const CONTACT_EMAIL = "ieeeatii@gmail.com";
 export const CONTACT_PHONE = "+91 79945 426 300";
@@ -31,16 +40,16 @@ export const SOCIAL_LINKS = [
 
 export const routeMeta = {
   "/": {
-    title: "IEEE Kerala ATIIG | Assistive Technology & Inclusion",
+    title: "IEEE ATII / ATIIG Kerala | Assistive Technology",
     description:
-      "Explore IEEE Kerala ATIIG's assistive technology projects, inclusive innovation programs, events, resources, and volunteer opportunities across Kerala.",
+      "IEEE ATII, also known as IEEE Kerala ATIIG, advances assistive technology and inclusive innovation through projects, programs, events, resources, and volunteering.",
     priority: "1.0",
     changefreq: "weekly",
   },
   "/about": {
-    title: "About IEEE Kerala ATIIG | Mission, Vision & Leadership",
+    title: "About IEEE ATII / ATIIG Kerala | Mission & Leadership",
     description:
-      "Learn about IEEE Kerala ATIIG's mission, journey, leadership, partners, and work advancing assistive technology and inclusive innovation across Kerala.",
+      "Learn about the IEEE Assistive Technology & Inclusive Innovation Group (IEEE ATII / ATIIG), including its mission, leadership, journey, and work across Kerala.",
     priority: "0.9",
     changefreq: "monthly",
   },

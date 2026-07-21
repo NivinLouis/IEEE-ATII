@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
 import { Button } from "@/components/ui/button";
-import { SITE_URL } from "@/data/site";
+import { getCanonicalUrl, SITE_URL } from "@/data/site";
 import { useNewsArticle, useNewsArticles } from "@/lib/sanity/hooks";
 import {
   formatNewsDate,
@@ -115,14 +115,14 @@ export default function NewsArticlePage() {
                 {
                   "@context": "https://schema.org",
                   "@type": "NewsArticle",
-                  "@id": `${SITE_URL}/news/${article.slug}#article`,
+                  "@id": `${getCanonicalUrl(`/news/${article.slug}`)}#article`,
                   headline: article.title,
                   datePublished: article.publishedAt,
                   dateModified: article._updatedAt,
                   description: article.excerpt,
-                  url: `${SITE_URL}/news/${article.slug}`,
+                  url: getCanonicalUrl(`/news/${article.slug}`),
                   image: image?.src ? [image.src] : undefined,
-                  mainEntityOfPage: { "@id": `${SITE_URL}/news/${article.slug}#webpage` },
+                  mainEntityOfPage: { "@id": `${getCanonicalUrl(`/news/${article.slug}`)}#webpage` },
                   author: { "@id": `${SITE_URL}/#organization` },
                   publisher: { "@id": `${SITE_URL}/#organization` },
                   articleSection: getPrimaryCategoryLabel(article.categories),
