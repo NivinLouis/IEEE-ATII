@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
+import { getCanonicalUrl, routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
 import { useHomePage, useProjectsPage, useProjectsStoriesSection } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
@@ -59,9 +59,9 @@ export default function ProjectsPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "@id": `${SITE_URL}/projects#webpage`,
+            "@id": `${getCanonicalUrl("/projects")}#webpage`,
             name: "IEEE Kerala ATIIG Projects & Impact",
-            url: `${SITE_URL}/projects`,
+            url: getCanonicalUrl("/projects"),
             isPartOf: { "@id": `${SITE_URL}/#website` },
             about: { "@id": `${SITE_URL}/#organization` },
           },

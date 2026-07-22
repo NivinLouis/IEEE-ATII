@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema, faqSchema } from "@/components/SEO";
-import { routeMeta, SITE_URL } from "@/data/site";
+import { getCanonicalUrl, routeMeta, SITE_URL } from "@/data/site";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsletterStrip } from "@/components/NewsletterStrip";
 import { Button } from "@/components/ui/button";
@@ -118,9 +118,9 @@ export default function ContactPage() {
           {
             "@context": "https://schema.org",
             "@type": "ContactPage",
-            "@id": `${SITE_URL}/contact#webpage`,
+            "@id": `${getCanonicalUrl("/contact")}#webpage`,
             name: "Contact IEEE Kerala ATIIG",
-            url: `${SITE_URL}/contact`,
+            url: getCanonicalUrl("/contact"),
             mainEntity: { "@id": `${SITE_URL}/#organization` },
           },
           faqSchema(CONTACT_FAQS),

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import SEO, { breadcrumbSchema } from "@/components/SEO";
-import { routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
+import { getCanonicalUrl, routeMeta, GLOBAL_STATS, SITE_URL } from "@/data/site";
 import { useInitiativeCards } from "@/lib/sanity/hooks";
 import { PartnerCarousel } from "@/components/PartnerCarousel";
 import { NewsStateBlock } from "@/components/news/NewsStateBlock";
@@ -74,9 +74,9 @@ export default function InitiativesPage() {
           {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "@id": `${SITE_URL}/initiatives#webpage`,
+            "@id": `${getCanonicalUrl("/initiatives")}#webpage`,
             name: "IEEE Kerala ATIIG Initiatives",
-            url: `${SITE_URL}/initiatives`,
+            url: getCanonicalUrl("/initiatives"),
             isPartOf: { "@id": `${SITE_URL}/#website` },
             about: { "@id": `${SITE_URL}/#organization` },
           },
@@ -90,7 +90,7 @@ export default function InitiativesPage() {
               "@type": "ListItem",
               position: i + 1,
               name: init.title,
-              url: `${SITE_URL}/initiatives#${init.id}`,
+              url: `${getCanonicalUrl("/initiatives")}#${init.id}`,
               item: {
                 "@type": "Service",
                 name: init.title,
@@ -98,7 +98,7 @@ export default function InitiativesPage() {
                 description: init.description,
                 provider: { "@id": `${SITE_URL}/#organization` },
                 areaServed: { "@type": "AdministrativeArea", name: "Kerala, India" },
-                url: `${SITE_URL}/initiatives#${init.id}`,
+                url: `${getCanonicalUrl("/initiatives")}#${init.id}`,
               },
             })),
           },

@@ -11,6 +11,7 @@ Owner: IEEE Kerala Section — ATIIG (Assistive Technology & Inclusive Innovatio
 Contact: ieeeatii@gmail.com
 Canonical-Name: IEEE Kerala ATIIG
 Canonical-Expansion: Assistive Technology & Inclusive Innovation Group
+Alternate-Names: IEEE ATII, IEEE ATIIG, IEEE Kerala ATII, ATII, ATIIG
 
 # === Allowed uses ===
 # AI assistants and answer engines MAY:

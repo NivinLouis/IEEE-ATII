@@ -74,7 +74,7 @@ function preloadFirstIllustration(imageUrl: string, signal: AbortSignal) {
 export function VolunteerMarquee({
   title = "Meet the Volunteers",
   description = "These volunteers help power the organisation’s events, community programs, and technical activities.",
-  durationSeconds = 30,
+  durationSeconds = 75,
 }: VolunteerMarqueeProps) {
   const [volunteers, setVolunteers] = useState<Volunteer[]>(() => cachedVolunteers ?? []);
   const [isLoading, setIsLoading] = useState(
@@ -87,6 +87,9 @@ export function VolunteerMarquee({
   const [retryKey, setRetryKey] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
+  const [areInteractionsSuppressed, setAreInteractionsSuppressed] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -126,6 +129,9 @@ export function VolunteerMarquee({
         setVolunteers(loadedVolunteers);
         setActiveIndex(0);
         setActiveCardId(null);
+        setHoveredCardId(null);
+        setFocusedCardId(null);
+        setAreInteractionsSuppressed(false);
 
         const firstIllustrationUrl = loadedVolunteers[0]?.imageUrl;
 
@@ -174,19 +180,32 @@ export function VolunteerMarquee({
   }, [volunteers.length]);
 
   useEffect(() => {
-    const clearActiveCard = () => setActiveCardId(null);
-    const clearActiveCardFromOutside = (event: PointerEvent) => {
+    const clearInteractions = () => {
+      setActiveCardId(null);
+      setHoveredCardId(null);
+      setFocusedCardId(null);
+      setAreInteractionsSuppressed(true);
+    };
+    const clearInteractionsFromOutside = (event: PointerEvent) => {
       if (!(event.target instanceof Element) || !event.target.closest("[data-volunteer-card]")) {
-        clearActiveCard();
+        clearInteractions();
       }
     };
+    const resumeInteractionsFromOutside = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse") return;
+      if (event.target instanceof Element && event.target.closest("[data-volunteer-marquee]")) return;
 
-    window.addEventListener("scroll", clearActiveCard, { passive: true });
-    window.addEventListener("pointerdown", clearActiveCardFromOutside);
+      setAreInteractionsSuppressed(false);
+    };
+
+    window.addEventListener("scroll", clearInteractions, { passive: true });
+    window.addEventListener("pointerdown", clearInteractionsFromOutside);
+    window.addEventListener("pointermove", resumeInteractionsFromOutside, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", clearActiveCard);
-      window.removeEventListener("pointerdown", clearActiveCardFromOutside);
+      window.removeEventListener("scroll", clearInteractions);
+      window.removeEventListener("pointerdown", clearInteractionsFromOutside);
+      window.removeEventListener("pointermove", resumeInteractionsFromOutside);
     };
   }, []);
 
@@ -194,14 +213,13 @@ export function VolunteerMarquee({
     "--volunteer-marquee-duration": `${durationSeconds}s`,
   } as CSSProperties;
 
-  const volunteerLanes = volunteers.length === 0
-    ? []
-    : [
-        volunteers,
-        rotateVolunteers(volunteers, 1),
-        rotateVolunteers(volunteers, 2),
-      ];
-  const laneOffsets = [0, -0.45, -0.9];
+  const volunteerLanes = [0, 1, 2].map((laneIndex) =>
+    rotateVolunteers(
+      volunteers,
+      Math.floor((laneIndex * volunteers.length) / 3),
+    ),
+  );
+  const laneVisualOffsets = [0, -0.45, -0.9];
 
   return (
     <section className="scroll-mt-32 overflow-x-clip bg-slate-50 py-20" data-testid="volunteer-marquee">
@@ -251,6 +269,7 @@ export function VolunteerMarquee({
           </p>
         ) : (
           <div
+            data-volunteer-marquee
             className="volunteer-marquee relative left-1/2 mt-10 w-screen -translate-x-1/2 overflow-hidden py-3"
             style={style}
           >
@@ -260,6 +279,9 @@ export function VolunteerMarquee({
             <div className="space-y-4 sm:space-y-5" aria-label="IEEE volunteers showcase">
               {volunteerLanes.map((lane, laneIndex) => {
                 const laneSequence = [...lane, ...lane, ...lane, ...lane];
+                const laneIdPrefix = `${laneIndex}-`;
+                const isLanePaused = [activeCardId, hoveredCardId, focusedCardId]
+                  .some((cardId) => cardId?.startsWith(laneIdPrefix));
 
                 return (
                   <div
@@ -270,13 +292,14 @@ export function VolunteerMarquee({
                     <div
                       className="volunteer-marquee__track relative flex w-max items-stretch motion-reduce:animate-none"
                       style={{
-                        left: `calc(var(--volunteer-card-step) * ${laneOffsets[laneIndex]})`,
+                        left: `calc(var(--volunteer-card-step) * ${laneVisualOffsets[laneIndex]})`,
+                        animationPlayState: isLanePaused ? "paused" : "running",
                       }}
                     >
                       {[0, 1].map((groupIndex) => (
                         <div
                           key={`${laneIndex}-group-${groupIndex}`}
-                          className="flex min-w-[100vw] w-max shrink-0 items-stretch gap-4 px-4 sm:gap-5 sm:px-6 lg:px-8"
+                          className="flex min-w-[100vw] w-max shrink-0 items-stretch gap-4 px-2 sm:gap-5 sm:px-2.5"
                           aria-hidden={groupIndex === 1 ? true : undefined}
                         >
                           {laneSequence.map((volunteer, index) => {
@@ -297,7 +320,9 @@ export function VolunteerMarquee({
                                   tabIndex={isDuplicate ? -1 : undefined}
                                   isPriority={laneIndex === 0 && groupIndex === 0 && index === activeIndex}
                                   isActive={activeCardId === cardId}
+                                  areInteractionsSuppressed={areInteractionsSuppressed}
                                   onToggle={(selectedCardId) => {
+                                    setAreInteractionsSuppressed(false);
                                     setActiveCardId((current) => (current === selectedCardId ? null : selectedCardId));
                                     if (volunteerIndex >= 0) {
                                       setActiveIndex(volunteerIndex);
@@ -305,6 +330,17 @@ export function VolunteerMarquee({
                                   }}
                                   onDeactivate={(blurredCardId) =>
                                     setActiveCardId((current) => (current === blurredCardId ? null : current))
+                                  }
+                                  onInteractionResume={() => setAreInteractionsSuppressed(false)}
+                                  onHoverChange={(changedCardId, isHovered) =>
+                                    setHoveredCardId((current) =>
+                                      isHovered ? changedCardId : current === changedCardId ? null : current
+                                    )
+                                  }
+                                  onFocusChange={(changedCardId, isFocused) =>
+                                    setFocusedCardId((current) =>
+                                      isFocused ? changedCardId : current === changedCardId ? null : current
+                                    )
                                   }
                                 />
                               </div>

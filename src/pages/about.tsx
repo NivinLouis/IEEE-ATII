@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Target, Eye, List, Heart, Lightbulb, Shield, Handshake, Leaf, Star } from "lucide-react";
 
 import {
+  getCanonicalUrl,
   routeMeta,
   GLOBAL_STATS,
   SITE_URL,
@@ -170,9 +171,9 @@ export default function AboutPage() {
           {
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "@id": `${SITE_URL}/about#webpage`,
-            name: "About IEEE Kerala ATIIG",
-            url: `${SITE_URL}/about`,
+            "@id": `${getCanonicalUrl("/about")}#webpage`,
+            name: "About IEEE ATII / ATIIG Kerala",
+            url: getCanonicalUrl("/about"),
             mainEntity: { "@id": `${SITE_URL}/#organization` },
           },
         ]}
@@ -187,10 +188,10 @@ export default function AboutPage() {
                 <span>/</span>
                 <span className="text-navy">About Us</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-black text-navy mb-4">About IEEE Kerala ATIIG</h1>
+              <h1 className="text-4xl md:text-5xl font-black text-navy mb-4">About IEEE ATII / ATIIG Kerala</h1>
               <h2 className="text-xl md:text-2xl font-bold text-teal mb-6">Technology for All. Innovation for Inclusion.</h2>
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                The IEEE Kerala Assistive Technology & Inclusive Innovation Group (ATIIG) is dedicated to harnessing the power of technology to create a more equitable world. We bring together researchers, engineers, volunteers, and communities to design solutions that break down barriers for people with disabilities.
+                The IEEE Kerala Assistive Technology &amp; Inclusive Innovation Group—also known as IEEE ATII and IEEE ATIIG—is dedicated to harnessing the power of technology to create a more equitable world. We bring together researchers, engineers, volunteers, and communities to design solutions that break down barriers for people with disabilities.
               </p>
             </div>
 
