@@ -74,7 +74,7 @@ function preloadFirstIllustration(imageUrl: string, signal: AbortSignal) {
 export function VolunteerMarquee({
   title = "Meet the Volunteers",
   description = "These volunteers help power the organisation’s events, community programs, and technical activities.",
-  durationSeconds = 30,
+  durationSeconds = 75,
 }: VolunteerMarqueeProps) {
   const [volunteers, setVolunteers] = useState<Volunteer[]>(() => cachedVolunteers ?? []);
   const [isLoading, setIsLoading] = useState(
@@ -213,14 +213,13 @@ export function VolunteerMarquee({
     "--volunteer-marquee-duration": `${durationSeconds}s`,
   } as CSSProperties;
 
-  const volunteerLanes = volunteers.length === 0
-    ? []
-    : [
-        volunteers,
-        rotateVolunteers(volunteers, 1),
-        rotateVolunteers(volunteers, 2),
-      ];
-  const laneOffsets = [0, -0.45, -0.9];
+  const volunteerLanes = [0, 1, 2].map((laneIndex) =>
+    rotateVolunteers(
+      volunteers,
+      Math.floor((laneIndex * volunteers.length) / 3),
+    ),
+  );
+  const laneVisualOffsets = [0, -0.45, -0.9];
 
   return (
     <section className="scroll-mt-32 overflow-x-clip bg-slate-50 py-20" data-testid="volunteer-marquee">
@@ -293,7 +292,7 @@ export function VolunteerMarquee({
                     <div
                       className="volunteer-marquee__track relative flex w-max items-stretch motion-reduce:animate-none"
                       style={{
-                        left: `calc(var(--volunteer-card-step) * ${laneOffsets[laneIndex]})`,
+                        left: `calc(var(--volunteer-card-step) * ${laneVisualOffsets[laneIndex]})`,
                         animationPlayState: isLanePaused ? "paused" : "running",
                       }}
                     >
