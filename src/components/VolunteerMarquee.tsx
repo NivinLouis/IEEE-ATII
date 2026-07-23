@@ -16,6 +16,7 @@ type VolunteersApiResponse = {
 };
 
 const VOLUNTEERS_API_URL = "/api/volunteers.php";
+const VOLUNTEER_SEQUENCES_PER_LOOP = 4;
 
 let cachedVolunteers: Volunteer[] | null = null;
 let cachedFirstIllustrationUrl: string | null = null;
@@ -23,7 +24,8 @@ let cachedFirstIllustrationUrl: string | null = null;
 type VolunteerMarqueeProps = {
   title?: string;
   description?: string;
-  durationSeconds?: number;
+  /** Number of volunteer cards that pass each second. */
+  cardsPerSecond?: number;
 };
 
 function rotateVolunteers(volunteers: Volunteer[], offset: number) {
@@ -74,7 +76,7 @@ function preloadFirstIllustration(imageUrl: string, signal: AbortSignal) {
 export function VolunteerMarquee({
   title = "Meet the Volunteers",
   description = "These volunteers help power the organisation’s events, community programs, and technical activities.",
-  durationSeconds = 75,
+  cardsPerSecond = 1,
 }: VolunteerMarqueeProps) {
   const [volunteers, setVolunteers] = useState<Volunteer[]>(() => cachedVolunteers ?? []);
   const [isLoading, setIsLoading] = useState(
@@ -209,8 +211,10 @@ export function VolunteerMarquee({
     };
   }, []);
 
+  const scaledDurationSeconds =
+    (volunteers.length * VOLUNTEER_SEQUENCES_PER_LOOP) / cardsPerSecond;
   const style = {
-    "--volunteer-marquee-duration": `${durationSeconds}s`,
+    "--volunteer-marquee-duration": `${scaledDurationSeconds}s`,
   } as CSSProperties;
 
   const volunteerLanes = [0, 1, 2].map((laneIndex) =>
@@ -278,7 +282,10 @@ export function VolunteerMarquee({
 
             <div className="space-y-4 sm:space-y-5" aria-label="IEEE volunteers showcase">
               {volunteerLanes.map((lane, laneIndex) => {
-                const laneSequence = [...lane, ...lane, ...lane, ...lane];
+                const laneSequence = Array.from(
+                  { length: VOLUNTEER_SEQUENCES_PER_LOOP },
+                  () => lane,
+                ).flat();
                 const laneIdPrefix = `${laneIndex}-`;
                 const isLanePaused = [activeCardId, hoveredCardId, focusedCardId]
                   .some((cardId) => cardId?.startsWith(laneIdPrefix));
